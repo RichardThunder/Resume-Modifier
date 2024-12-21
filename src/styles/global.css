@@ -1,0 +1,51 @@
+/* 引入 Google Fonts - Raleway */
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;700&display=swap');
+/* 全局颜色变量 */
+:root {
+    --text-color: #0E051F;
+    --background-color: #F8F0FF;
+    --accent-color: #E7775A;
+    --button-primary-color: #7835E2;
+    --button-secondary-color: #EE89A1;
+    /* Fuchsia 色系 */
+    --fuchsia-100: #EF5DA8;
+    --fuchsia-80: #F178B6;
+    --fuchsia-60: #FCDDEC;
+}
+/* 全局字体和样式 */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Raleway', sans-serif; /* 使用 Raleway 字体 */
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+h1, h2, h3 {
+    margin: 0;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+    border-radius: 8px;
+    /*保证按钮内的文本不换行*/
+    white-space: nowrap;
+}
+button:hover {
+    opacity: 0.9;
+}
+button:active {
+    transform: scale(0.98);
+}
