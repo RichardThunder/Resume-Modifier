@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from 'vue';
 import {store} from '../../store.js';
 // 添加技能方法
 function addSkill() {
