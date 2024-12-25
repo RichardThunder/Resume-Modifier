@@ -3,7 +3,7 @@
     <button class="toolbar-btn rename">
       <img src="../assets/toolbar/ep_edit.svg" alt="edit"/>Rename
     </button>
-    <button class="toolbar-btn upload">
+    <button class="toolbar-btn upload" @click="uploadPDF">
       <img src="../assets/toolbar/circum_export.svg" alt="upload"/>Upload
     </button>
     <button class="toolbar-btn reanalyze">
@@ -18,13 +18,26 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'Toolbar',
+<script setup>
+import axios from 'axios';
+import {store} from '../store.js';
+
+const uploadPDF = async () => {
+  try {
+    const response = await axios.post('http://localhost:8080/api/pdfupload/');
+    if (response.data.status === 200) {
+      Object.assign(store,response.data.data);
+      console.log("get data from server",store);
+    } else {
+      console.error('Error uploading PDF:', response.data);
+    }
+  } catch (error) {
+    console.error('Failed to upload PDF:', error);
+  }
 };
 </script>
 
-<style scoped>
+<style>
 .toolbar {
   display: flex;
   align-items: center;
@@ -32,10 +45,10 @@ export default {
   background-color: #CDCDCD;
   padding: 10px;
   border-bottom: 1px solid #ccc;
-  gap:10px;
+  gap: 10px;
 }
 
-.toolbar-btn {
+.toolbar .toolbar-btn {
   background-color: var(--button-primary-color);
   color: white;
   border: none;
@@ -48,18 +61,19 @@ export default {
   gap: 5px;
 }
 
-.toolbar-btn.export {
+.toolbar .toolbar-btn.export {
   background-color: var(--accent-color); /* 使用不同颜色区分导出按钮 */
 }
 
-.toolbar-btn:hover {
+.toolbar .toolbar-btn:hover {
   opacity: 0.9;
 }
 
-.toolbar-btn:active {
+.toolbar .toolbar-btn:active {
   transform: scale(0.98);
 }
-button{
+
+.toolbar button {
   padding: 5px 5px;
 }
 </style>

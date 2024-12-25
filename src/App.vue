@@ -1,44 +1,50 @@
 <template>
   <div id="app">
     <!-- 头部 -->
-    <Header />
-
+    <Header/>
     <div class="container">
-
-        <PersonalForm />
-
-
+      <div class="personalForm">
+      <PersonalForm />
+      </div>
 
       <!-- 右侧预览 -->
-      <ResumePreview class="preview" />
+      <div class="resume-preview">
+        <ResumePreview />
+      </div>
+    </div>
+    <button @click="showData">showData</button>
   </div>
-  </div>
+
 </template>
 
-<script>
+<script setup>
 import PersonalForm from './components/PersonalForm.vue';
 import ResumePreview from './components/ResumePreview.vue';
 import Header from './components/Header.vue';
-
-export default {
-  components: {
-    Header,
-    PersonalForm,
-    ResumePreview,
-  },
-
-};
+import {store} from './store.js';
+const showData = ()=> console.log(store.userInfo);
 </script>
 
 <style>
 .container {
   display: flex;
   height: 100vh;
+  flex-direction: row;
   padding: 64px 0;
+  overflow-y: auto; /* 启用垂直滚动 */
 
 }
-
-.preview {
-  padding: 20px;
+.personalForm{
+  padding:20px;
+  overflow-y:  auto;
+  max-height: 100%;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+.resume-preview {
+  flex: 2;
+  padding: 10px;
+  background-color: white;
+  overflow-y: auto;
+  box-shadow: -1px 0 5px rgba(0, 0, 0, 0.1);
 }
 </style>

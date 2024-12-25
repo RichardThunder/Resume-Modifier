@@ -22,7 +22,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .header {
   position: fixed; /* 固定定位 */
   top: 0; /* 紧贴页面顶部 */
@@ -51,12 +51,12 @@ export default {
   font-size: 32px;
 }
 
-nav{
+.header nav{
   display: flex;
   align-items: center;
   gap:15px;
 }
-nav ul {
+.header nav ul {
   list-style: none;
   display: flex;
   gap: 15px;
@@ -65,17 +65,17 @@ nav ul {
 
 }
 
-nav ul li {
+.header nav ul li {
   cursor: pointer;
   font-size: 18px;
   font-weight: bold;
   white-space: nowrap;
 }
-li{
+.header li{
   padding: 10px 0;
 }
 
-.highlighted {
+.header .highlighted {
   color: var(--fuchsia-100);
 }
 
@@ -85,14 +85,14 @@ li{
   cursor: pointer;
 
 }
-button {
+.header button {
   background-color: var(--button-primary-color);
   border: none;
   padding: 8px 12px;
   cursor: pointer;
 
 }
-.avatar {
+.header .avatar {
   cursor: pointer;
 }
 </style>

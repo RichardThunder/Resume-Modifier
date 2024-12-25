@@ -1,61 +1,51 @@
 <template>
   <div class="editor-panel">
-    <h2>Personal Information</h2>
-    <div class="input-group">
-      <label>First Name</label>
-      <input type="text" v-model="form.firstName" placeholder="First Name" />
-
-      <label>Last Name</label>
-      <input type="text" v-model="form.lastName" placeholder="Last Name" />
-
-      <label>Phone Number</label>
-      <input type="text" v-model="form.phoneNumber" placeholder="Phone Number" />
-
-      <label>Email</label>
-      <input type="text" v-model="form.email" placeholder="Email" />
-    </div>
-
-    <div class="dropdown-sections">
-      <button>Summary</button>
-      <button>Work Experience</button>
-      <button>Education</button>
-      <button>Skills</button>
-      <button>Projects</button>
-    </div>
+    <person-info />
+    <resume-summary/>
+    <work-experience />
+    <education />
+    <skills />
+    <achievements />
+    <projects />
+    <awards />
+    <certification />
+    <publications />
+    <volunteering />
+    <references />
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      form: {
-        firstName: '',
-        lastName: '',
-        phoneNumber: '',
-        email: '',
-      },
-    };
-  },
-};
+<script setup>
+import PersonInfo from './form/personInfo.vue';
+import ResumeSummary from './form/resume-summary.vue';
+import WorkExperience from './form/work-experience.vue';
+import Education from './form/Education.vue';
+import Skills from './form/Skills.vue';
+import Achievements from './form/Achievements.vue';
+import Projects from './form/Projects.vue';
+import Awards from './form/awards.vue';
+import Certification from './form/certification.vue';
+import Publications from './form/Publications.vue';
+import Volunteering from './form/Volunteering.vue';
+import References from './form/References.vue';
+
+
 </script>
 
 <style>
-.editor-panel {
-  width: 30%;
-  padding: 20px;
-  background-color: white;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
+
+
 .input-group label {
   display: block;
   margin: 10px 0 5px;
 }
+
 .input-group input {
   width: 100%;
   padding: 8px;
   margin-bottom: 10px;
 }
+
 .dropdown-sections button {
   display: block;
   width: 100%;

@@ -1,7 +1,7 @@
 <template>
   <div class="resume-preview">
     <!-- 引入功能区组件 -->
-    <Toolbar />
+    <Toolbar/>
     <div class="section-header">
       <h2>{{ name }}</h2>
       <p>✉ {{ email }} | 📍 {{ location }}</p>
@@ -58,7 +58,7 @@ export default {
 
 <style>
 .resume-preview {
-  width: 70%;
+
   padding: 0;
   background-color: white;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
