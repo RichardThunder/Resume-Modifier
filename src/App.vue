@@ -12,7 +12,6 @@
         <ResumePreview />
       </div>
     </div>
-    <button @click="showData">showData</button>
   </div>
 
 </template>
@@ -22,7 +21,6 @@ import PersonalForm from './components/PersonalForm.vue';
 import ResumePreview from './components/ResumePreview.vue';
 import Header from './components/Header.vue';
 import {store} from './store.js';
-const showData = ()=> console.log(store.userInfo);
 </script>
 
 <style>
