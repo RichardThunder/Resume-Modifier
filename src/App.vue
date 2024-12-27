@@ -32,7 +32,7 @@ const showData=()=> console.log(store)
   display: flex;
   height: 100vh;
   flex-direction: row;
-  padding: 64px 0;
+  padding: 64px 0 0 0 ;
   overflow-y: auto; /* 启用垂直滚动 */
 
 }
