@@ -23,3 +23,5 @@
 ## TODO
 - 删除功能
 - 组件化
+- 实现undo
+- 实现 re-analysis
