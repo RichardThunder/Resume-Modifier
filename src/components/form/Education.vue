@@ -12,7 +12,12 @@ function toggleShow(index) {
 
 // 初始化 visibleIndexes 的状态
 function initializeVisibility() {
-  visibleIndexes.value = store.education.map(() => false); // 初始化每个教育条目为隐藏状态
+  while (visibleIndexes.value.length < store.education.length) {
+    visibleIndexes.value.push(false); // 新增的默认值为 false
+  }
+  if (visibleIndexes.value.length > store.education.length) {
+    visibleIndexes.value.splice(store.education.length);
+  }
 }
 
 watch(
@@ -34,7 +39,7 @@ function addEducation(){
     country:'',
     fromDate:'',
     toDate:'',
-    isPresent:'',
+    isPresent:false,
     description:'',
   })
   visibleIndexes.value.push(true);

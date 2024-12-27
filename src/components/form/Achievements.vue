@@ -1,8 +1,6 @@
 <script setup>
 import { ref } from 'vue';
 import {store} from '../../store.js';
-// 定义成就的响应式数据
-const achievements = ref('');
 
 // 是否显示表单
 const isVisible = ref(false);

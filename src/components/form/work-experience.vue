@@ -12,9 +12,14 @@ function toggleShow(index) {
 
 // 初始化 visibleIndexes 的状态
 function initializeVisibility() {
-  store.workExperience.map(() => {
-    visibleIndexes.value.push(false);
-  })
+  // 确保 visibleIndexes 长度与 store.workExperience 一致
+  while (visibleIndexes.value.length < store.workExperience.length) {
+    visibleIndexes.value.push(false); // 新增的默认值为 false
+  }
+  // 如果 visibleIndexes 长度超过 store.workExperience，则截断
+  if (visibleIndexes.value.length > store.workExperience.length) {
+    visibleIndexes.value.splice(store.workExperience.length);
+  }
 }
 watch(
     () => store.workExperience,
@@ -36,7 +41,7 @@ function addExperience() {
     country: '',
     fromDate: '',
     toDate: '',
-    isPresent: '',
+    isPresent: false,
     description: ''
   });
   visibleIndexes.value.push(true);

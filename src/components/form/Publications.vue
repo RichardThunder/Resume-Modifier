@@ -11,7 +11,12 @@ function toggleShow(index) {
 
 // 初始化 visibleIndexes 的状态
 function initializeVisibility() {
-  visibleIndexes.value = store.publications.map(() => false); // 初始化每个教育条目为隐藏状态
+  while (visibleIndexes.value.length < store.publications.length) {
+    visibleIndexes.value.push(false); // 新增的默认值为 false
+  }
+  if (visibleIndexes.value.length > store.publications.length) {
+    visibleIndexes.value.splice(store.publications.length);
+  }
 }
 watch(
     () => store.publications,

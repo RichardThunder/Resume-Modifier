@@ -12,7 +12,12 @@ function toggleShow(index) {
 
 // 初始化 visibleIndexes 的状态
 function initializeVisibility() {
-  visibleIndexes.value = store.education.map(() => false); // 初始化每个教育条目为隐藏状态
+  while (visibleIndexes.value.length < store.award.length) {
+    visibleIndexes.value.push(false); // 新增的默认值为 false
+  }
+  if (visibleIndexes.value.length > store.award.length) {
+    visibleIndexes.value.splice(store.award.length);
+  }
 }
 
 watch(
@@ -33,6 +38,7 @@ function addAwards() {
     dateOfAward: '',
     description: ''
   });
+  visibleIndexes.value.push(true);
 }
 
 </script>
