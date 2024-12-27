@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  app:
+    image: node:lts-alpine # 使用 Node.js 镜像进行构建
+    container_name: vue-app-builder
+    working_dir: /app
+    volumes:
+      - .:/app # 挂载当前目录到容器
+      - /app/node_modules # 避免 node_modules 冲突
+    command: sh -c "npm install && npm run build" # 构建项目
+    networks:
+      - app-network
+
+  nginx:
+    image: nginx:stable-alpine # 使用 Nginx 镜像作为生产环境服务器
+    container_name: vue-nginx
+    depends_on:
+      - app # 等待构建完成
+    ports:
+      - "8081:80" # 映射本地 8080 到 Nginx 的 80 端口
+    volumes:
+      - ./dist:/usr/share/nginx/html # 将构建后的文件挂载到 Nginx 的静态文件目录
+    networks:
+      - app-network
+
+networks:
+  app-network:
