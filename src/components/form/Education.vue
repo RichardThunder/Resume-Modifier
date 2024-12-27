@@ -44,6 +44,10 @@ function addEducation(){
   })
   visibleIndexes.value.push(true);
 }
+function deleteEducation(index) {
+  store.education.splice(index, 1); // 从 store.workExperience 中删除指定索引的项目
+  visibleIndexes.value.splice(index, 1); // 同步更新 visibleIndexes 的状态
+}
 </script>
 
 <template>
@@ -56,7 +60,10 @@ function addEducation(){
     <div v-for="(education, index) in store.education" :key="index" class="blockComponent">
       <h3 @click="toggleShow(index)" class="toggle-header">
         <span>Education #{{ index + 1 }}</span>
-        <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
+        <div class="block-utils">
+          <img class="delete-block" src="../../assets/block-delete.svg" @click="deleteEducation(index)">
+          <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
+        </div>
       </h3>
       <!-- 动态显示/隐藏 -->
       <div v-if="visibleIndexes[index]" class="form-container">

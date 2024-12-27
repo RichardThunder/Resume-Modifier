@@ -41,6 +41,10 @@ function addCertification() {
   });
   visibleIndexes.value.push(true);
 }
+function deleteCertification(index) {
+  store.certifications.splice(index, 1); //
+  visibleIndexes.value.splice(index, 1); // 同步更新 visibleIndexes 的状态
+}
 </script>
 
 <template>
@@ -51,7 +55,10 @@ function addCertification() {
   <div v-for="(certification, index) in store.certifications" :key="index" class="blockComponent">
     <h3 @click="toggleShow(index)" class="toggle-header">
       <span>Certification #{{ index + 1 }}</span>
-      <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
+      <div class="block-utils">
+        <img class="delete-block" src="../../assets/block-delete.svg" @click="deleteCertification(index)">
+        <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
+      </div>
     </h3>
     <!-- 表单内容 -->
     <div v-if="visibleIndexes[index]" class="form-container">

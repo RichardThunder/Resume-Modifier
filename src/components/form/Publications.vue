@@ -37,6 +37,10 @@ function addPublication() {
   });
   visibleIndexes.value.push(true);
 }
+function deletePublication(index) {
+  store.publications.splice(index, 1); // 从 store.workExperience 中删除指定索引的项目
+  visibleIndexes.value.splice(index, 1); // 同步更新 visibleIndexes 的状态
+}
 </script>
 
 <template>
@@ -49,7 +53,10 @@ function addPublication() {
     <div v-for="(publication, index) in store.publications" :key="index" class="blockComponent">
       <h3 @click="toggleShow(index)" class="toggle-header">
         <span>Publication #{{ index + 1 }}</span>
-        <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
+        <div class="block-utils">
+          <img class="delete-block" src="../../assets/block-delete.svg" @click="deletePublication(index)">
+          <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
+        </div>
       </h3>
       <!-- 表单内容 -->
       <div v-if="visibleIndexes[index]" class="form-container">

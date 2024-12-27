@@ -145,4 +145,19 @@ textarea:focus {
   border-radius: 4px;
   cursor: pointer;
 }
+.delete-block {
+  width: 30px; /* 设置宽度 */
+  height: 30px; /* 设置高度 */
+  cursor: pointer; /* 鼠标指针变为手形 */
+}
+
+.delete-block:hover {
+  transform: scale(1.1); /* 鼠标悬停时稍微放大 */
+  transition: transform 0.2s ease; /* 添加平滑过渡 */
+}
+.block-utils{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 </style>

@@ -40,7 +40,10 @@ function addProject(){
   })
   visibleIndexes.value.push(true);
 }
-
+function deleteProject(index) {
+  store.project.splice(index, 1); // 从 store.workExperience 中删除指定索引的项目
+  visibleIndexes.value.splice(index, 1); // 同步更新 visibleIndexes 的状态
+}
 </script>
 
 <template>
@@ -51,7 +54,10 @@ function addProject(){
   <div v-for="(project, index) in store.project" :key="index" class="blockComponent">
     <h3 @click="toggleShow(index)" class="toggle-header">
       <span>Project #{{ index + 1 }}</span>
-      <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
+      <div class="block-utils">
+        <img class="delete-block" src="../../assets/block-delete.svg" @click="deleteProject(index)">
+        <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
+      </div>
     </h3>
     <div v-if="visibleIndexes[index]" class="form-container">
       <div class="form-group">

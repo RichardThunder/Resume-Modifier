@@ -40,6 +40,10 @@ function addReference() {
   });
   visibleIndexes.value.push(true);
 }
+function deleteReferences(index) {
+  store.references.splice(index, 1); // 从 store.workExperience 中删除指定索引的项目
+  visibleIndexes.value.splice(index, 1); // 同步更新 visibleIndexes 的状态
+}
 </script>
 
 <template>
@@ -52,7 +56,10 @@ function addReference() {
     <div v-for="(reference, index) in store.references" :key="index" class="blockComponent">
       <h3 @click="toggleShow(index)" class="toggle-header">
         <span>Education #{{ index + 1 }}</span>
-        <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
+        <div class="block-utils">
+          <img class="delete-block" src="../../assets/block-delete.svg" @click="deleteReferences(index)">
+          <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
+        </div>
       </h3>
       <!-- 表单内容 -->
       <div v-if="visibleIndexes[index]" class="form-container">

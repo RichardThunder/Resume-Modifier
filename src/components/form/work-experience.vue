@@ -21,12 +21,13 @@ function initializeVisibility() {
     visibleIndexes.value.splice(store.workExperience.length);
   }
 }
+
 watch(
     () => store.workExperience,
     () => {
       initializeVisibility();
     },
-    { deep: true } // 深度监听以捕获数组内容的变化
+    {deep: true} // 深度监听以捕获数组内容的变化
 );
 // 初始化显示状态
 initializeVisibility();
@@ -46,6 +47,11 @@ function addExperience() {
   });
   visibleIndexes.value.push(true);
 }
+
+function deleteExperience(index) {
+  store.workExperience.splice(index, 1); // 从 store.workExperience 中删除指定索引的项目
+  visibleIndexes.value.splice(index, 1); // 同步更新 visibleIndexes 的状态
+}
 </script>
 
 <template>
@@ -58,7 +64,11 @@ function addExperience() {
     <div v-for="(experience, index) in store.workExperience" :key="index" class="blockComponent">
       <h3 @click="toggleShow(index)" class="toggle-header">
         <span>Work Experience #{{ index + 1 }}</span>
-        <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
+        <div class="block-utils">
+          <img class="delete-block" src="../../assets/block-delete.svg" @click="deleteExperience(index)">
+          <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
+        </div>
+
       </h3>
       <!-- 动态显示/隐藏 -->
       <div v-if="visibleIndexes[index]" class="form-container">
