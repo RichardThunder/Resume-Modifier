@@ -129,7 +129,7 @@ const disableEditing = () => {
 };
 
 const exportToPDF = () => {
-  const element = document.querySelector('.resume-container'); // 选择需要导出的内容
+  const element = document.querySelector('.resume-area'); // 选择需要导出的内容
   console.log(element + '' + 'element');
   const options = {
     margin: 0.5,
