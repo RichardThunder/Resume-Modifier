@@ -174,7 +174,7 @@ import {store} from '../store.js';
 <style>
 .resume-container {
   font-family: Arial, sans-serif;
-  margin: 20px auto;
+  margin: 0  auto;
   padding: 20px;
   width: 8.27in;
 
@@ -201,6 +201,8 @@ import {store} from '../store.js';
 
 .resume-section {
   margin-bottom: 20px;
+  page-break-inside: avoid;
+  break-inside: avoid;
 }
 
 .resume-section h2 {
@@ -235,5 +237,4 @@ import {store} from '../store.js';
   color: blue;
   text-decoration: underline;
 }
-
 </style>

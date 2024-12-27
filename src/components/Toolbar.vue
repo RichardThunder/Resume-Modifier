@@ -100,8 +100,8 @@ const exportToPDF=()=>{
       margin: 0.5,
       filename: fileName.value,
       image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+      html2canvas: { scale: 2,useCORS: true, },
+      jsPDF: { unit: 'in', format: [11,17], orientation: 'portrait' },
     };
 
     html2pdf().set(options).from(element).save();
@@ -190,4 +190,5 @@ const exportToPDF=()=>{
   display: flex;
   align-items: center;
 }
+
 </style>
