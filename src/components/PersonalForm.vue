@@ -17,12 +17,12 @@
 
 <script setup>
 import PersonInfo from './form/personInfo.vue';
-import ResumeSummary from './form/resume-summary.vue';
+import ResumeSummary from './form/summary.vue';
 import WorkExperience from './form/work-experience.vue';
 import Education from './form/Education.vue';
 import Skills from './form/Skills.vue';
 import Achievements from './form/Achievements.vue';
-import Projects from './form/Projects.vue';
+import Projects from './form/Project.vue';
 import Awards from './form/awards.vue';
 import Certification from './form/certification.vue';
 import Publications from './form/Publications.vue';
@@ -53,6 +53,96 @@ import References from './form/References.vue';
   margin: 5px 0;
   background-color: #dfe6e9;
   border: none;
+  cursor: pointer;
+}
+/* 容器样式 */
+.blockComponent {
+  margin: 20px auto;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  width: 600px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.block-header{
+  display: flex;
+  margin-top:20px;
+  gap:20px;
+}
+
+/* 标题样式 */
+.toggle-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* 表单容器 */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* 表单行布局 */
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+/* 表单组样式 */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.form-group label {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+textarea {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-group input:focus,
+textarea:focus {
+  outline: none;
+  border-color: #007BFF;
+  background-color: #fff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.form-group input[type="checkbox"] {
+  margin: 0;
+}
+.add-button{
+  padding: 8px 12px;
+  font-size: 14px;
+  background-color: var(--button-secondary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
 }
 </style>

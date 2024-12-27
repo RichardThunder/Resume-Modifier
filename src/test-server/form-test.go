@@ -37,6 +37,8 @@ func handlePDFUpload(w http.ResponseWriter, r *http.Request) {
 				"headLine":                "Software Engineer",
 				"phoneNumber":             "+123456789",
 				"email":                   "johndoe@example.com",
+				"city":"Beijing",
+				"country":"China",
 				"linkedInURL":             "https://www.linkedin.com/in/johndoe",
 				"websiteOrOtherProfileURL": "https://johndoe.com",
 			},
@@ -102,6 +104,17 @@ func handlePDFUpload(w http.ResponseWriter, r *http.Request) {
 					"isPresent":   false,
 					"description": "Led the development of a scalable inventory management system for a retail client.",
 				},
+                {
+                  "title": "Machine Learning Algorithm for Predictive Analytics",
+                  "projectRole": "Researcher",
+                  "city": "Boston",
+                  "country": "USA",
+                  "fromDate": "2020-06-01",
+                  "toDate": "2021-06-30",
+                  "isPresent": false,
+                  "description": "Developed machine learning models for predicting sales trends in e-commerce.",
+                },
+
 			},
 			"award": []map[string]interface{}{
 				{
@@ -121,9 +134,69 @@ func handlePDFUpload(w http.ResponseWriter, r *http.Request) {
 					"url":         "https://www.oracle.com/certifications/java-developer",
 					"description": "Certified Java Developer after completing the official Oracle certification program.",
 				},
+            {
+                          "name": "Certified Scrum Master",
+                          "issuer": "Scrum Alliance",
+                          "date": "2019-04-15",
+                          "expiryDate": "2024-04-15",
+                          "url": "https://www.scrumalliance.org/certifications/scrum-master",
+                          "description": "Certified Scrum Master after successful completion of Scrum Master training.",
+                        },
 			},
-		},
-	}
+          "publications": []map[string]interface{}{
+            {
+              "name": "AI in Business",
+              "publisher": "Tech Journal",
+              "url": "https://www.techjournal.com/ai-in-business",
+              "date": "2021-07-01",
+            },
+            {
+              "name": "The Future of Cloud Computing",
+              "publisher": "CloudTech",
+              "url": "https://www.cloudtech.com/future-of-cloud-computing",
+              "date": "2020-11-20",
+            },
+        },
+          "volunteering": []map[string]interface{}{
+            {
+              "name": "Community Tech Support",
+              "role": "Volunteer Developer",
+              "city": "San Francisco",
+              "country": "USA",
+              "fromDate": "2021-03-01",
+              "toDate": "2021-12-31",
+              "description": "Provided tech support to local community centers and non-profits.",
+            },
+            {
+              "name": "Youth Coding Workshops",
+              "role": "Instructor",
+              "city": "Chongqing",
+              "country": "China",
+              "fromDate": "2019-07-01",
+              "toDate": "2019-12-31",
+              "description": "Taught coding to underprivileged youth in the community.",
+            },
+        },
+          "references": []map[string]interface{}{
+            {
+              "company": "TechCorp",
+              "personName": "Jane Smith",
+              "roleOfPerson": "HR Manager",
+              "email": "janesmith@techcorp.com",
+              "phoneNumber": "+123456789",
+              "description": "Jane Smith was my supervisor at TechCorp, and she can provide detailed feedback on my work performance.",
+            },
+            {
+              "company": "DevWorks",
+              "personName": "Tom Brown",
+              "roleOfPerson": "Team Lead",
+              "email": "tombrown@devworks.com",
+              "phoneNumber": "+987654321",
+              "description": "Tom Brown was my team lead at DevWorks and can speak to my contributions to the team.",
+            },
+        },
+	},}
+	
 
 	// 将 JSON 数据写入响应
 	if err := json.NewEncoder(w).Encode(response); err != nil {

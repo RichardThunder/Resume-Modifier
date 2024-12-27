@@ -1,9 +1,11 @@
 <template>
   <div id="app">
+
     <!-- 头部 -->
     <Header/>
     <div class="container">
       <div class="personalForm">
+<!--        <button @click="showData">showData</button>-->
       <PersonalForm />
       </div>
 
@@ -21,6 +23,8 @@ import PersonalForm from './components/PersonalForm.vue';
 import ResumePreview from './components/ResumePreview.vue';
 import Header from './components/Header.vue';
 import {store} from './store.js';
+
+const showData=()=> console.log(store)
 </script>
 
 <style>
@@ -33,14 +37,15 @@ import {store} from './store.js';
 
 }
 .personalForm{
+  flex:1;
   padding:20px;
   overflow-y:  auto;
   max-height: 100%;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 .resume-preview {
-  flex: 2;
-  padding: 10px;
+  flex: 1.5;
+  padding: 5px;
   background-color: white;
   overflow-y: auto;
   box-shadow: -1px 0 5px rgba(0, 0, 0, 0.1);

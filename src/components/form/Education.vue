@@ -1,6 +1,6 @@
 <script setup>
-import { ref } from 'vue';
-import { store } from '../../store.js';
+import {ref, watch} from 'vue';
+import {store} from '../../store.js';
 
 // 控制每个组件的显示/隐藏状态
 const visibleIndexes = ref([]);
@@ -15,15 +15,40 @@ function initializeVisibility() {
   visibleIndexes.value = store.education.map(() => false); // 初始化每个教育条目为隐藏状态
 }
 
+watch(
+    () => store.education,
+    () => {
+      initializeVisibility();
+    },
+    { deep: true } // 深度监听以捕获数组内容的变化
+);
 // 初始化显示状态
 initializeVisibility();
+function addEducation(){
+  store.education.push({
+    institutionName:'',
+    fieldOfStudy:'',
+    degree:'',
+    grade:'',
+    city:'',
+    country:'',
+    fromDate:'',
+    toDate:'',
+    isPresent:'',
+    description:'',
+  })
+  visibleIndexes.value.push(true);
+}
 </script>
 
 <template>
   <div>
-    <h2 class="section-title">🎓 Education</h2>
+    <div class="block-header">
+      <h2 class="section-title">🎓 Education</h2>
+      <button @click="addEducation" class="add-button">Add</button>
+    </div>
     <!-- 遍历 store.education 数组 -->
-    <div v-for="(education, index) in store.education" :key="index" class="educationComponent">
+    <div v-for="(education, index) in store.education" :key="index" class="blockComponent">
       <h3 @click="toggleShow(index)" class="toggle-header">
         <span>Education #{{ index + 1 }}</span>
         <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
@@ -33,52 +58,52 @@ initializeVisibility();
         <div class="form-row">
           <div class="form-group">
             <label>Institution Name</label>
-            <input type="text" v-model="education.institutionName" placeholder="Institution Name" />
+            <input type="text" v-model="store.education[index].institutionName" placeholder="Institution Name"/>
           </div>
           <div class="form-group">
             <label>Field of Study</label>
-            <input type="text" v-model="education.fieldOfStudy" placeholder="Field of Study" />
+            <input type="text" v-model="store.education[index].fieldOfStudy" placeholder="Field of Study"/>
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
             <label>Degree</label>
-            <input type="text" v-model="education.degree" placeholder="Degree" />
+            <input type="text" v-model="store.education[index].degree" placeholder="Degree"/>
           </div>
           <div class="form-group">
             <label>Grade</label>
-            <input type="text" v-model="education.grade" placeholder="Grade or Classification" />
+            <input type="text" v-model="store.education[index].grade" placeholder="Grade or Classification"/>
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
             <label>City</label>
-            <input type="text" v-model="education.city" placeholder="City" />
+            <input type="text" v-model="store.education[index].city" placeholder="City"/>
           </div>
           <div class="form-group">
             <label>Country</label>
-            <input type="text" v-model="education.country" placeholder="Country" />
+            <input type="text" v-model="store.education[index].country" placeholder="Country"/>
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
             <label>From Date</label>
-            <input type="date" v-model="education.fromDate" />
+            <input type="date" v-model="store.education[index].fromDate"/>
           </div>
           <div class="form-group">
             <label>To Date</label>
-            <input type="date" v-model="education.toDate" :disabled="education.isPresent" />
+            <input type="date" v-model="store.education[index].toDate" :disabled="store.education[index].isPresent"/>
           </div>
         </div>
         <div class="form-group">
           <label>
-            <input type="checkbox" v-model="education.isPresent" /> Currently Studying Here
+            <input type="checkbox" v-model="store.education[index].isPresent"/> Currently Studying Here
           </label>
         </div>
         <div class="form-group">
           <label>Description</label>
           <textarea
-              v-model="education.description"
+              v-model="store.education[index].description"
               placeholder="Describe your education details, achievements, or notable projects"
           ></textarea>
         </div>

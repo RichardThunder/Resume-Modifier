@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-
+import {store} from '../../store.js';
 // 定义成就的响应式数据
 const achievements = ref('');
 
@@ -14,7 +14,7 @@ function toggleShow() {
 </script>
 
 <template>
-  <div class="achievementsComponent">
+  <div class="blockComponent">
     <h2 @click="toggleShow" class="toggle-header">
       <span>🏆 Achievements</span>
       <span>{{ isVisible ? '▲' : '▼' }}</span>
@@ -25,7 +25,7 @@ function toggleShow() {
         <label for="achievements">Your Achievements</label>
         <textarea
             id="achievements"
-            v-model="achievements"
+            v-model="store.achievements"
             placeholder="Summarize your achievements, awards, or significant accomplishments."
         ></textarea>
       </div>
