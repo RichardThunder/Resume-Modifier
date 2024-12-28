@@ -129,13 +129,12 @@ const disableEditing = () => {
 };
 
 const exportToPDF = () => {
-  const element = document.querySelector('.resume-container'); // 选择需要导出的内容
-  console.log(element + '' + 'element');
+  const element = document.querySelector('.resume-area'); // 选择需要导出的内容
   const options = {
-    margin: 0.5,
+    margin: 0,
     filename: fileName.value,
     image: {type: 'jpeg', quality: 0.98},
-    html2canvas: {scale: 2, useCORS: true},
+    html2canvas: {scale: 3, useCORS: true},
     jsPDF: {unit: 'in', format: [11, 17], orientation: 'portrait'}
   };
 

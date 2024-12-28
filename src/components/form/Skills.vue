@@ -6,7 +6,7 @@ const newSkill = ref('');
 
 // 添加技能方法
 function addSkill() {
-  if(newSkill.value.trim() === '')
+  if (newSkill.value.trim() === '')
     return;
   store.skills.push(newSkill.value.trim());
   newSkill.value = ''; // 清空输入框
@@ -25,14 +25,12 @@ function removeSkill(index) {
       🛠️ Skills
     </h2>
   </div>
-
   <!-- 表单内容 -->
-  <div class="form-container">
-    <div class="blockComponent">
+  <div class="blockComponent">
+    <div class="form-container">
       <div class="skills-list">
 
         <div v-for="(skill, index) in store.skills" :key="index" class="form-row">
-          <!--        <input type="text" v-model="store.skills[index]" placeholder="skills you hold">-->
           <span class="skill-item">{{ skill }}</span>
           <button @click="removeSkill(index)" class="add-button">Remove️</button>
         </div>

@@ -55,7 +55,7 @@ function deleteExperience(index) {
 </script>
 
 <template>
-  <div>
+
     <div class="block-header">
       <h2 class="section-title">💼 Work Experience</h2>
       <button @click="addExperience" class="add-button">Add</button>
@@ -115,7 +115,7 @@ function deleteExperience(index) {
         </div>
       </div>
     </div>
-  </div>
+
 </template>
 <style scoped>
 /* 容器样式 */

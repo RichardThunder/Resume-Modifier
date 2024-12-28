@@ -4,12 +4,25 @@
       <!-- 引入功能区组件 -->
       <Toolbar/>
     </div>
-
+    <div class="resume-area">
     <div class="resume-container">
       <header class="resume-header">
+        <div style="display: flex;flex-direction: column; ">
         <h1>{{ store.userInfo.firstName + ' ' + store.userInfo.lastName }}</h1>
+         <div style="margin: 0 0 0 0;" >
+          <p>{{store.userInfo.headLine}}</p>
+           <p>
+           <I>{{ store.userInfo.city + ' ' + store.userInfo.country }}</I>
+           </p>
+         </div>
+        </div>
+        <div>
         <p>{{ store.userInfo.email }}</p>
-        <p>{{ store.userInfo.city + ' ' + store.userInfo.country }}</p>
+
+          <p>{{store.userInfo.phoneNumber}}</p>
+          <p>{{store.userInfo.linkedInURL}}</p>
+          <p>{{store.userInfo.websiteOrOtherProfileURL}}</p>
+        </div>
       </header>
       <section v-if="store.summary" class="resume-section">
         <h2>SUMMARY</h2>
@@ -22,9 +35,9 @@
           <li v-for="(job, index) in store.workExperience" :key="index" class="list-block">
             <div class="flex-col width25">
               <div class="title">{{ job.companyName }}</div>
-              <p><I>{{ job.city }}, {{ job.country }}</I></p>
+              <p><I>{{ job.city }}<span v-if="job.city && job.country">,</span> {{ job.country }}</I></p>
               <I v-if="job.isPresent">({{ job.fromDate }} - Present)</I>
-              <I v-else>{{ job.fromDate }} - {{ job.toDate }}</I>
+              <I v-else>{{ job.fromDate }} <span v-if="job.fromDate && job.toDate">-</span> {{ job.toDate }}</I>
             </div>
             <div class="width75 flex-col">
               <div class="title">{{ job.jobTitle }}</div>
@@ -41,13 +54,13 @@
           <li v-for="(edu, index) in store.education" :key="index" class="list-block">
             <div class="flex-col width25">
               <div class="title">{{ edu.institutionName }}</div>
-              <p><I>{{ edu.city }}, {{ edu.country }}</I></p>
+              <p><I>{{ edu.city }}<span v-if="edu.city && edu.country">,</span>  {{ edu.country }}</I></p>
 
               <I v-if="edu.isPresent">({{ edu.fromDate }} - Present)</I>
-              <I v-else>{{ edu.fromDate }} - {{ edu.toDate }}</I>
+              <I v-else>{{ edu.fromDate }} <span v-if="edu.fromDate && edu.toDate">-</span> {{ edu.toDate }}</I>
             </div>
             <div class="width75 flex-col">
-              <div class="title">{{ edu.degree }} in {{ edu.fieldOfStudy }} <span v-if="edu.grade">(Grade: {{
+              <div class="title">{{ edu.degree }} <span v-if="edu.degree && edu.fieldOfStudy">in</span> {{ edu.fieldOfStudy }} <span v-if="edu.grade">(Grade: {{
                   edu.grade
                 }})</span></div>
               <p>{{ edu.description }}</p>
@@ -77,9 +90,9 @@
           <li v-for="(project, index) in store.project" :key="index" class="list-block">
             <div class="flex-col width25">
               <div class="title">{{ project.title }}</div>
-              <p><I>{{ project.city }}, {{ project.country }}</I></p>
+              <p><I>{{ project.city }}<span v-if="project.city && project.country">,</span> {{ project.country }}</I></p>
               <I v-if="project.isPresent">({{ project.fromDate }} - Present)</I>
-              <I v-else>{{ project.fromDate }} - {{ project.toDate }}</I>
+              <I v-else>{{ project.fromDate }} <span v-if="project.fromDate && project.toDate">-</span>  {{ project.toDate }}</I>
             </div>
             <div class="width75 flex-col">
               <div class="title">{{ project.projectRole }}</div>
@@ -101,7 +114,7 @@
               <I>{{ award.dateOfAward }}</I>
             </div>
             <div class="width75 flex-col">
-              <div class="title">{{ award.name }} by {{ award.issuer }}</div>
+              <div class="title">{{ award.name }} <span v-if="award.name && award.issuer">by</span> {{ award.issuer }}</div>
               <p>{{ award.description }}</p>
 
             </div>
@@ -122,7 +135,7 @@
 
             </div>
             <div class="width75 flex-col">
-              <div class="title">{{ cert.name }} by {{ cert.issuer }}</div>
+              <div class="title">{{ cert.name }}<span v-if="cert.name&&cert.issuer">by</span>  {{ cert.issuer }}</div>
               <p>{{ cert.description }}</p>
             </div>
             <!--            <div v-if="cert.expiryDate">Expiry Date: {{ cert.expiryDate }}</div>-->
@@ -145,7 +158,7 @@
               <!-- Publication Name -->
               <div class="title">{{ pub.name }}</div>
               <!-- Publisher -->
-              <div>Publisher: {{ pub.publisher }}</div>
+              <div v-if="pub.publisher">Publisher: {{ pub.publisher }}</div>
             </div>
           </li>
         </ul>
@@ -155,12 +168,12 @@
         <ul>
           <li v-for="(volunteer, index) in store.volunteering" :key="index" class="list-block">
             <div class="flex-col width25">
-              <p><I>{{ volunteer.city }} ,{{ volunteer.country }}</I></p>
+              <p><I>{{ volunteer.city }} <span v-if="volunteer.city && volunteer.country">,</span>{{ volunteer.country }}</I></p>
               <I v-if="volunteer.isPresent">({{ volunteer.fromDate }} - Present)</I>
-              <I v-else>({{ volunteer.fromDate }} - {{ volunteer.toDate }})</I>
+              <I v-else >{{ volunteer.fromDate }} <span v-if="volunteer.fromDate && volunteer.toDate">-</span> {{ volunteer.toDate }}</I>
             </div>
             <div class="flex-col width75">
-              <div class="title">{{ volunteer.role }} in {{ volunteer.name }}</div>
+              <div class="title">{{ volunteer.role }} <span v-if="volunteer.role && volunteer.name">in</span>{{ volunteer.name }}</div>
               <p>{{ volunteer.description }}</p>
             </div>
           </li>
@@ -183,6 +196,7 @@
         </ul>
       </section>
     </div>
+    </div>
   </div>
 </template>
 
@@ -197,17 +211,17 @@ import {store} from '../store.js';
   margin: 0 auto;
   padding: 20px;
   width: 8.27in;
-
   background-color: #fff;
-  border: 1px solid #ddd;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   overflow: auto;
 }
 
 .resume-header {
   text-align: center;
   margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  padding:10px 50px 0 10px;
 }
 
 .resume-header h1 {
@@ -216,7 +230,7 @@ import {store} from '../store.js';
 }
 
 .resume-header p {
-  margin: 5px 0;
+  margin:  0;
 }
 
 .resume-section {
@@ -226,11 +240,11 @@ import {store} from '../store.js';
 }
 
 .resume-section h2 {
-  border-bottom: 2px solid #78c5ce;
+  border-bottom: 2px solid rgba(120, 197, 206, 0.55);
   color: #333;
   margin-bottom: 10px;
   font-size: 24px;
-  background-color: #9eccd1;
+  background-color: rgba(158, 204, 209, 0.77);
 }
 
 .resume-section p span {
