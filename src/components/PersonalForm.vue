@@ -33,7 +33,11 @@ import References from './form/References.vue';
 </script>
 
 <style>
-
+.editor-panel{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
 
 .input-group label {
   display: block;
@@ -57,18 +61,21 @@ import References from './form/References.vue';
 }
 /* 容器样式 */
 .blockComponent {
-  margin: 20px auto;
+  margin: 20px 20px 0 20px;
   padding: 15px;
   border: 1px solid #ccc;
   border-radius: 8px;
   background-color: #fff;
-  width: 600px;
+  width: 90%;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 .block-header{
+
   display: flex;
-  margin-top:20px;
+  margin:20px 0 0 0;
+  padding: 15px;
   gap:20px;
+
 }
 
 /* 标题样式 */
@@ -121,6 +128,11 @@ textarea {
 }
 
 .form-group textarea {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
   resize: vertical;
   min-height: 100px;
 }

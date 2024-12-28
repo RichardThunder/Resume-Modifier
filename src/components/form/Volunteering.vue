@@ -48,7 +48,6 @@ function deleteVolunteer(index) {
 </script>
 
 <template>
-  <div>
     <div class="block-header">
       <h2 class="section-title">🌟 Volunteering</h2>
       <button @click="addVolunteer" class="add-button">Add</button>
@@ -102,7 +101,7 @@ function deleteVolunteer(index) {
         </div>
       </div>
     </div>
-  </div>
+
 </template>
 
 <style scoped>

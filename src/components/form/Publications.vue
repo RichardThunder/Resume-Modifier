@@ -44,12 +44,10 @@ function deletePublication(index) {
 </script>
 
 <template>
-  <div>
     <div class="block-header">
       <h2 class="section-title">📚 Publications</h2>
       <button @click="addPublication" class="add-button">Add</button>
     </div>
-    <!-- 遍历 store.education 数组 -->
     <div v-for="(publication, index) in store.publications" :key="index" class="blockComponent">
       <h3 @click="toggleShow(index)" class="toggle-header">
         <span>Publication #{{ index + 1 }}</span>
@@ -60,6 +58,7 @@ function deletePublication(index) {
       </h3>
       <!-- 表单内容 -->
       <div v-if="visibleIndexes[index]" class="form-container">
+        <div class="form-row">
         <div class="form-group">
           <label>Publication Title</label>
           <input type="text" v-model="publication.name" placeholder="Title of the Publication"/>
@@ -67,6 +66,7 @@ function deletePublication(index) {
         <div class="form-group">
           <label>Publisher</label>
           <input type="text" v-model="publication.publisher" placeholder="Publisher of the Publication"/>
+        </div>
         </div>
         <div class="form-group">
           <label>URL</label>
@@ -78,7 +78,6 @@ function deletePublication(index) {
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <style scoped>

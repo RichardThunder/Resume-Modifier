@@ -51,7 +51,7 @@ function deleteEducation(index) {
 </script>
 
 <template>
-  <div>
+
     <div class="block-header">
       <h2 class="section-title">🎓 Education</h2>
       <button @click="addEducation" class="add-button">Add</button>
@@ -121,78 +121,7 @@ function deleteEducation(index) {
         </div>
       </div>
     </div>
-  </div>
 </template>
 <style scoped>
-/* 容器样式 */
-.educationComponent {
-  margin: 20px auto;
-  padding: 15px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #fff;
-  width: 600px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
 
-/* 标题样式 */
-.toggle-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  font-size: 18px;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-/* 表单容器 */
-.form-container {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-/* 表单行布局 */
-.form-row {
-  display: flex;
-  gap: 15px;
-}
-
-/* 表单组样式 */
-.form-group {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.form-group label {
-  font-size: 14px;
-  color: #555;
-  margin-bottom: 5px;
-}
-
-.form-group input,
-textarea {
-  padding: 8px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: #f9f9f9;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.form-group textarea {
-  resize: vertical;
-  min-height: 100px;
-}
-
-.form-group input:focus,
-textarea:focus {
-  outline: none;
-  border-color: #007BFF;
-  background-color: #fff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}
 </style>

@@ -5,7 +5,6 @@
     <Header/>
     <div class="container">
       <div class="personalForm">
-<!--        <button @click="showData">showData</button>-->
       <PersonalForm />
       </div>
 
@@ -37,14 +36,14 @@ const showData=()=> console.log(store)
 
 }
 .personalForm{
-  flex:1;
+  flex:2;
   padding:20px;
   overflow-y:  auto;
   max-height: 100%;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 .resume-preview {
-  flex: 1.5;
+  flex: 3;
   padding: 5px;
   background-color: white;
   overflow-y: auto;

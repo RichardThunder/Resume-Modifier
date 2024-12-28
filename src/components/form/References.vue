@@ -47,7 +47,7 @@ function deleteReferences(index) {
 </script>
 
 <template>
-  <div>
+
     <div class="block-header">
       <h2 class="section-title">🔗 References</h2>
       <button @click="addReference" class="add-button">Add</button>
@@ -92,7 +92,7 @@ function deleteReferences(index) {
         </div>
       </div>
     </div>
-  </div>
+
 </template>
 
 <style scoped>
