@@ -3,10 +3,10 @@
 /* 全局颜色变量 */
 :root {
     --text-color: #0E051F;
-    --background-color: #F8F0FF;
-    --accent-color: #E7775A;
-    --button-primary-color: #7835E2;
-    --button-secondary-color: #EE89A1;
+    --background-color: #f9fbfd;
+    --button-primary-color: #4a95ce;
+    --button-secondary-color: #96c4e8;
+    --button-thirdary-color: #3c89c0;
     /* Fuchsia 色系 */
     --fuchsia-100: #EF5DA8;
     --fuchsia-80: #F178B6;

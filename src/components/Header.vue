@@ -30,7 +30,7 @@ export default {
   width:100%; /* 占满页面宽度 */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 添加阴影 */
   z-index: 1000; /* 保证 Header 在其他内容之上 */
-  background-color: #f0ebf8;
+  background-color: var(--background-color);
   padding: 10px 10px 10px 10px;
   display: flex;
   justify-content: space-between;
