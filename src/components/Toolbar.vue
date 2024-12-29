@@ -168,7 +168,7 @@ const exportToPDF = () => {
 }
 
 .toolbar .toolbar-btn.export {
-  background-color: var(--accent-color); /* 使用不同颜色区分导出按钮 */
+  background-color: var(--button-thirdary-color); /* 使用不同颜色区分导出按钮 */
 }
 
 .toolbar .toolbar-btn:hover {
