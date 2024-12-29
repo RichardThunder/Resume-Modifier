@@ -3,12 +3,9 @@
 一个简历修改器的前端部分
 
 ## 页面预览如下:
-
 ![img.png](image/index.png)
-![index.png](image/index.png)
 ## 生成pdf如下:
-
-![img.png](image/pdf.png)
+![img_2.png](image/pdf.png)
 
 - 处理pdf使用了 html2pdf
 - 需要在container的样式中添加
