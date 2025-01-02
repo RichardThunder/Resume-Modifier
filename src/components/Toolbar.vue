@@ -135,7 +135,8 @@ const exportToPDF = () => {
     filename: fileName.value,
     image: {type: 'jpeg', quality: 0.98},
     html2canvas: {scale: 3, useCORS: true},
-    jsPDF: {unit: 'in', format: [11, 17], orientation: 'portrait'}
+    jsPDF: {unit: 'in', format: [11, 17], orientation: 'portrait'},
+    enableLinks : true,
   };
 
   html2pdf().set(options).from(element).save();
