@@ -7,8 +7,7 @@ import (
 
 func main() {
 	// 路由配置
-	http.HandleFunc("/api/pdfupload/", handlePDFUpload)
-
+	http.HandleFunc("/api/pdfupload", handlePDFUpload)
 	// 启动服务器
 	serverAddr := ":8080"
 	println("Server running at http://localhost" + serverAddr)

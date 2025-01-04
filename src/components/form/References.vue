@@ -1,6 +1,6 @@
 <script setup>
 import {ref, watch} from 'vue';
-import {store} from '../../store.js';
+import {model} from '../../model.js';
 
 
 // 控制每个组件的显示/隐藏状态
@@ -13,14 +13,14 @@ function toggleShow(index) {
 
 // 初始化 visibleIndexes 的状态
 function initializeVisibility() {
-  while (visibleIndexes.value.length < store.references.length) {
+  while (visibleIndexes.value.length < model.references.length) {
     visibleIndexes.value.push(false); // 新增的默认值为 false
   }
-  if (visibleIndexes.value.length > store.references.length) {
-    visibleIndexes.value.splice(store.references.length);
+  if (visibleIndexes.value.length > model.references.length) {
+    visibleIndexes.value.splice(model.references.length);
   }}
 watch(
-    () => store.references,
+    () => model.references,
     () => {
       initializeVisibility();
     },
@@ -30,7 +30,7 @@ watch(
 initializeVisibility();
 
 function addReference() {
-  store.references.push({
+  model.references.push({
     company: '',
     personName: '',
     roleOfPerson: '',
@@ -41,7 +41,7 @@ function addReference() {
   visibleIndexes.value.push(true);
 }
 function deleteReferences(index) {
-  store.references.splice(index, 1); // 从 store.workExperience 中删除指定索引的项目
+  model.references.splice(index, 1); // 从 model.workExperience 中删除指定索引的项目
   visibleIndexes.value.splice(index, 1); // 同步更新 visibleIndexes 的状态
 }
 </script>
@@ -52,8 +52,8 @@ function deleteReferences(index) {
       <h2 class="section-title">🔗 References</h2>
       <button @click="addReference" class="add-button">Add</button>
     </div>
-    <!-- 遍历 store.education 数组 -->
-    <div v-for="(reference, index) in store.references" :key="index" class="blockComponent">
+    <!-- 遍历 model.education 数组 -->
+    <div v-for="(reference, index) in model.references" :key="index" class="blockComponent">
       <h3 @click="toggleShow(index)" class="toggle-header">
         <span>Education #{{ index + 1 }}</span>
         <div class="block-utils">

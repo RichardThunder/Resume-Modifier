@@ -1,5 +1,11 @@
 <template>
   <div class="editor-panel">
+<!--    <forms>
+      <template #header>
+        <span>{{titles.userInfo}}</span>
+      </template>
+    </forms>-->
+
     <person-info />
     <resume-summary/>
     <work-experience />
@@ -28,7 +34,11 @@ import Certification from './form/certification.vue';
 import Publications from './form/Publications.vue';
 import Volunteering from './form/Volunteering.vue';
 import References from './form/References.vue';
-
+import {model} from '../model.js';
+import Forms from './Forms.vue';
+const titles= {
+  userInfo:'ℹ️ Personal Information',
+}
 
 </script>
 

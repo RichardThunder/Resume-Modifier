@@ -1,5 +1,5 @@
 <script setup>
-import {store} from '../../store.js';
+import {model} from '../../model.js';
 import {ref} from 'vue';
 // 创建一个响应式变量来绑定输入框的值
 const newSkill = ref('');
@@ -8,14 +8,14 @@ const newSkill = ref('');
 function addSkill() {
   if (newSkill.value.trim() === '')
     return;
-  store.skills.push(newSkill.value.trim());
+  model.skills.push(newSkill.value.trim());
   newSkill.value = ''; // 清空输入框
 
 }
 
 // 删除技能方法
 function removeSkill(index) {
-  store.skills.splice(index, 1); // 根据索引删除技能
+  model.skills.splice(index, 1); // 根据索引删除技能
 }
 </script>
 
@@ -30,7 +30,7 @@ function removeSkill(index) {
     <div class="form-container">
       <div class="skills-list">
 
-        <div v-for="(skill, index) in store.skills" :key="index" class="form-row">
+        <div v-for="(skill, index) in model.skills" :key="index" class="form-row">
           <span class="skill-item">{{ skill }}</span>
           <button @click="removeSkill(index)" class="add-button">Remove️</button>
         </div>

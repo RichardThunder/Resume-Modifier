@@ -1,6 +1,6 @@
 <script setup>
 import {ref, watch} from 'vue';
-import {store} from '../../store.js';
+import {model} from '../../model.js';
 
 // 控制每个组件的显示/隐藏状态
 const visibleIndexes = ref([]);
@@ -12,16 +12,16 @@ function toggleShow(index) {
 
 // 初始化 visibleIndexes 的状态
 function initializeVisibility() {
-  while (visibleIndexes.value.length < store.certifications.length) {
+  while (visibleIndexes.value.length < model.certifications.length) {
     visibleIndexes.value.push(false); // 新增的默认值为 false
   }
-  if (visibleIndexes.value.length > store.certifications.length) {
-    visibleIndexes.value.splice(store.certifications.length);
+  if (visibleIndexes.value.length > model.certifications.length) {
+    visibleIndexes.value.splice(model.certifications.length);
   }
 }
 
 watch(
-    () => store.certifications,
+    () => model.certifications,
     () => {
       initializeVisibility();
     },
@@ -31,7 +31,7 @@ watch(
 initializeVisibility();
 
 function addCertification() {
-  store.certifications.push({
+  model.certifications.push({
     name: '',
     issuer: '',
     date: '',
@@ -42,7 +42,7 @@ function addCertification() {
   visibleIndexes.value.push(true);
 }
 function deleteCertification(index) {
-  store.certifications.splice(index, 1); //
+  model.certifications.splice(index, 1); //
   visibleIndexes.value.splice(index, 1); // 同步更新 visibleIndexes 的状态
 }
 </script>
@@ -52,7 +52,7 @@ function deleteCertification(index) {
     <h2 class="section-title">📜 Certifications</h2>
     <button @click="addCertification" class="add-button">Add</button>
   </div>
-  <div v-for="(certification, index) in store.certifications" :key="index" class="blockComponent">
+  <div v-for="(certification, index) in model.certifications" :key="index" class="blockComponent">
     <h3 @click="toggleShow(index)" class="toggle-header">
       <span>Certification #{{ index + 1 }}</span>
       <div class="block-utils">

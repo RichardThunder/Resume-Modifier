@@ -1,6 +1,6 @@
 <script setup>
 import {ref, watch} from 'vue';
-import {store} from '../../store.js';
+import {model} from '../../model.js';
 // 控制每个组件的显示/隐藏状态
 const visibleIndexes = ref([]);
 
@@ -11,15 +11,15 @@ function toggleShow(index) {
 
 // 初始化 visibleIndexes 的状态
 function initializeVisibility() {
-  while (visibleIndexes.value.length < store.publications.length) {
+  while (visibleIndexes.value.length < model.publications.length) {
     visibleIndexes.value.push(false); // 新增的默认值为 false
   }
-  if (visibleIndexes.value.length > store.publications.length) {
-    visibleIndexes.value.splice(store.publications.length);
+  if (visibleIndexes.value.length > model.publications.length) {
+    visibleIndexes.value.splice(model.publications.length);
   }
 }
 watch(
-    () => store.publications,
+    () => model.publications,
     () => {
       initializeVisibility();
     },
@@ -29,7 +29,7 @@ watch(
 initializeVisibility();
 
 function addPublication() {
-  store.publications.push({
+  model.publications.push({
     name: '',
     publisher: '',
     url: '',
@@ -38,7 +38,7 @@ function addPublication() {
   visibleIndexes.value.push(true);
 }
 function deletePublication(index) {
-  store.publications.splice(index, 1); // 从 store.workExperience 中删除指定索引的项目
+  model.publications.splice(index, 1); // 从 model.workExperience 中删除指定索引的项目
   visibleIndexes.value.splice(index, 1); // 同步更新 visibleIndexes 的状态
 }
 </script>
@@ -48,7 +48,7 @@ function deletePublication(index) {
       <h2 class="section-title">📚 Publications</h2>
       <button @click="addPublication" class="add-button">Add</button>
     </div>
-    <div v-for="(publication, index) in store.publications" :key="index" class="blockComponent">
+    <div v-for="(publication, index) in model.publications" :key="index" class="blockComponent">
       <h3 @click="toggleShow(index)" class="toggle-header">
         <span>Publication #{{ index + 1 }}</span>
         <div class="block-utils">

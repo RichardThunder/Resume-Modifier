@@ -1,3 +1,4 @@
+
 <template>
   <div class="toolbar">
 
@@ -22,6 +23,7 @@
     <button class="toolbar-btn reanalyze">
       <img src="../assets/toolbar/mynaui_redo.svg" alt="redo"/>Re-Analyze
     </button>
+<!--    <button class="toolbar-btn" @click="btnForTest">Button-for-test</button>-->
     <button class="toolbar-btn undo">
       <img src="../assets/toolbar/material-symbols-light_undo.svg" alt="undo"/>Undo
     </button>
@@ -64,7 +66,7 @@
 
 <script setup>
 import axios from 'axios';
-import {store, fileName} from '../store.js';
+import {model, fileName} from '../model.js';
 import {nextTick, ref} from 'vue';
 import html2pdf from 'html2pdf.js';
 
@@ -75,33 +77,47 @@ const fileNameInput = ref(null);
 const showModal = ref(false);
 const jobDescription = ref('');
 const selectedFile = ref(null);
-
+//TODO: toolbar 没有充满容器而是窗口
+const btnForTest= async ()=>{
+  try {
+    const response = await axios.post('http://localhost:8080/api/pdfupload/', null, {
+      headers: {'Content-Type': 'multipart/form-data'}
+    });
+    if (response.data.status === 200) {
+      Object.assign(model, response.data.data);
+    } else {
+      console.error('Error uploading data:', response.data);
+    }
+  } catch (error) {
+    console.error('Failed to upload data:', error);
+  } finally {
+    jobDescription.value = '';
+    selectedFile.value = null;
+  }
+}
 const toggleModal = () => {
   showModal.value = !showModal.value;
 };
 const handleFileChange = (event) => {
   selectedFile.value = event.target.files[0];
 };
-
+//legacy code
 const submitData = async () => {
   if (!jobDescription.value || !selectedFile.value) {
     alert('Please provide both job description and a file.');
     return;
   }
-
   const formData = new FormData();
   formData.append('file', selectedFile.value);
   formData.append('job_description', jobDescription.value);
-
   try {
-    const response = await axios.post('http://localhost:8080/api/pdfupload/', formData, {
+    const response = await axios.post('http://localhost:8080/api/pdfupload', formData, {
       headers: {'Content-Type': 'multipart/form-data'}
     });
-
     if (response.data.status === 200) {
       console.log('Data received from server:', response.data);
       fileName.value = selectedFile.value.name;
-      Object.assign(store, response.data.data);
+      Object.assign(model, response.data.data);
     } else {
       console.error('Error uploading data:', response.data);
     }
@@ -109,11 +125,12 @@ const submitData = async () => {
     console.error('Failed to upload data:', error);
   } finally {
     toggleModal();
-    jobDescription.value = '';
-    selectedFile.value = null;
-
+    // jobDescription.value = '';
+    // selectedFile.value = null;
   }
 };
+
+
 const editFileName = () => {
   isEditing.value = true;
   nextTick(() => {

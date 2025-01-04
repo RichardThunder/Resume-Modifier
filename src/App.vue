@@ -21,9 +21,9 @@
 import PersonalForm from './components/PersonalForm.vue';
 import ResumePreview from './components/ResumePreview.vue';
 import Header from './components/Header.vue';
-import {store} from './store.js';
+import {model} from './model.js';
 
-const showData=()=> console.log(store)
+const showData=()=> console.log(model)
 </script>
 
 <style>

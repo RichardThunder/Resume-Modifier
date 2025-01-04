@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import {store} from '../../store.js';
+import {model} from '../../model.js';
 
 // 是否显示表单
 const isVisible = ref(false);
@@ -23,7 +23,7 @@ function toggleShow() {
         <label for="achievements">Your Achievements</label>
         <textarea
             id="achievements"
-            v-model="store.achievements"
+            v-model="model.achievements"
             placeholder="Summarize your achievements, awards, or significant accomplishments."
         ></textarea>
       </div>
