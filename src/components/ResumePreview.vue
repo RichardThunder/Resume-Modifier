@@ -5,180 +5,191 @@
       <Toolbar/>
     </div>
     <div class="resume-area">
-    <div class="resume-container">
-      <header class="resume-header">
-        <div style="display: flex;flex-direction: column; ">
-          <h1>{{ model.userInfo.firstName + ' ' + model.userInfo.lastName }}</h1>
-          <div style="margin: 0 0 0 0;" >
-            <p>{{model.userInfo.headLine}}</p>
-            <p>
-              <I>{{ model.userInfo.city + ' ' + model.userInfo.country }}</I>
-            </p>
+      <div class="resume-container">
+        <header class="resume-header">
+          <div style="display: flex;flex-direction: column; ">
+            <h1>{{ model.userInfo.firstName + ' ' + model.userInfo.lastName }}</h1>
+            <div style="margin: 0 0 0 0;">
+              <p>{{ model.userInfo.headLine }}</p>
+              <p>
+                <I>{{ model.userInfo.city + ' ' + model.userInfo.country }}</I>
+              </p>
+            </div>
           </div>
-        </div>
-        <div>
-          <p>{{ model.userInfo.email }}</p>
+          <div>
+            <p>{{ model.userInfo.email }}</p>
 
-          <p>{{model.userInfo.phoneNumber}}</p>
-          <p>{{model.userInfo.linkedInURL}}</p>
-          <p>{{model.userInfo.websiteOrOtherProfileURL}}</p>
-        </div>
-      </header>
+            <p>{{ model.userInfo.phoneNumber }}</p>
+            <p>{{ model.userInfo.linkedInURL }}</p>
+            <p>{{ model.userInfo.websiteOrOtherProfileURL }}</p>
+          </div>
+        </header>
 
-      <section v-if="model.summary" class="resume-section">
-        <h2>SUMMARY</h2>
-        <div v-if="!isEditingSummary" @dblclick="enableSummaryEdit">
-          <p>{{ model.summary }}</p>
-        </div>
-        <div v-else>
+        <section v-if="model.summary" class="resume-section">
+          <h2>SUMMARY</h2>
+          <div v-if="!isEditingSummary" @dblclick="enableSummaryEdit">
+            <p>{{ model.summary }}</p>
+          </div>
+          <div v-else>
     <textarea
         v-model="model.summary"
+
+        v-focus
         @blur="saveSummaryEdit"
         rows="3"
         style="width: 100%; font-size: 16px; border: 1px solid #ccc; padding: 5px; resize: none;"
     ></textarea>
-        </div>
+          </div>
 
-      </section>
-      <section v-if="model.workExperience.length" class="resume-section">
-        <h2>WORK EXPERIENCE</h2>
-        <ul>
-          <li
-              v-for="(job, index) in model.workExperience"
-              :key="index"
-              class="list-block"
-          >
-            <div class="flex-col width25">
-              <!-- companyName -->
-              <template v-if="!editingWorkFields[index]?.companyName">
-                <div
-                    class="title"
-                    @dblclick="enableWorkEdit(index, 'companyName')"
+        </section>
+        <section v-if="model.workExperience.length" class="resume-section">
+          <h2>WORK EXPERIENCE</h2>
+          <ul>
+            <li
+                v-for="(job, index) in model.workExperience"
+                :key="index"
+                class="list-block"
+            >
+              <div class="flex-col width25">
+                <!-- companyName -->
+                <template v-if="!editingWorkFields[index]?.companyName">
+                  <div
+                      class="title"
+                      @dblclick="enableWorkEdit(index, 'companyName')"
+                  >
+                    {{ job.companyName }}
+                  </div>
+                </template>
+                <template v-else>
+                  <input
+                      type="text"
+                      class="title"
+                      v-model="job.companyName"
+                      v-focus
+                      @blur="disableWorkEdit(index, 'companyName')"
+
+                  />
+                </template>
+
+                <!-- city & country -->
+                <p>
+                  <!-- city -->
+                  <i v-if="!editingWorkFields[index]?.city"
+                     @dblclick="enableWorkEdit(index, 'city')">
+                    {{ job.city }}
+                  </i>
+                  <input
+                      v-else
+                      type="text"
+                      v-model="job.city"
+                      v-focus
+                      @blur="disableWorkEdit(index, 'city')"
+                  />
+                  <span v-if="job.city && job.country">,</span>
+
+                  <!-- country -->
+                  <i v-if="!editingWorkFields[index]?.country"
+                     @dblclick="enableWorkEdit(index, 'country')">
+                    {{ job.country }}
+                  </i>
+                  <input
+                      v-else
+                      type="text"
+                      v-model="job.country"
+                      v-focus
+                      @blur="disableWorkEdit(index, 'country')"
+                  />
+                </p>
+
+                <!-- 日期：isPresent / fromDate / toDate -->
+                <i v-if="job.isPresent">
+                  (<span
+                    v-if="!editingWorkFields[index]?.fromDate"
+                    @dblclick="enableWorkEdit(index, 'fromDate')"
                 >
-                  {{ job.companyName }}
-                </div>
-              </template>
-              <template v-else>
-                <input
-                    type="text"
-                    class="title"
-                    v-model="job.companyName"
-                    @blur="disableWorkEdit(index, 'companyName')"
-                />
-              </template>
-
-              <!-- city & country -->
-              <p>
-                <!-- city -->
-                <i v-if="!editingWorkFields[index]?.city"
-                   @dblclick="enableWorkEdit(index, 'city')">
-                  {{ job.city }}
-                </i>
-                <input
-                    v-else
-                    type="text"
-                    v-model="job.city"
-                    @blur="disableWorkEdit(index, 'city')"
-                />
-                <span v-if="job.city && job.country">,</span>
-
-                <!-- country -->
-                <i v-if="!editingWorkFields[index]?.country"
-                   @dblclick="enableWorkEdit(index, 'country')">
-                  {{ job.country }}
-                </i>
-                <input
-                    v-else
-                    type="text"
-                    v-model="job.country"
-                    @blur="disableWorkEdit(index, 'country')"
-                />
-              </p>
-
-              <!-- 日期：isPresent / fromDate / toDate -->
-              <i v-if="job.isPresent">
-                (<span
-                  v-if="!editingWorkFields[index]?.fromDate"
-                  @dblclick="enableWorkEdit(index, 'fromDate')"
-              >
           {{ job.fromDate }}
         </span>
-                <input
-                    v-else
-                    type="text"
-                    v-model="job.fromDate"
-                    @blur="disableWorkEdit(index, 'fromDate')"
-                />
-                - Present)
-              </i>
-              <i v-else>
+                  <input
+                      v-else
+                      type="text"
+                      v-model="job.fromDate"
+                      v-focus
+                      @blur="disableWorkEdit(index, 'fromDate')"
+                  />
+                  - Present)
+                </i>
+                <i v-else>
         <span
             v-if="!editingWorkFields[index]?.fromDate"
             @dblclick="enableWorkEdit(index, 'fromDate')"
         >
           {{ job.fromDate }}
         </span>
-                <input
-                    v-else
-                    type="text"
-                    v-model="job.fromDate"
-                    @blur="disableWorkEdit(index, 'fromDate')"
-                />
-                <span v-if="job.fromDate && job.toDate">-</span>
-                <span
-                    v-if="!editingWorkFields[index]?.toDate"
-                    @dblclick="enableWorkEdit(index, 'toDate')"
-                >
+                  <input
+                      v-else
+                      type="text"
+                      v-model="job.fromDate"
+                      v-focus
+                      @blur="disableWorkEdit(index, 'fromDate')"
+                  />
+                  <span v-if="job.fromDate && job.toDate">-</span>
+                  <span
+                      v-if="!editingWorkFields[index]?.toDate"
+                      @dblclick="enableWorkEdit(index, 'toDate')"
+                  >
           {{ job.toDate }}
         </span>
-                <input
-                    v-else
-                    type="text"
-                    v-model="job.toDate"
-                    @blur="disableWorkEdit(index, 'toDate')"
-                />
-              </i>
-            </div>
+                  <input
+                      v-else
+                      type="text"
+                      v-model="job.toDate"
+                      v-focus
+                      @blur="disableWorkEdit(index, 'toDate')"
+                  />
+                </i>
+              </div>
 
-            <div class="width75 flex-col">
-              <!-- jobTitle -->
-              <template v-if="!editingWorkFields[index]?.jobTitle">
-                <div
-                    class="title"
-                    @dblclick="enableWorkEdit(index, 'jobTitle')"
-                >
-                  {{ job.jobTitle }}
-                </div>
-              </template>
-              <template v-else>
-                <input
-                    type="text"
-                    class="title"
-                    v-model="job.jobTitle"
-                    @blur="disableWorkEdit(index, 'jobTitle')"
-                />
-              </template>
+              <div class="width75 flex-col">
+                <!-- jobTitle -->
+                <template v-if="!editingWorkFields[index]?.jobTitle">
+                  <div
+                      class="title"
+                      @dblclick="enableWorkEdit(index, 'jobTitle')"
+                  >
+                    {{ job.jobTitle }}
+                  </div>
+                </template>
+                <template v-else>
+                  <input
+                      type="text"
+                      class="title"
+                      v-model="job.jobTitle"
+                      v-focus
+                      @blur="disableWorkEdit(index, 'jobTitle')"
+                  />
+                </template>
 
-              <!-- description -->
-              <template v-if="!editingWorkFields[index]?.description">
-                <p @dblclick="enableWorkEdit(index, 'description')">
-                  {{ job.description }}
-                </p>
-              </template>
-              <template v-else>
+                <!-- description -->
+                <template v-if="!editingWorkFields[index]?.description">
+                  <p @dblclick="enableWorkEdit(index, 'description')">
+                    {{ job.description }}
+                  </p>
+                </template>
+                <template v-else>
         <textarea
             rows="3"
             v-model="job.description"
+            v-focus
             @blur="disableWorkEdit(index, 'description')"
         ></textarea>
-              </template>
-            </div>
-          </li>
-        </ul>
-      </section>
-      <section v-if="model.skills.length" class="resume-section">
-        <h2>Skills</h2>
-        <ul>
+                </template>
+              </div>
+            </li>
+          </ul>
+        </section>
+        <section v-if="model.skills.length" class="resume-section">
+          <h2>Skills</h2>
+          <ul>
           <span v-for="(skill, index) in model.skills" :key="index">
             <!-- 非编辑状态 -->
             <span
@@ -193,646 +204,681 @@
                 v-else
                 type="text"
                 v-model="model.skills[index]"
+                v-focus
                 @blur="disableSkillEdit(index)"
             />
           </span>
-        </ul>
-      </section>
-      <section v-if="model.achievements" class="resume-section">
-        <h2>Achievements</h2>
+          </ul>
+        </section>
+        <section v-if="model.achievements" class="resume-section">
+          <h2>Achievements</h2>
 
-        <!-- 非编辑状态 -->
-        <div v-if="!isEditingAchievements" @dblclick="enableAchievementsEdit">
-          <p>{{ model.achievements }}</p>
-        </div>
+          <!-- 非编辑状态 -->
+          <div v-if="!isEditingAchievements" @dblclick="enableAchievementsEdit">
+            <p>{{ model.achievements }}</p>
+          </div>
 
-        <!-- 编辑状态 -->
-        <div v-else>
+          <!-- 编辑状态 -->
+          <div v-else>
     <textarea
         rows="3"
         v-model="model.achievements"
+        v-focus
         @blur="saveAchievementsEdit"
         style="width: 100%; font-size: 16px; border: 1px solid #ccc; padding: 5px; resize: none;"
     ></textarea>
-        </div>
-      </section>
+          </div>
+        </section>
 
-      <section v-if="model.project.length" class="resume-section">
-        <h2>Projects</h2>
-        <ul>
-          <li
-              v-for="(project, index) in model.project"
-              :key="index"
-              class="list-block"
-          >
-            <div class="flex-col width25">
-              <!-- title -->
-              <template v-if="!editingProjectFields[index]?.title">
-                <div
-                    class="title"
-                    @dblclick="enableProjectEdit(index, 'title')"
-                >
-                  {{ project.title }}
-                </div>
-              </template>
-              <template v-else>
-                <input
-                    type="text"
-                    class="title"
-                    v-model="project.title"
-                    @blur="disableProjectEdit(index, 'title')"
-                />
-              </template>
-
-              <!-- city & country -->
-              <p>
-                <!-- city -->
-                <template v-if="!editingProjectFields[index]?.city">
-                  <i @dblclick="enableProjectEdit(index, 'city')">
-                    {{ project.city }}
-                  </i>
+        <section v-if="model.project.length" class="resume-section">
+          <h2>Projects</h2>
+          <ul>
+            <li
+                v-for="(project, index) in model.project"
+                :key="index"
+                class="list-block"
+            >
+              <div class="flex-col width25">
+                <!-- title -->
+                <template v-if="!editingProjectFields[index]?.title">
+                  <div
+                      class="title"
+                      @dblclick="enableProjectEdit(index, 'title')"
+                  >
+                    {{ project.title }}
+                  </div>
                 </template>
                 <template v-else>
                   <input
                       type="text"
-                      v-model="project.city"
-                      @blur="disableProjectEdit(index, 'city')"
+                      class="title"
+                      v-model="project.title"
+                      v-focus
+                      @blur="disableProjectEdit(index, 'title')"
                   />
                 </template>
-                <span v-if="project.city && project.country">,</span>
 
-                <!-- country -->
-                <template v-if="!editingProjectFields[index]?.country">
-                  <i @dblclick="enableProjectEdit(index, 'country')">
-                    {{ project.country }}
-                  </i>
-                </template>
-                <template v-else>
-                  <input
-                      type="text"
-                      v-model="project.country"
-                      @blur="disableProjectEdit(index, 'country')"
-                  />
-                </template>
-              </p>
+                <!-- city & country -->
+                <p>
+                  <!-- city -->
+                  <template v-if="!editingProjectFields[index]?.city">
+                    <i @dblclick="enableProjectEdit(index, 'city')">
+                      {{ project.city }}
+                    </i>
+                  </template>
+                  <template v-else>
+                    <input
+                        type="text"
+                        v-model="project.city"
+                        v-focus
+                        @blur="disableProjectEdit(index, 'city')"
+                    />
+                  </template>
+                  <span v-if="project.city && project.country">,</span>
 
-              <!-- 日期 -->
-              <i v-if="project.isPresent">
-                (
-                <span
-                    v-if="!editingProjectFields[index]?.fromDate"
-                    @dblclick="enableProjectEdit(index, 'fromDate')"
-                >
+                  <!-- country -->
+                  <template v-if="!editingProjectFields[index]?.country">
+                    <i @dblclick="enableProjectEdit(index, 'country')">
+                      {{ project.country }}
+                    </i>
+                  </template>
+                  <template v-else>
+                    <input
+                        type="text"
+                        v-model="project.country"
+                        v-focus
+                        @blur="disableProjectEdit(index, 'country')"
+                    />
+                  </template>
+                </p>
+
+                <!-- 日期 -->
+                <i v-if="project.isPresent">
+                  (
+                  <span
+                      v-if="!editingProjectFields[index]?.fromDate"
+                      @dblclick="enableProjectEdit(index, 'fromDate')"
+                  >
             {{ project.fromDate }}
           </span>
-                <input
-                    v-else
-                    type="text"
-                    v-model="project.fromDate"
-                    @blur="disableProjectEdit(index, 'fromDate')"
-                />
-                - Present)
-              </i>
-              <i v-else>
+                  <input
+                      v-else
+                      type="text"
+                      v-model="project.fromDate"
+                      v-focus
+                      @blur="disableProjectEdit(index, 'fromDate')"
+                  />
+                  - Present)
+                </i>
+                <i v-else>
           <span
               v-if="!editingProjectFields[index]?.fromDate"
               @dblclick="enableProjectEdit(index, 'fromDate')"
           >
             {{ project.fromDate }}
           </span>
-                <input
-                    v-else
-                    type="text"
-                    v-model="project.fromDate"
-                    @blur="disableProjectEdit(index, 'fromDate')"
-                />
-                <span v-if="project.fromDate && project.toDate">-</span>
-                <span
-                    v-if="!editingProjectFields[index]?.toDate"
-                    @dblclick="enableProjectEdit(index, 'toDate')"
-                >
-            {{ project.toDate }}
-          </span>
-                <input
-                    v-else
-                    type="text"
-                    v-model="project.toDate"
-                    @blur="disableProjectEdit(index, 'toDate')"
-                />
-              </i>
-            </div>
-
-            <div class="width75 flex-col">
-              <!-- projectRole -->
-              <template v-if="!editingProjectFields[index]?.projectRole">
-                <div
-                    class="title"
-                    @dblclick="enableProjectEdit(index, 'projectRole')"
-                >
-                  {{ project.projectRole }}
-                </div>
-              </template>
-              <template v-else>
-                <input
-                    type="text"
-                    class="title"
-                    v-model="project.projectRole"
-                    @blur="disableProjectEdit(index, 'projectRole')"
-                />
-              </template>
-
-              <!-- description -->
-              <template v-if="!editingProjectFields[index]?.description">
-                <p @dblclick="enableProjectEdit(index, 'description')">
-                  {{ project.description }}
-                </p>
-              </template>
-              <template v-else>
-          <textarea
-              rows="3"
-              v-model="project.description"
-              @blur="disableProjectEdit(index, 'description')"
-          ></textarea>
-              </template>
-            </div>
-          </li>
-        </ul>
-      </section>
-      <section v-if="model.award.length" class="resume-section">
-        <h2>Awards</h2>
-        <ul>
-          <li
-              v-for="(award, index) in model.award"
-              :key="index"
-              class="list-block"
-          >
-            <div class="flex-col width25">
-              <!-- urlToAward (仍保持超链接显示，不需要编辑的话可不动) -->
-              <p v-if="award.urlToAward">
-                <a :href="award.urlToAward" target="_blank" rel="noopener noreferrer">
-                  View Details
-                </a>
-              </p>
-
-              <!-- dateOfAward: 双击编辑 -->
-              <template v-if="!editingAwardFields[index]?.dateOfAward">
-                <i @dblclick="enableAwardEdit(index, 'dateOfAward')">
-                  {{ award.dateOfAward }}
-                </i>
-              </template>
-              <template v-else>
-                <input
-                    type="text"
-                    v-model="award.dateOfAward"
-                    @blur="disableAwardEdit(index, 'dateOfAward')"
-                />
-              </template>
-            </div>
-
-            <div class="width75 flex-col">
-              <!-- name + issuer: 可以一起放在一个模板中 -->
-              <template v-if="!editingAwardFields[index]?.name">
-                <div
-                    class="title"
-                    @dblclick="enableAwardEdit(index, 'name')"
-                >
-                  {{ award.name }}
-                  <span v-if="award.name && award.issuer">by</span>
-                  {{ award.issuer }}
-                </div>
-              </template>
-              <template v-else>
-                <!-- 这里可根据需求拆分：一个输入框编辑 name，另一个编辑 issuer -->
-                <input
-                    type="text"
-                    class="title"
-                    placeholder="Award Name"
-                    v-model="award.name"
-                    @blur="disableAwardEdit(index, 'name')"
-                />
-                <input
-                    type="text"
-                    class="title"
-                    placeholder="Award Issuer"
-                    v-model="award.issuer"
-                    @blur="disableAwardEdit(index, 'name')"
-                />
-              </template>
-
-              <!-- description: 双击编辑 -->
-              <template v-if="!editingAwardFields[index]?.description">
-                <p @dblclick="enableAwardEdit(index, 'description')">
-                  {{ award.description }}
-                </p>
-              </template>
-              <template v-else>
-          <textarea
-              rows="3"
-              v-model="award.description"
-              @blur="disableAwardEdit(index, 'description')"
-          ></textarea>
-              </template>
-            </div>
-          </li>
-        </ul>
-      </section>
-      <section v-if="model.certifications.length" class="resume-section">
-        <h2>Certifications</h2>
-        <ul>
-          <li
-              v-for="(cert, index) in model.certifications"
-              :key="index"
-              class="list-block"
-          >
-            <div class="flex-col width25">
-              <!-- url (不需要编辑的话可保留原样) -->
-              <p v-if="cert.url">
-                <a :href="cert.url" target="_blank" rel="noopener noreferrer">
-                  View Details
-                </a>
-              </p>
-
-              <!-- date: 双击可编辑 -->
-              <template v-if="!editingCertFields[index]?.date">
-                <i @dblclick="enableCertEdit(index, 'date')">
-                  {{ cert.date }}
-                </i>
-              </template>
-              <template v-else>
-                <input
-                    type="text"
-                    v-model="cert.date"
-                    @blur="disableCertEdit(index, 'date')"
-                />
-              </template>
-            </div>
-
-            <div class="width75 flex-col">
-              <!-- name + issuer: 可以合并或拆分编辑 -->
-              <template v-if="!editingCertFields[index]?.name">
-                <div
-                    class="title"
-                    @dblclick="enableCertEdit(index, 'name')"
-                >
-                  {{ cert.name }}
-                  <span v-if="cert.name && cert.issuer"> by </span>
-                  {{ cert.issuer }}
-                </div>
-              </template>
-              <template v-else>
-                <!-- 可以拆分成两个输入框分别编辑 name 和 issuer -->
-                <input
-                    type="text"
-                    class="title"
-                    placeholder="Certification Name"
-                    v-model="cert.name"
-                    @blur="disableCertEdit(index, 'name')"
-                />
-                <input
-                    type="text"
-                    class="title"
-                    placeholder="Issuer"
-                    v-model="cert.issuer"
-                    @blur="disableCertEdit(index, 'name')"
-                />
-              </template>
-
-              <!-- description: 双击可编辑 -->
-              <template v-if="!editingCertFields[index]?.description">
-                <p @dblclick="enableCertEdit(index, 'description')">
-                  {{ cert.description }}
-                </p>
-              </template>
-              <template v-else>
-          <textarea
-              rows="3"
-              v-model="cert.description"
-              @blur="disableCertEdit(index, 'description')"
-          ></textarea>
-              </template>
-
-              <!-- 如果还有 expiryDate 之类的字段，也可仿照上面添加双击编辑 -->
-              <!--
-              <template v-if="cert.expiryDate && !editingCertFields[index]?.expiryDate">
-                <div @dblclick="enableCertEdit(index, 'expiryDate')">
-                  Expiry Date: {{ cert.expiryDate }}
-                </div>
-              </template>
-              <template v-else-if="cert.expiryDate">
-                <input
-                  type="text"
-                  placeholder="Expiry Date"
-                  v-model="cert.expiryDate"
-                  @blur="disableCertEdit(index, 'expiryDate')"
-                />
-              </template>
-              -->
-            </div>
-          </li>
-        </ul>
-      </section>
-      <section v-if="model.publications.length" class="resume-section">
-        <h2>Publications</h2>
-        <ul>
-          <li
-              v-for="(pub, index) in model.publications"
-              :key="index"
-              class="list-block"
-          >
-            <div class="flex-col width25">
-              <!-- 如果 url 不需要编辑，可保留原样 -->
-              <p v-if="pub.url">
-                <a :href="pub.url" target="_blank" rel="noopener noreferrer">
-                  View Publication
-                </a>
-              </p>
-
-              <!-- date: 双击可编辑 -->
-              <template v-if="!editingPublications[index]?.date">
-                <i @dblclick="enablePublicationEdit(index, 'date')">
-                  {{ pub.date }}
-                </i>
-              </template>
-              <template v-else>
-                <input
-                    type="text"
-                    v-model="pub.date"
-                    @blur="disablePublicationEdit(index, 'date')"
-                />
-              </template>
-            </div>
-
-            <div class="flex-col width75">
-              <!-- Publication name -->
-              <template v-if="!editingPublications[index]?.name">
-                <div
-                    class="title"
-                    @dblclick="enablePublicationEdit(index, 'name')"
-                >
-                  {{ pub.name }}
-                </div>
-              </template>
-              <template v-else>
-                <input
-                    type="text"
-                    class="title"
-                    v-model="pub.name"
-                    @blur="disablePublicationEdit(index, 'name')"
-                />
-              </template>
-
-              <!-- publisher -->
-              <template v-if="pub.publisher && !editingPublications[index]?.publisher">
-                <div @dblclick="enablePublicationEdit(index, 'publisher')">
-                  Publisher: {{ pub.publisher }}
-                </div>
-              </template>
-              <template v-else-if="pub.publisher">
-                <input
-                    type="text"
-                    v-model="pub.publisher"
-                    @blur="disablePublicationEdit(index, 'publisher')"
-                />
-              </template>
-            </div>
-          </li>
-        </ul>
-      </section>
-      <section v-if="model.volunteering.length" class="resume-section">
-        <h2>Volunteering</h2>
-        <ul>
-          <li
-              v-for="(volunteer, index) in model.volunteering"
-              :key="index"
-              class="list-block"
-          >
-            <!-- 左侧：城市、国家、日期 -->
-            <div class="flex-col width25">
-
-              <!-- city / country -->
-              <p>
-                <!-- city -->
-                <template v-if="!editingVolunteeringFields[index]?.city">
-                  <i @dblclick="enableVolunteeringEdit(index, 'city')">
-                    {{ volunteer.city }}
-                  </i>
-                </template>
-                <template v-else>
-                  <input
-                      type="text"
-                      v-model="volunteer.city"
-                      @blur="disableVolunteeringEdit(index, 'city')"
-                  />
-                </template>
-
-                <span v-if="volunteer.city && volunteer.country">,</span>
-
-                <!-- country -->
-                <template v-if="!editingVolunteeringFields[index]?.country">
-                  <i @dblclick="enableVolunteeringEdit(index, 'country')">
-                    {{ volunteer.country }}
-                  </i>
-                </template>
-                <template v-else>
-                  <input
-                      type="text"
-                      v-model="volunteer.country"
-                      @blur="disableVolunteeringEdit(index, 'country')"
-                  />
-                </template>
-              </p>
-
-              <!-- 时间 (isPresent / fromDate / toDate) -->
-              <template v-if="volunteer.isPresent">
-                <i>
-                  (
-                  <span
-                      v-if="!editingVolunteeringFields[index]?.fromDate"
-                      @dblclick="enableVolunteeringEdit(index, 'fromDate')"
-                  >
-              {{ volunteer.fromDate }}
-            </span>
                   <input
                       v-else
                       type="text"
-                      v-model="volunteer.fromDate"
-                      @blur="disableVolunteeringEdit(index, 'fromDate')"
+                      v-model="project.fromDate"
+                      v-focus
+                      @blur="disableProjectEdit(index, 'fromDate')"
                   />
-                  - Present
-                  )
+                  <span v-if="project.fromDate && project.toDate">-</span>
+                  <span
+                      v-if="!editingProjectFields[index]?.toDate"
+                      @dblclick="enableProjectEdit(index, 'toDate')"
+                  >
+            {{ project.toDate }}
+          </span>
+                  <input
+                      v-else
+                      type="text"
+                      v-model="project.toDate"
+                      v-focus
+                      @blur="disableProjectEdit(index, 'toDate')"
+                  />
                 </i>
-              </template>
-              <template v-else>
-                <i>
+              </div>
+
+              <div class="width75 flex-col">
+                <!-- projectRole -->
+                <template v-if="!editingProjectFields[index]?.projectRole">
+                  <div
+                      class="title"
+                      @dblclick="enableProjectEdit(index, 'projectRole')"
+                  >
+                    {{ project.projectRole }}
+                  </div>
+                </template>
+                <template v-else>
+                  <input
+                      type="text"
+                      class="title"
+                      v-model="project.projectRole"
+                      v-focus
+                      @blur="disableProjectEdit(index, 'projectRole')"
+                  />
+                </template>
+
+                <!-- description -->
+                <template v-if="!editingProjectFields[index]?.description">
+                  <p @dblclick="enableProjectEdit(index, 'description')">
+                    {{ project.description }}
+                  </p>
+                </template>
+                <template v-else>
+          <textarea
+              rows="3"
+              v-model="project.description"
+              v-focus
+              @blur="disableProjectEdit(index, 'description')"
+          ></textarea>
+                </template>
+              </div>
+            </li>
+          </ul>
+        </section>
+        <section v-if="model.award.length" class="resume-section">
+          <h2>Awards</h2>
+          <ul>
+            <li
+                v-for="(award, index) in model.award"
+                :key="index"
+                class="list-block"
+            >
+              <div class="flex-col width25">
+                <!-- urlToAward (仍保持超链接显示，不需要编辑的话可不动) -->
+                <p v-if="award.urlToAward">
+                  <a :href="award.urlToAward" target="_blank" rel="noopener noreferrer">
+                    View Details
+                  </a>
+                </p>
+
+                <!-- dateOfAward: 双击编辑 -->
+                <template v-if="!editingAwardFields[index]?.dateOfAward">
+                  <i @dblclick="enableAwardEdit(index, 'dateOfAward')">
+                    {{ award.dateOfAward }}
+                  </i>
+                </template>
+                <template v-else>
+                  <input
+                      type="text"
+                      v-model="award.dateOfAward"
+                      v-focus
+                      @blur="disableAwardEdit(index, 'dateOfAward')"
+                  />
+                </template>
+              </div>
+
+              <div class="width75 flex-col">
+                <!-- name + issuer: 可以一起放在一个模板中 -->
+                <template v-if="!editingAwardFields[index]?.name">
+                  <div
+                      class="title"
+                      @dblclick="enableAwardEdit(index, 'name')"
+                  >
+                    {{ award.name }}
+                    <span v-if="award.name && award.issuer">by</span>
+                    {{ award.issuer }}
+                  </div>
+                </template>
+                <template v-else>
+                  <!-- 这里可根据需求拆分：一个输入框编辑 name，另一个编辑 issuer -->
+                  <input
+                      type="text"
+                      class="title"
+                      placeholder="Award Name"
+                      v-model="award.name"
+                      v-focus
+                      @blur="disableAwardEdit(index, 'name')"
+                  />
+                  <input
+                      type="text"
+                      class="title"
+                      placeholder="Award Issuer"
+                      v-model="award.issuer"
+                      v-focus
+                      @blur="disableAwardEdit(index, 'name')"
+                  />
+                </template>
+
+                <!-- description: 双击编辑 -->
+                <template v-if="!editingAwardFields[index]?.description">
+                  <p @dblclick="enableAwardEdit(index, 'description')">
+                    {{ award.description }}
+                  </p>
+                </template>
+                <template v-else>
+          <textarea
+              rows="3"
+              v-model="award.description"
+              v-focus
+              @blur="disableAwardEdit(index, 'description')"
+          ></textarea>
+                </template>
+              </div>
+            </li>
+          </ul>
+        </section>
+        <section v-if="model.certifications.length" class="resume-section">
+          <h2>Certifications</h2>
+          <ul>
+            <li
+                v-for="(cert, index) in model.certifications"
+                :key="index"
+                class="list-block"
+            >
+              <div class="flex-col width25">
+                <!-- url (不需要编辑的话可保留原样) -->
+                <p v-if="cert.url">
+                  <a :href="cert.url" target="_blank" rel="noopener noreferrer">
+                    View Details
+                  </a>
+                </p>
+
+                <!-- date: 双击可编辑 -->
+                <template v-if="!editingCertFields[index]?.date">
+                  <i @dblclick="enableCertEdit(index, 'date')">
+                    {{ cert.date }}
+                  </i>
+                </template>
+                <template v-else>
+                  <input
+                      type="text"
+                      v-model="cert.date"
+                      v-focus
+                      @blur="disableCertEdit(index, 'date')"
+                  />
+                </template>
+              </div>
+
+              <div class="width75 flex-col">
+                <!-- name + issuer: 可以合并或拆分编辑 -->
+                <template v-if="!editingCertFields[index]?.name">
+                  <div
+                      class="title"
+                      @dblclick="enableCertEdit(index, 'name')"
+                  >
+                    {{ cert.name }}
+                    <span v-if="cert.name && cert.issuer"> by </span>
+                    {{ cert.issuer }}
+                  </div>
+                </template>
+                <template v-else>
+                  <!-- 可以拆分成两个输入框分别编辑 name 和 issuer -->
+                  <input
+                      type="text"
+                      class="title"
+                      placeholder="Certification Name"
+                      v-model="cert.name"
+                      v-focus
+                      @blur="disableCertEdit(index, 'name')"
+                  />
+                  <input
+                      type="text"
+                      class="title"
+                      placeholder="Issuer"
+                      v-model="cert.issuer"
+                      v-focus
+                      @blur="disableCertEdit(index, 'name')"
+                  />
+                </template>
+
+                <!-- description: 双击可编辑 -->
+                <template v-if="!editingCertFields[index]?.description">
+                  <p @dblclick="enableCertEdit(index, 'description')">
+                    {{ cert.description }}
+                  </p>
+                </template>
+                <template v-else>
+          <textarea
+              rows="3"
+              v-model="cert.description"
+              v-focus
+              @blur="disableCertEdit(index, 'description')"
+          ></textarea>
+                </template>
+
+                <!-- 如果还有 expiryDate 之类的字段，也可仿照上面添加双击编辑 -->
+                <!--
+                <template v-if="cert.expiryDate && !editingCertFields[index]?.expiryDate">
+                  <div @dblclick="enableCertEdit(index, 'expiryDate')">
+                    Expiry Date: {{ cert.expiryDate }}
+                  </div>
+                </template>
+                <template v-else-if="cert.expiryDate">
+                  <input
+                    type="text"
+                    placeholder="Expiry Date"
+                    v-model="cert.expiryDate"
+                    v-focus
+          @blur="disableCertEdit(index, 'expiryDate')"
+                  />
+                </template>
+                -->
+              </div>
+            </li>
+          </ul>
+        </section>
+        <section v-if="model.publications.length" class="resume-section">
+          <h2>Publications</h2>
+          <ul>
+            <li
+                v-for="(pub, index) in model.publications"
+                :key="index"
+                class="list-block"
+            >
+              <div class="flex-col width25">
+                <!-- 如果 url 不需要编辑，可保留原样 -->
+                <p v-if="pub.url">
+                  <a :href="pub.url" target="_blank" rel="noopener noreferrer">
+                    View Publication
+                  </a>
+                </p>
+
+                <!-- date: 双击可编辑 -->
+                <template v-if="!editingPublications[index]?.date">
+                  <i @dblclick="enablePublicationEdit(index, 'date')">
+                    {{ pub.date }}
+                  </i>
+                </template>
+                <template v-else>
+                  <input
+                      type="text"
+                      v-model="pub.date"
+                      v-focus
+                      @blur="disablePublicationEdit(index, 'date')"
+                  />
+                </template>
+              </div>
+
+              <div class="flex-col width75">
+                <!-- Publication name -->
+                <template v-if="!editingPublications[index]?.name">
+                  <div
+                      class="title"
+                      @dblclick="enablePublicationEdit(index, 'name')"
+                  >
+                    {{ pub.name }}
+                  </div>
+                </template>
+                <template v-else>
+                  <input
+                      type="text"
+                      class="title"
+                      v-model="pub.name"
+                      v-focus
+                      @blur="disablePublicationEdit(index, 'name')"
+                  />
+                </template>
+
+                <!-- publisher -->
+                <template v-if="pub.publisher && !editingPublications[index]?.publisher">
+                  <div @dblclick="enablePublicationEdit(index, 'publisher')">
+                    Publisher: {{ pub.publisher }}
+                  </div>
+                </template>
+                <template v-else-if="pub.publisher">
+                  <input
+                      type="text"
+                      v-model="pub.publisher"
+                      v-focus
+                      @blur="disablePublicationEdit(index, 'publisher')"
+                  />
+                </template>
+              </div>
+            </li>
+          </ul>
+        </section>
+        <section v-if="model.volunteering.length" class="resume-section">
+          <h2>Volunteering</h2>
+          <ul>
+            <li
+                v-for="(volunteer, index) in model.volunteering"
+                :key="index"
+                class="list-block"
+            >
+              <!-- 左侧：城市、国家、日期 -->
+              <div class="flex-col width25">
+
+                <!-- city / country -->
+                <p>
+                  <!-- city -->
+                  <template v-if="!editingVolunteeringFields[index]?.city">
+                    <i @dblclick="enableVolunteeringEdit(index, 'city')">
+                      {{ volunteer.city }}
+                    </i>
+                  </template>
+                  <template v-else>
+                    <input
+                        type="text"
+                        v-model="volunteer.city"
+                        v-focus
+                        @blur="disableVolunteeringEdit(index, 'city')"
+                    />
+                  </template>
+
+                  <span v-if="volunteer.city && volunteer.country">,</span>
+
+                  <!-- country -->
+                  <template v-if="!editingVolunteeringFields[index]?.country">
+                    <i @dblclick="enableVolunteeringEdit(index, 'country')">
+                      {{ volunteer.country }}
+                    </i>
+                  </template>
+                  <template v-else>
+                    <input
+                        type="text"
+                        v-model="volunteer.country"
+                        v-focus
+                        @blur="disableVolunteeringEdit(index, 'country')"
+                    />
+                  </template>
+                </p>
+
+                <!-- 时间 (isPresent / fromDate / toDate) -->
+                <template v-if="volunteer.isPresent">
+                  <i>
+                    (
+                    <span
+                        v-if="!editingVolunteeringFields[index]?.fromDate"
+                        @dblclick="enableVolunteeringEdit(index, 'fromDate')"
+                    >
+              {{ volunteer.fromDate }}
+            </span>
+                    <input
+                        v-else
+                        type="text"
+                        v-model="volunteer.fromDate"
+                        v-focus
+                        @blur="disableVolunteeringEdit(index, 'fromDate')"
+                    />
+                    - Present
+                    )
+                  </i>
+                </template>
+                <template v-else>
+                  <i>
             <span
                 v-if="!editingVolunteeringFields[index]?.fromDate"
                 @dblclick="enableVolunteeringEdit(index, 'fromDate')"
             >
               {{ volunteer.fromDate }}
             </span>
-                  <input
-                      v-else
-                      type="text"
-                      v-model="volunteer.fromDate"
-                      @blur="disableVolunteeringEdit(index, 'fromDate')"
-                  />
-                  <span v-if="volunteer.fromDate && volunteer.toDate"> - </span>
-                  <span
-                      v-if="!editingVolunteeringFields[index]?.toDate"
-                      @dblclick="enableVolunteeringEdit(index, 'toDate')"
-                  >
+                    <input
+                        v-else
+                        type="text"
+                        v-model="volunteer.fromDate"
+                        v-focus
+                        @blur="disableVolunteeringEdit(index, 'fromDate')"
+                    />
+                    <span v-if="volunteer.fromDate && volunteer.toDate"> - </span>
+                    <span
+                        v-if="!editingVolunteeringFields[index]?.toDate"
+                        @dblclick="enableVolunteeringEdit(index, 'toDate')"
+                    >
               {{ volunteer.toDate }}
             </span>
+                    <input
+                        v-else
+                        type="text"
+                        v-model="volunteer.toDate"
+                        v-focus
+                        @blur="disableVolunteeringEdit(index, 'toDate')"
+                    />
+                  </i>
+                </template>
+              </div>
+
+              <!-- 右侧：role / name / description -->
+              <div class="flex-col width75">
+                <!-- role + name -->
+                <template v-if="!editingVolunteeringFields[index]?.role">
+                  <div class="title" @dblclick="enableVolunteeringEdit(index, 'role')">
+                    {{ volunteer.role }}
+                    <span v-if="volunteer.role && volunteer.name"> in </span>
+                    {{ volunteer.name }}
+                  </div>
+                </template>
+                <template v-else>
                   <input
-                      v-else
                       type="text"
-                      v-model="volunteer.toDate"
-                      @blur="disableVolunteeringEdit(index, 'toDate')"
+                      class="title"
+                      placeholder="Role"
+                      v-model="volunteer.role"
+                      v-focus
+                      @blur="disableVolunteeringEdit(index, 'role')"
                   />
-                </i>
-              </template>
-            </div>
+                  <input
+                      type="text"
+                      class="title"
+                      placeholder="Organization / Name"
+                      v-model="volunteer.name"
+                      v-focus
+                      @blur="disableVolunteeringEdit(index, 'role')"
+                  />
+                </template>
 
-            <!-- 右侧：role / name / description -->
-            <div class="flex-col width75">
-              <!-- role + name -->
-              <template v-if="!editingVolunteeringFields[index]?.role">
-                <div class="title" @dblclick="enableVolunteeringEdit(index, 'role')">
-                  {{ volunteer.role }}
-                  <span v-if="volunteer.role && volunteer.name"> in </span>
-                  {{ volunteer.name }}
-                </div>
-              </template>
-              <template v-else>
-                <input
-                    type="text"
-                    class="title"
-                    placeholder="Role"
-                    v-model="volunteer.role"
-                    @blur="disableVolunteeringEdit(index, 'role')"
-                />
-                <input
-                    type="text"
-                    class="title"
-                    placeholder="Organization / Name"
-                    v-model="volunteer.name"
-                    @blur="disableVolunteeringEdit(index, 'role')"
-                />
-              </template>
-
-              <!-- description -->
-              <template v-if="!editingVolunteeringFields[index]?.description">
-                <p @dblclick="enableVolunteeringEdit(index, 'description')">
-                  {{ volunteer.description }}
-                </p>
-              </template>
-              <template v-else>
+                <!-- description -->
+                <template v-if="!editingVolunteeringFields[index]?.description">
+                  <p @dblclick="enableVolunteeringEdit(index, 'description')">
+                    {{ volunteer.description }}
+                  </p>
+                </template>
+                <template v-else>
           <textarea
               rows="3"
               v-model="volunteer.description"
+              v-focus
               @blur="disableVolunteeringEdit(index, 'description')"
           ></textarea>
-              </template>
-            </div>
-          </li>
-        </ul>
-      </section>
-      <section v-if="model.references.length" class="resume-section">
-        <h2>References</h2>
-        <ul>
-          <li
-              v-for="(reference, index) in model.references"
-              :key="index"
-              class="list-block"
-          >
-            <div class="flex-col width25">
-              <!-- company -->
-              <template v-if="!editingReferencesFields[index]?.company">
-                <div
-                    class="title"
-                    @dblclick="enableReferencesEdit(index, 'company')"
-                >
-                  {{ reference.company }}
-                </div>
-              </template>
-              <template v-else>
-                <input
-                    type="text"
-                    class="title"
-                    v-model="reference.company"
-                    @blur="disableReferencesEdit(index, 'company')"
-                />
-              </template>
+                </template>
+              </div>
+            </li>
+          </ul>
+        </section>
+        <section v-if="model.references.length" class="resume-section">
+          <h2>References</h2>
+          <ul>
+            <li
+                v-for="(reference, index) in model.references"
+                :key="index"
+                class="list-block"
+            >
+              <div class="flex-col width25">
+                <!-- company -->
+                <template v-if="!editingReferencesFields[index]?.company">
+                  <div
+                      class="title"
+                      @dblclick="enableReferencesEdit(index, 'company')"
+                  >
+                    {{ reference.company }}
+                  </div>
+                </template>
+                <template v-else>
+                  <input
+                      type="text"
+                      class="title"
+                      v-model="reference.company"
+                      v-focus
+                      @blur="disableReferencesEdit(index, 'company')"
+                  />
+                </template>
 
-              <!-- email -->
-              <template v-if="!editingReferencesFields[index]?.email">
-                <div @dblclick="enableReferencesEdit(index, 'email')">
-                  <a :href="'mailto:' + reference.email">
-                    {{ reference.email }}
-                  </a>
-                </div>
-              </template>
-              <template v-else>
-                <!-- 注意：要不要保留 mailto 链接，可灵活处理 -->
-                <input
-                    type="text"
-                    v-model="reference.email"
-                    @blur="disableReferencesEdit(index, 'email')"
-                />
-              </template>
+                <!-- email -->
+                <template v-if="!editingReferencesFields[index]?.email">
+                  <div @dblclick="enableReferencesEdit(index, 'email')">
+                    <a :href="'mailto:' + reference.email">
+                      {{ reference.email }}
+                    </a>
+                  </div>
+                </template>
+                <template v-else>
+                  <!-- 注意：要不要保留 mailto 链接，可灵活处理 -->
+                  <input
+                      type="text"
+                      v-model="reference.email"
+                      v-focus
+                      @blur="disableReferencesEdit(index, 'email')"
+                  />
+                </template>
 
-              <!-- phoneNumber -->
-              <template v-if="!editingReferencesFields[index]?.phoneNumber">
-                <div @dblclick="enableReferencesEdit(index, 'phoneNumber')">
-                  {{ reference.phoneNumber }}
-                </div>
-              </template>
-              <template v-else>
-                <input
-                    type="text"
-                    v-model="reference.phoneNumber"
-                    @blur="disableReferencesEdit(index, 'phoneNumber')"
-                />
-              </template>
-            </div>
+                <!-- phoneNumber -->
+                <template v-if="!editingReferencesFields[index]?.phoneNumber">
+                  <div @dblclick="enableReferencesEdit(index, 'phoneNumber')">
+                    {{ reference.phoneNumber }}
+                  </div>
+                </template>
+                <template v-else>
+                  <input
+                      type="text"
+                      v-model="reference.phoneNumber"
+                      v-focus
+                      @blur="disableReferencesEdit(index, 'phoneNumber')"
+                  />
+                </template>
+              </div>
 
-            <div class="flex-col width75">
-              <!-- personName -->
-              <template v-if="!editingReferencesFields[index]?.personName">
-                <div
-                    class="title"
-                    @dblclick="enableReferencesEdit(index, 'personName')"
-                >
-                  {{ reference.personName }}
-                </div>
-              </template>
-              <template v-else>
-                <input
-                    type="text"
-                    class="title"
-                    v-model="reference.personName"
-                    @blur="disableReferencesEdit(index, 'personName')"
-                />
-              </template>
+              <div class="flex-col width75">
+                <!-- personName -->
+                <template v-if="!editingReferencesFields[index]?.personName">
+                  <div
+                      class="title"
+                      @dblclick="enableReferencesEdit(index, 'personName')"
+                  >
+                    {{ reference.personName }}
+                  </div>
+                </template>
+                <template v-else>
+                  <input
+                      type="text"
+                      class="title"
+                      v-model="reference.personName"
+                      v-focus
+                      @blur="disableReferencesEdit(index, 'personName')"
+                  />
+                </template>
 
-              <!-- description -->
-              <template v-if="!editingReferencesFields[index]?.description">
-                <p @dblclick="enableReferencesEdit(index, 'description')">
-                  {{ reference.description }}
-                </p>
-              </template>
-              <template v-else>
+                <!-- description -->
+                <template v-if="!editingReferencesFields[index]?.description">
+                  <p @dblclick="enableReferencesEdit(index, 'description')">
+                    {{ reference.description }}
+                  </p>
+                </template>
+                <template v-else>
           <textarea
               rows="3"
               v-model="reference.description"
+              v-focus
               @blur="disableReferencesEdit(index, 'description')"
           ></textarea>
-              </template>
-            </div>
-          </li>
-        </ul>
-      </section>
-    </div>
+                </template>
+              </div>
+            </li>
+          </ul>
+        </section>
+      </div>
     </div>
   </div>
 </template>
@@ -842,6 +888,12 @@ import Toolbar from './Toolbar.vue';
 import {model} from '../model.js';
 import {ref} from 'vue';
 import ResumeSection from './ResumeSection.vue';
+//定义一个自定义指令
+const vFocus = {
+  mounted(el) {
+    el.focus();
+  }
+};
 // 控制编辑状态
 const isEditingName = ref(false);
 
@@ -884,6 +936,7 @@ function disableWorkEdit(index, field) {
     editingWorkFields.value[index][field] = false;
   }
 }
+
 // 新增：教育的编辑状态
 const editingEduFields = ref({});
 
@@ -899,6 +952,7 @@ function disableEduEdit(index, field) {
     editingEduFields.value[index][field] = false;
   }
 }
+
 // 新增：skills 的编辑状态
 const editingSkillFields = ref({});
 
@@ -909,6 +963,7 @@ function enableSkillEdit(index) {
 function disableSkillEdit(index) {
   editingSkillFields.value[index] = false;
 }
+
 const isEditingAchievements = ref(false);
 
 function enableAchievementsEdit() {
@@ -918,6 +973,7 @@ function enableAchievementsEdit() {
 function saveAchievementsEdit() {
   isEditingAchievements.value = false;
 }
+
 // 新增：projects 的编辑状态
 const editingProjectFields = ref({});
 
@@ -933,6 +989,7 @@ function disableProjectEdit(index, field) {
     editingProjectFields.value[index][field] = false;
   }
 }
+
 // 新增：Awards 的编辑状态
 const editingAwardFields = ref({});
 
@@ -948,6 +1005,7 @@ function disableAwardEdit(index, field) {
     editingAwardFields.value[index][field] = false;
   }
 }
+
 // 新增：Certifications 的编辑状态
 const editingCertFields = ref({});
 
@@ -963,6 +1021,7 @@ function disableCertEdit(index, field) {
     editingCertFields.value[index][field] = false;
   }
 }
+
 const editingPublications = ref({});
 
 function enablePublicationEdit(index, field) {
@@ -977,6 +1036,7 @@ function disablePublicationEdit(index, field) {
     editingPublications.value[index][field] = false;
   }
 }
+
 // volunteering 的编辑状态
 const editingVolunteeringFields = ref({});
 
@@ -992,6 +1052,7 @@ function disableVolunteeringEdit(index, field) {
     editingVolunteeringFields.value[index][field] = false;
   }
 }
+
 // 1. 新增 references 的编辑状态
 const editingReferencesFields = ref({});
 
@@ -1021,6 +1082,7 @@ input, textarea {
   width: 100%;
   padding: 2px 4px;
 }
+
 .resume-container {
   font-family: Arial, sans-serif;
   margin: 0 auto;
@@ -1036,7 +1098,7 @@ input, textarea {
   margin-bottom: 20px;
   display: flex;
   justify-content: space-between;
-  padding:10px 50px 0 10px;
+  padding: 10px 50px 0 10px;
 }
 
 .header-h1 {
@@ -1046,7 +1108,7 @@ input, textarea {
 }
 
 .resume-header p {
-  margin:  0;
+  margin: 0;
 }
 
 .resume-section {
@@ -1110,7 +1172,8 @@ input, textarea {
 .width75 {
   width: 75%;
 }
-.width25{
+
+.width25 {
   width: 25%;
 }
 
