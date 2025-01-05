@@ -19,11 +19,14 @@
     防止文字被上下截断
 ## 使用 How To Use
 ```shell
+//安装依赖
 npm install
 ```
 ```
+//启动项目
 npm run dev
 ```
+此时可以访问http://localhost:5173/ 来使用项目
 ## TODO
 - ~~删除功能~~
 - 组件化
