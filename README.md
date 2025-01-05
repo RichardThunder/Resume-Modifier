@@ -17,6 +17,13 @@
     }
     ```
     防止文字被上下截断
+## 使用 How To Use
+```shell
+npm install
+```
+```
+npm run dev
+```
 ## TODO
 - ~~删除功能~~
 - 组件化
