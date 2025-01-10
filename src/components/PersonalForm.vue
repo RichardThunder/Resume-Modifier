@@ -180,6 +180,7 @@ textarea:focus {
 .block-utils{
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: space-between;
+
 }
 </style>

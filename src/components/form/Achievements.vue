@@ -9,18 +9,28 @@ const isVisible = ref(false);
 function toggleShow() {
   isVisible.value = !isVisible.value;
 }
+function addAchieve(){
+  model.achievements=' ';
+  isVisible.value=true;
+}
+function deleteAchieve() {
+  model.achievements=''; // 从 model.workExperience 中删除指定索引的项目
+  isVisible.value=false;// 同步更新 visibleIndexes 的状态
+}
 </script>
 
 <template>
-  <div class="blockComponent">
-    <h2 @click="toggleShow" class="toggle-header">
-      <span>🏆 Achievements</span>
-      <span>{{ isVisible ? '▲' : '▼' }}</span>
-    </h2>
-    <!-- 表单内容 -->
-    <div v-if="isVisible" class="form-container">
+  <div class="block-header">
+    <h2 class="section-title">🏆 Achievements</h2>
+    <button @click="addAchieve" class="add-button">Add</button>
+  </div>
+  <div v-if="isVisible" class="blockComponent">
+    <div  class="form-container">
       <div class="form-group">
+        <div class="block-utils">
         <label for="achievements">Your Achievements</label>
+        <img class="delete-block" src="../../assets/block-delete.svg" @click="deleteAchieve">
+      </div>
         <textarea
             id="achievements"
             v-model="model.achievements"

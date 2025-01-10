@@ -1,7 +1,7 @@
 <script setup>
 import {ref, watch} from 'vue';
 import {model} from '../../model.js';
-
+import {scoreToColors} from '../../model.js';
 // 控制每个组件的显示/隐藏状态
 const visibleIndexes = ref([]);
 
@@ -65,6 +65,16 @@ function deleteExperience(index) {
       <h3 @click="toggleShow(index)" class="toggle-header">
         <span>Work Experience #{{ index + 1 }}</span>
         <div class="block-utils">
+          <v-tooltip :text="model.workExperience[index].suggestion">
+            <template v-slot:activator="{ props }">
+              <span v-bind="props">
+                <v-progress-circular :size="45" :width="5" :model-value="model.workExperience[index].score" :color="scoreToColors(model.workExperience[index].score)">
+                  <template v-slot:default> {{model.workExperience[index].score}}</template>
+                </v-progress-circular>
+              </span>
+            </template>
+          </v-tooltip>
+
           <img class="delete-block" src="../../assets/block-delete.svg" @click="deleteExperience(index)">
           <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
         </div>

@@ -20,8 +20,12 @@
             <p>{{ model.userInfo.email }}</p>
 
             <p>{{ model.userInfo.phoneNumber }}</p>
-            <p>{{ model.userInfo.linkedInURL }}</p>
-            <p>{{ model.userInfo.websiteOrOtherProfileURL }}</p>
+            <p>
+              <a class="link" :href="model.userInfo.linkedInURL" target="_blank" rel="noopener noreferrer">{{ model.userInfo.linkedInURL }}</a>
+            </p>
+            <p>
+            <a class="link" :href="model.userInfo.websiteOrOtherProfileURL" target="_blank" rel="noopener noreferrer">{{ model.userInfo.websiteOrOtherProfileURL }}</a>
+            </p>
           </div>
         </header>
 
@@ -1118,11 +1122,10 @@ input, textarea {
 }
 
 .resume-section h2 {
-  border-bottom: 2px solid rgba(120, 197, 206, 0.55);
+  border-bottom: 2px solid rgb(75, 57, 57);
   color: #333;
   margin-bottom: 10px;
   font-size: 24px;
-  background-color: rgba(158, 204, 209, 0.77);
 }
 
 .resume-section p span {
@@ -1152,6 +1155,10 @@ input, textarea {
 }
 
 .resume-section ul li a {
+  color: blue;
+  text-decoration: underline;
+}
+.link {
   color: blue;
   text-decoration: underline;
 }

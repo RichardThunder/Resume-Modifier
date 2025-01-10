@@ -23,7 +23,21 @@ export const model = reactive({
       fromDate: '2020-01-01',
       isPresent: false,
       jobTitle: 'Software Engineer',
-      toDate: '2023-12-31'
+      toDate: '2023-12-31',
+      score:100,
+      suggestion:"Well Done"
+    },
+    {
+      city: 'New York',
+      companyName: 'TechCorp',
+      country: 'USA',
+      description: 'Developed backend services and APIs for enterprise-level applications.',
+      fromDate: '2020-01-01',
+      isPresent: false,
+      jobTitle: 'Software Engineer',
+      toDate: '2023-12-31',
+      score:80,
+      suggestion:"need more detail in description"
     },
     {
       city: 'San Francisco',
@@ -33,8 +47,47 @@ export const model = reactive({
       fromDate: '2018-06-01',
       isPresent: false,
       jobTitle: 'Junior Developer',
-      toDate: '2019-12-31'
-    }],
+      toDate: '2019-12-31',
+      score: 60,
+      suggestion:"need further more detail in description"
+    },
+    {
+      city: 'San Francisco',
+      companyName: 'DevWorks',
+      country: 'USA',
+      description: 'Worked on front-end development and UI design for client projects.',
+      fromDate: '2018-06-01',
+      isPresent: false,
+      jobTitle: 'Junior Developer',
+      toDate: '2019-12-31',
+      score: 40,
+      suggestion:"need further more detail in description"
+    },
+    {
+      city: 'San Francisco',
+      companyName: 'DevWorks',
+      country: 'USA',
+      description: 'Worked on front-end development and UI design for client projects.',
+      fromDate: '2018-06-01',
+      isPresent: false,
+      jobTitle: 'Junior Developer',
+      toDate: '2019-12-31',
+      score: 20,
+      suggestion:"need further more detail in description"
+    },
+    {
+      city: 'San Francisco',
+      companyName: 'DevWorks',
+      country: 'USA',
+      description: 'Worked on front-end development and UI design for client projects.',
+      fromDate: '2018-06-01',
+      isPresent: false,
+      jobTitle: 'Junior Developer',
+      toDate: '2019-12-31',
+      score: 0,
+      suggestion:"need further more detail in description"
+    }
+    ],
   education: [
     {
       city: 'Chongqing',
@@ -201,3 +254,61 @@ export const analysis = reactive({
     }
 );
 export const fileName = ref('resume.pdf');
+
+/*
+export const scoreToColors = function (score) {
+  if (score < 0 || score > 100) {
+    throw new Error('Score must be between 0 and 100');
+  }
+
+  // 将分数映射到 0-255 的范围，用于颜色分量
+  const red = Math.round(255 - (score * 2.55));
+  const green = Math.round(score * 2.55);
+
+  // 返回颜色字符串
+  return `rgb(${red}, ${green}, 0)`;
+}
+*/
+export const  scoreToColors= (score)=> {
+  if (score < 0 || score > 100) {
+    throw new Error('Score must be between 0 and 100');
+  }
+
+  // 定义各个颜色的 RGB 值
+  const deepRed = { r: 139, g: 0, b: 0 };       // 深红色
+  const red = { r: 255, g: 0, b: 0 };           // 红色
+  const yellow = { r: 255, g: 255, b: 0 };      // 黄色
+  const lightGreen = { r: 0, g: 255, b: 0 };    // 浅绿色
+  const deepGreen = { r: 0, g: 100, b: 0 };     // 深绿色
+
+  let redVal, greenVal, blueVal;
+
+  // 映射分为 4 个区间：0-25、25-50、50-75、75-100
+  if (score <= 25) {
+    // 从深红色到红色
+    redVal = Math.round(deepRed.r + (red.r - deepRed.r) * (score / 25));
+    greenVal = Math.round(deepRed.g + (red.g - deepRed.g) * (score / 25));
+    blueVal = Math.round(deepRed.b + (red.b - deepRed.b) * (score / 25));
+  } else if (score <= 50) {
+    // 从红色到黄色
+    const adjustedScore = score - 25; // 将区间缩小到 [0, 25]
+    redVal = Math.round(red.r + (yellow.r - red.r) * (adjustedScore / 25));
+    greenVal = Math.round(red.g + (yellow.g - red.g) * (adjustedScore / 25));
+    blueVal = Math.round(red.b + (yellow.b - red.b) * (adjustedScore / 25));
+  } else if (score <= 75) {
+    // 从黄色到浅绿色
+    const adjustedScore = score - 50; // 将区间缩小到 [0, 25]
+    redVal = Math.round(yellow.r + (lightGreen.r - yellow.r) * (adjustedScore / 25));
+    greenVal = Math.round(yellow.g + (lightGreen.g - yellow.g) * (adjustedScore / 25));
+    blueVal = Math.round(yellow.b + (lightGreen.b - yellow.b) * (adjustedScore / 25));
+  } else {
+    // 从浅绿色到深绿色
+    const adjustedScore = score - 75; // 将区间缩小到 [0, 25]
+    redVal = Math.round(lightGreen.r + (deepGreen.r - lightGreen.r) * (adjustedScore / 25));
+    greenVal = Math.round(lightGreen.g + (deepGreen.g - lightGreen.g) * (adjustedScore / 25));
+    blueVal = Math.round(lightGreen.b + (deepGreen.b - lightGreen.b) * (adjustedScore / 25));
+  }
+
+  // 返回 RGB 颜色字符串
+  return `rgb(${redVal}, ${greenVal}, ${blueVal})`;
+}

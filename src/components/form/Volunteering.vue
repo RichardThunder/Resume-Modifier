@@ -89,7 +89,7 @@ function deleteVolunteer(index) {
           </div>
           <div class="form-group">
             <label>To Date</label>
-            <input type="date" v-model="volunteering.toDate"/>
+            <input type="date" v-model="volunteering.toDate">
           </div>
         </div>
         <div class="form-group">
