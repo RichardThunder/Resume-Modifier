@@ -6,7 +6,7 @@
       <button class="toolbar-btn rename" @click="editFileName">
         <img src="../assets/toolbar/ep_edit.svg" alt="edit"/>Rename
       </button>
-      <span class="file-name">{{ fileName }}</span>
+<!--      <span class="file-name" >{{ fileName }}</span>-->
     </div>
 
     <div v-else class="filename-edit">
@@ -203,7 +203,7 @@ const exportToPDF = () => {
 .file-input {
   display: flex;
 }
-
+/*
 .file-name {
   margin-left: 10px;
   font-size: 14px;
@@ -211,6 +211,7 @@ const exportToPDF = () => {
   font-weight: bold;
   align-items: center;
 }
+*/
 
 .file-name-input {
   font-size: 14px;
