@@ -1,10 +1,7 @@
+//TODO: 使用富文本编辑器
 <template>
   <div class="editor-panel">
-<!--    <forms>
-      <template #header>
-        <span>{{titles.userInfo}}</span>
-      </template>
-    </forms>-->
+
 
     <person-info />
     <resume-summary/>
@@ -34,8 +31,9 @@ import Certification from './form/certification.vue';
 import Publications from './form/Publications.vue';
 import Volunteering from './form/Volunteering.vue';
 import References from './form/References.vue';
-import {model} from '../model.js';
+import {analysis, model} from '../model.js';
 import Forms from './Forms.vue';
+import {scoreToColors} from '../methods.js';
 const titles= {
   userInfo:'ℹ️ Personal Information',
 }
@@ -182,5 +180,8 @@ textarea:focus {
   align-items: center;
   justify-content: space-between;
 
+}
+.score{
+  color: black;
 }
 </style>

@@ -21,10 +21,13 @@
 
             <p>{{ model.userInfo.phoneNumber }}</p>
             <p>
-              <a class="link" :href="model.userInfo.linkedInURL" target="_blank" rel="noopener noreferrer">{{ model.userInfo.linkedInURL }}</a>
+              <a class="link" :href="model.userInfo.linkedInURL" target="_blank"
+                 rel="noopener noreferrer">{{ model.userInfo.linkedInURL }}</a>
             </p>
             <p>
-            <a class="link" :href="model.userInfo.websiteOrOtherProfileURL" target="_blank" rel="noopener noreferrer">{{ model.userInfo.websiteOrOtherProfileURL }}</a>
+              <a class="link" :href="model.userInfo.websiteOrOtherProfileURL" target="_blank" rel="noopener noreferrer">{{
+                  model.userInfo.websiteOrOtherProfileURL
+                }}</a>
             </p>
           </div>
         </header>
@@ -1085,6 +1088,7 @@ input, textarea {
   font-size: 16px;
   width: 100%;
   padding: 2px 4px;
+  white-space: normal;
 }
 
 .resume-container {
@@ -1158,6 +1162,7 @@ input, textarea {
   color: blue;
   text-decoration: underline;
 }
+
 .link {
   color: blue;
   text-decoration: underline;

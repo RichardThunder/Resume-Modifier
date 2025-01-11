@@ -1,7 +1,10 @@
 
 <template>
   <div class="toolbar">
-
+    <!-- Spinner -->
+    <div v-if="isLoading" class="spinner-overlay">
+      <div class="spinner"></div>
+    </div>
     <div v-if="!isEditing" class="filename-edit">
       <button class="toolbar-btn rename" @click="editFileName">
         <img src="../assets/toolbar/ep_edit.svg" alt="edit"/>Rename
@@ -17,8 +20,11 @@
              @keyup.enter="disableEditing"/>
     </div>
 
-    <button class="toolbar-btn upload" @click="toggleModal">
-      <img src="../assets/toolbar/circum_export.svg" alt="upload"/>Upload
+    <button class="toolbar-btn upload" @click="toggleModalRM">
+      <img src="../assets/toolbar/circum_export.svg" alt="upload Resume"/>Resume
+    </button>
+    <button class="toolbar-btn upload" @click="toggleModalJD">
+      <img src="../assets/toolbar/circum_export.svg" alt="upload JD"/>JD
     </button>
     <button class="toolbar-btn reanalyze">
       <img src="../assets/toolbar/mynaui_redo.svg" alt="redo"/>Re-Analyze
@@ -32,16 +38,9 @@
     </button>
   </div>
   <!-- 弹出窗口 -->
-  <div v-if="showModal" class="modal-overlay">
+  <div v-if="showModalRM" class="modal-overlay">
     <div class="modal">
       <h3>Upload File</h3>
-      <label for="jobDescription">Job Description:</label>
-      <textarea
-          id="jobDescription"
-          v-model="jobDescription"
-          placeholder="Enter Job Description"
-          class="modal-input"
-      />
       <div class="choose-and-filename">
         <div class="choose-file">
           <label for="fileUpload">Choose a file</label>
@@ -57,8 +56,25 @@
         <span v-if="selectedFile" style="font-weight: bold">{{ selectedFile.name }}</span>
       </div>
       <div class="modal-actions">
-        <button class="modal-btn cancel" @click="toggleModal">Cancel</button>
-        <button class="modal-btn" @click="submitData">Submit</button>
+        <button class="modal-btn cancel" @click="toggleModalRM">Cancel</button>
+        <button class="modal-btn" @click="submitDataRM">Submit</button>
+      </div>
+    </div>
+  </div>
+  <!-- 弹出窗口 -->
+  <div v-if="showModalJD" class="modal-overlay">
+    <div class="modal">
+      <h3>Upload Job Description</h3>
+      <label for="jobDescription">Job Description:</label>
+      <textarea
+          id="jobDescription"
+          v-model="jobDescription"
+          placeholder="Enter Job Description"
+          class="modal-input"
+      />
+      <div class="modal-actions">
+        <button class="modal-btn cancel" @click="toggleModalJD">Cancel</button>
+        <button class="modal-btn" @click="submitDataJD">Submit</button>
       </div>
     </div>
   </div>
@@ -66,52 +82,45 @@
 
 <script setup>
 import axios from 'axios';
-import {model, fileName} from '../model.js';
+import {model, fileName, analysis} from '../model.js';
 import {nextTick, ref} from 'vue';
 import html2pdf from 'html2pdf.js';
-
 const showUpload = ref(false);
 const fileInput = ref(null);
 const isEditing = ref(false);
 const fileNameInput = ref(null);
-const showModal = ref(false);
+const showModalRM = ref(false);
+const showModalJD = ref(false);
 const jobDescription = ref('');
 const selectedFile = ref(null);
+const isLoading = ref(false);
+
 //TODO: toolbar 没有充满容器而是窗口
-const btnForTest= async ()=>{
-  try {
-    const response = await axios.post('http://localhost:8080/api/pdfupload/', null, {
-      headers: {'Content-Type': 'multipart/form-data'}
-    });
-    if (response.data.status === 200) {
-      Object.assign(model, response.data.data);
-    } else {
-      console.error('Error uploading data:', response.data);
-    }
-  } catch (error) {
-    console.error('Failed to upload data:', error);
-  } finally {
-    jobDescription.value = '';
-    selectedFile.value = null;
-  }
-}
-const toggleModal = () => {
-  showModal.value = !showModal.value;
+
+const toggleModalRM = () => {
+  showModalRM.value = !showModalRM.value;
 };
+
+const toggleModalJD = () => {
+  showModalJD.value = !showModalJD.value;
+};
+
 const handleFileChange = (event) => {
   selectedFile.value = event.target.files[0];
 };
-//legacy code
-const submitData = async () => {
-  if (!jobDescription.value || !selectedFile.value) {
-    alert('Please provide both job description and a file.');
+
+const submitDataRM = async () => {
+  if (!selectedFile.value) {
+    alert('Please provide a file.');
     return;
   }
   const formData = new FormData();
   formData.append('file', selectedFile.value);
-  formData.append('job_description', jobDescription.value);
+  // 设置加载状态为 true
+  isLoading.value = true;
+
   try {
-    const response = await axios.post('http://localhost:8080/api/pdfupload', formData, {
+    const response = await axios.post('api/pdfupload/', formData, {
       headers: {'Content-Type': 'multipart/form-data'}
     });
     if (response.data.status === 200) {
@@ -124,12 +133,41 @@ const submitData = async () => {
   } catch (error) {
     console.error('Failed to upload data:', error);
   } finally {
-    toggleModal();
+    // 结束加载状态
+    isLoading.value = false;
+    toggleModalRM();
     // jobDescription.value = '';
     // selectedFile.value = null;
   }
 };
 
+const submitDataJD = async () => {
+  if (!jobDescription.value ) {
+    alert('Please provide a job description ');
+    return;
+  }
+  const formData = new FormData();
+  formData.append('job_description', jobDescription.value);
+  // 设置加载状态为 true
+  isLoading.value = true;
+  try {
+    const response = await axios.post('api/job_description_upload/', formData, {
+      headers: {'Content-Type': 'multipart/form-data'}
+    });
+    if (response.data.status === 200) {
+      console.log('Data received from server:', response.data);
+      Object.assign(analysis, response.data.data.analysis);
+    } else {
+      console.error('Error uploading data:', response.data);
+    }
+  } catch (error) {
+    console.error('Failed to upload data:', error);
+  } finally {
+    // 设置加载状态为 false
+    isLoading.value = false;
+    toggleModalJD();
+  }
+};
 
 const editFileName = () => {
   isEditing.value = true;
@@ -318,5 +356,34 @@ const exportToPDF = () => {
   margin-left: 10px;
   font-size: 14px;
   color: #fffdfd;
+}
+/* Spinner Overlay */
+.spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Spinner */
+.spinner {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid var(--button-primary-color);
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
+/* Spinner Animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 </style>

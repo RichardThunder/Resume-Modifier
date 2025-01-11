@@ -1,6 +1,7 @@
 <script setup>
 import {ref} from 'vue';
-import {model} from '../../model.js';
+import {analysis, model} from '../../model.js';
+import {scoreToColors} from '../../methods.js';
 
 const isVisible = ref(true);
 //TODO:使用插槽
@@ -13,7 +14,22 @@ function toggleShow() {
   <div class="blockComponent">
     <h2 @click="toggleShow" class="toggle-header">
       <span>ℹ️ Personal Information</span>
+      <div>
+        <v-tooltip :text="analysis.overallAnalysis.comment"
+                   location="bottom"
+                   max-width="500px"
+                   close-delay="200"
+        >
+          <template v-slot:activator="{ props }">
+              <span v-bind="props">
+                <v-progress-circular :size="45" :width="5" :model-value="analysis.overallAnalysis.score" :color="scoreToColors(analysis.overallAnalysis.score)">
+                  <template v-slot:default> <span class="score">{{analysis.overallAnalysis.score}}</span></template>
+                </v-progress-circular>
+              </span>
+          </template>
+        </v-tooltip>
       <span>{{ isVisible ? '▲' : '▼' }}</span>
+      </div>
     </h2>
     <!-- 表单内容 -->
     <div v-if="isVisible" class="form-container">

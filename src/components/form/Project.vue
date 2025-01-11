@@ -1,6 +1,7 @@
 <script setup>
 import {ref, watch} from 'vue';
-import {model} from '../../model.js';
+import {analysis, model} from '../../model.js';
+import {scoreToColors} from '../../methods.js';
 
 const visibleIndexes = ref([]);
 
@@ -39,6 +40,8 @@ function addProject(){
     description: '',
   })
   visibleIndexes.value.push(true);
+  console.log(model);
+  console.log(visibleIndexes.value);
 }
 function deleteProject(index) {
   model.project.splice(index, 1); // 从 model.workExperience 中删除指定索引的项目
@@ -55,6 +58,19 @@ function deleteProject(index) {
     <h3 @click="toggleShow(index)" class="toggle-header">
       <span>Project #{{ index + 1 }}</span>
       <div class="block-utils">
+        <v-tooltip :text="analysis.project[index].comment"
+                   location="bottom"
+                   max-width="500px"
+                   close-delay="200"
+        >
+          <template v-slot:activator="{ props }">
+              <span v-bind="props">
+                <v-progress-circular :size="45" :width="5" :model-value="analysis.project[index].score" :color="scoreToColors(analysis.project[index].score)">
+                  <template v-slot:default> <span class="score">{{analysis.project[index].score}}</span></template>
+                </v-progress-circular>
+              </span>
+          </template>
+        </v-tooltip>
         <img class="delete-block" src="../../assets/block-delete.svg" @click="deleteProject(index)">
         <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
       </div>
@@ -110,4 +126,7 @@ function deleteProject(index) {
 </template>
 
 <style scoped>
+v-tooltip{
+
+}
 </style>
