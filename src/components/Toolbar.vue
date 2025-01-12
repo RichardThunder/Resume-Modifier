@@ -1,4 +1,3 @@
-
 <template>
   <div class="toolbar">
     <!-- Spinner -->
@@ -9,7 +8,7 @@
       <button class="toolbar-btn rename" @click="editFileName">
         <img src="../assets/toolbar/ep_edit.svg" alt="edit"/>Rename
       </button>
-<!--      <span class="file-name" >{{ fileName }}</span>-->
+      <!--      <span class="file-name" >{{ fileName }}</span>-->
     </div>
 
     <div v-else class="filename-edit">
@@ -29,7 +28,7 @@
     <button class="toolbar-btn reanalyze">
       <img src="../assets/toolbar/mynaui_redo.svg" alt="redo"/>Re-Analyze
     </button>
-<!--    <button class="toolbar-btn" @click="btnForTest">Button-for-test</button>-->
+    <!--    <button class="toolbar-btn" @click="btnForTest">Button-for-test</button>-->
     <button class="toolbar-btn undo">
       <img src="../assets/toolbar/material-symbols-light_undo.svg" alt="undo"/>Undo
     </button>
@@ -85,6 +84,8 @@ import axios from 'axios';
 import {model, fileName, analysis} from '../model.js';
 import {nextTick, ref} from 'vue';
 import html2pdf from 'html2pdf.js';
+import {convertModel, htmlToPlainText, textToHtml} from '../methods.js';
+
 const showUpload = ref(false);
 const fileInput = ref(null);
 const isEditing = ref(false);
@@ -120,13 +121,18 @@ const submitDataRM = async () => {
   isLoading.value = true;
 
   try {
-    const response = await axios.post('api/pdfupload/', formData, {
+    const response = await axios.post('http://localhost:8080/api/pdfupload', formData, {
       headers: {'Content-Type': 'multipart/form-data'}
     });
     if (response.data.status === 200) {
-      console.log('Data received from server:', response.data);
       fileName.value = selectedFile.value.name;
+      // 1) 先删除旧属性
+      Object.keys(model).forEach(key => {
+        delete model[key]
+      })
+      // 2) 把 newData 的属性合并进来
       Object.assign(model, response.data.data);
+      // convertModel(model,textToHtml);
     } else {
       console.error('Error uploading data:', response.data);
     }
@@ -142,12 +148,14 @@ const submitDataRM = async () => {
 };
 
 const submitDataJD = async () => {
-  if (!jobDescription.value ) {
+  if (!jobDescription.value) {
     alert('Please provide a job description ');
     return;
   }
+  // convertModel(model,htmlToPlainText);
   const formData = new FormData();
   formData.append('job_description', jobDescription.value);
+  formData.append('json', model);
   // 设置加载状态为 true
   isLoading.value = true;
   try {
@@ -191,7 +199,7 @@ const exportToPDF = () => {
     image: {type: 'jpeg', quality: 0.98},
     html2canvas: {scale: 3, useCORS: true},
     jsPDF: {unit: 'in', format: [11, 17], orientation: 'portrait'},
-    enableLinks : true,
+    enableLinks: true
   };
 
   html2pdf().set(options).from(element).save();
@@ -241,6 +249,7 @@ const exportToPDF = () => {
 .file-input {
   display: flex;
 }
+
 /*
 .file-name {
   margin-left: 10px;
@@ -347,16 +356,19 @@ const exportToPDF = () => {
 .file-input {
   display: none; /* 隐藏默认的文件选择框 */
 }
-.choose-and-filename{
+
+.choose-and-filename {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
+
 .modal-file-upload span {
   margin-left: 10px;
   font-size: 14px;
   color: #fffdfd;
 }
+
 /* Spinner Overlay */
 .spinner-overlay {
   position: fixed;
@@ -383,7 +395,11 @@ const exportToPDF = () => {
 
 /* Spinner Animation */
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>

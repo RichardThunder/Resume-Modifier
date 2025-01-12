@@ -29,9 +29,10 @@ function deleteAchieve() {
   </div>
   <div v-if="isVisible" class="blockComponent">
     <h3 class="toggle-header">
-      <span for="achievements">Your Achievements</span>
+      <span >Your Achievements</span>
       <div class="block-utils">
-        <v-tooltip :text="analysis.achievements.comment"
+        <v-tooltip v-if="analysis.achievements"
+            :text="analysis.achievements.comment"
                    location="bottom"
                    max-width="500px"
                    close-delay="200"

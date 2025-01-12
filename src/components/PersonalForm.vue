@@ -1,7 +1,5 @@
-//TODO: 使用富文本编辑器
 <template>
   <div class="editor-panel">
-
 
     <person-info />
     <resume-summary/>
@@ -41,6 +39,10 @@ const titles= {
 </script>
 
 <style>
+/* 调整 Quill 编辑器的高度 */
+.ql-editor {
+  min-height: 150px;
+}
 .editor-panel{
   display: flex;
   flex-direction: column;

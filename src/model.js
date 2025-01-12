@@ -29,7 +29,7 @@ export const model = reactive({
       toDate: '2011'
     }
   ],
-  project: [
+  projects: [
     {
       city: '',
       country: '',
@@ -89,7 +89,9 @@ export const model = reactive({
     lastName: 'Last',
     linkedInURL: 'linkedin.com/in/sampleresume',
     phoneNumber: '(480) 123‐5689',
-    websiteOrOtherProfileURL: ''
+    websiteOrOtherProfileURL: '',
+    city:"chongqing",
+    country:"China"
   },
   volunteering: [],
   workExperience: [

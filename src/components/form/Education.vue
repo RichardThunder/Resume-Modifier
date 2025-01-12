@@ -62,7 +62,8 @@ function deleteEducation(index) {
       <h3 @click="toggleShow(index)" class="toggle-header">
         <span>Education #{{ index + 1 }}</span>
         <div class="block-utils">
-          <v-tooltip :text="analysis.education[index].comment"
+          <v-tooltip v-if="analysis.education[index]"
+              :text="analysis.education[index].comment"
                      location="bottom"
                      max-width="500px"
                      close-delay="200"

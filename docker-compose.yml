@@ -8,7 +8,7 @@ services:
     volumes:
       - .:/app # 挂载当前目录到容器
       - /app/node_modules # 避免 node_modules 冲突
-    command: sh -c "npm install && npm run build" # 构建项目
+    command: sh -c "npm install && npm run build && sleep 3600s" # 构建项目
     networks:
       - app-network
 

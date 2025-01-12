@@ -12,7 +12,8 @@
             <div style="margin: 0 0 0 0;">
               <p>{{ model.userInfo.headLine }}</p>
               <p>
-                <I>{{ model.userInfo.city + ' ' + model.userInfo.country }}</I>
+                <i v-if="model.userInfo.city">{{ model.userInfo.city + " "}}</i>
+                <i v-if="model.userInfo.country">{{ model.userInfo.country}}</i>
               </p>
             </div>
           </div>
@@ -35,7 +36,7 @@
         <section v-if="model.summary" class="resume-section">
           <h2>SUMMARY</h2>
           <div v-if="!isEditingSummary" @dblclick="enableSummaryEdit">
-            <p>{{ model.summary }}</p>
+            <span v-html="formattedDescription(model.summary)"></span>
           </div>
           <div v-else>
     <textarea
@@ -178,9 +179,8 @@
 
                 <!-- description -->
                 <template v-if="!editingWorkFields[index]?.description">
-                  <p @dblclick="enableWorkEdit(index, 'description')">
-                    {{ job.description }}
-                  </p>
+                  <span v-html="formattedDescription(job.description)"  @dblclick="enableWorkEdit(index, 'description')">
+                  </span>
                 </template>
                 <template v-else>
         <textarea
@@ -217,7 +217,7 @@
           </span>
           </ul>
         </section>
-        <section v-if="model.achievements" class="resume-section">
+        <section v-if="model.achievements.length!==0" class="resume-section">
           <h2>Achievements</h2>
 
           <!-- 非编辑状态 -->
@@ -237,11 +237,11 @@
           </div>
         </section>
 
-        <section v-if="model.project.length" class="resume-section">
+        <section v-if="model.projects.length" class="resume-section">
           <h2>Projects</h2>
           <ul>
             <li
-                v-for="(project, index) in model.project"
+                v-for="(project, index) in model.projects"
                 :key="index"
                 class="list-block"
             >
@@ -370,9 +370,8 @@
 
                 <!-- description -->
                 <template v-if="!editingProjectFields[index]?.description">
-                  <p @dblclick="enableProjectEdit(index, 'description')">
-                    {{ project.description }}
-                  </p>
+                  <span v-html="formattedDescription(project.description)" @dblclick="enableProjectEdit(index, 'description')">
+                  </span>
                 </template>
                 <template v-else>
           <textarea
@@ -452,9 +451,8 @@
 
                 <!-- description: 双击编辑 -->
                 <template v-if="!editingAwardFields[index]?.description">
-                  <p @dblclick="enableAwardEdit(index, 'description')">
-                    {{ award.description }}
-                  </p>
+                  <span v-html="formattedDescription(award.description)" @dblclick="enableAwardEdit(index, 'description')">
+                  </span>
                 </template>
                 <template v-else>
           <textarea
@@ -534,9 +532,8 @@
 
                 <!-- description: 双击可编辑 -->
                 <template v-if="!editingCertFields[index]?.description">
-                  <p @dblclick="enableCertEdit(index, 'description')">
-                    {{ cert.description }}
-                  </p>
+                  <span v-html="formattedDescription(cert.description)" @dblclick="enableCertEdit(index, 'description')">
+                  </span>
                 </template>
                 <template v-else>
           <textarea
@@ -769,9 +766,8 @@
 
                 <!-- description -->
                 <template v-if="!editingVolunteeringFields[index]?.description">
-                  <p @dblclick="enableVolunteeringEdit(index, 'description')">
-                    {{ volunteer.description }}
-                  </p>
+                  <span v-html="formattedDescription(volunteer.description)" @dblclick="enableVolunteeringEdit(index, 'description')">
+                  </span>
                 </template>
                 <template v-else>
           <textarea
@@ -869,9 +865,8 @@
 
                 <!-- description -->
                 <template v-if="!editingReferencesFields[index]?.description">
-                  <p @dblclick="enableReferencesEdit(index, 'description')">
-                    {{ reference.description }}
-                  </p>
+                  <span v-html="formattedDescription(reference.description)" @dblclick="enableReferencesEdit(index, 'description')">
+                  </span>
                 </template>
                 <template v-else>
           <textarea
@@ -895,12 +890,17 @@ import Toolbar from './Toolbar.vue';
 import {model} from '../model.js';
 import {ref} from 'vue';
 import ResumeSection from './ResumeSection.vue';
+import { computed } from 'vue';
 //定义一个自定义指令
 const vFocus = {
   mounted(el) {
     el.focus();
   }
 };
+
+function formattedDescription(description) {
+  return description.replace(/\n/g, '<br>');
+}
 // 控制编辑状态
 const isEditingName = ref(false);
 
@@ -1131,7 +1131,9 @@ input, textarea {
   margin-bottom: 10px;
   font-size: 24px;
 }
-
+.resume-container p{
+  white-space: normal;
+}
 .resume-section p span {
   margin-right: 10px;
 }
@@ -1182,11 +1184,11 @@ input, textarea {
 }
 
 .width75 {
-  width: 75%;
+  width: 70%;
 }
 
 .width25 {
-  width: 25%;
+  width: 30%;
 }
 
 .flex {

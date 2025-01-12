@@ -2,6 +2,12 @@
 import {ref, watch} from 'vue';
 import {analysis, model} from '../../model.js';
 import {scoreToColors} from '../../methods.js';
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
+
+const showData = (index)=>{
+  console.log(model.workExperience[index].description);
+}
 // 控制每个组件的显示/隐藏状态
 const visibleIndexes = ref([]);
 
@@ -52,6 +58,24 @@ function deleteExperience(index) {
   model.workExperience.splice(index, 1); // 从 model.workExperience 中删除指定索引的项目
   visibleIndexes.value.splice(index, 1); // 同步更新 visibleIndexes 的状态
 }
+
+// 编辑器配置选项
+const editorOptions = {
+  theme: 'snow',
+  modules: {
+    toolbar: [
+      ['bold', 'italic', 'underline'],        // 加粗、斜体、下划线
+      [{ 'header': [1, 2, 3, false] }],      // 标题
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }], // 列表
+      ['clean']                               // 清除格式
+    ]
+  },
+};
+// 保存工作经验（根据需要自定义，例如 API 调用）
+function saveExperience(index) {
+  console.log(`Saved Work Experience #${index + 1}`);
+  console.log(model.workExperience);
+}
 </script>
 
 <template>
@@ -65,7 +89,8 @@ function deleteExperience(index) {
       <h3 @click="toggleShow(index)" class="toggle-header">
         <span>Work Experience #{{ index + 1 }}</span>
         <div class="block-utils">
-          <v-tooltip :text="analysis.workExperience[index].comment"
+          <v-tooltip v-if="analysis.workExperience[index]"
+              :text="analysis.workExperience[index].comment"
                      location="bottom"
                      max-width="500px"
                      close-delay="200"
@@ -124,8 +149,17 @@ function deleteExperience(index) {
         </div>
         <div class="form-group">
           <label>Job Description</label>
-          <textarea v-model="model.workExperience[index].description"
-                    placeholder="Describe your responsibilities and achievements"></textarea>
+<!--          <textarea v-model="model.workExperience[index].description"-->
+<!--                    placeholder="Describe your responsibilities and achievements">-->
+<!--          </textarea>-->
+          <QuillEditor
+              v-model:content="model.workExperience[index].description"
+              content="model.workExperience[index].description"
+              content-type="text"
+              :options="editorOptions"
+              @blur="saveExperience(index)"
+          />
+          <button @click="showData(index)">showData</button>
         </div>
       </div>
     </div>
