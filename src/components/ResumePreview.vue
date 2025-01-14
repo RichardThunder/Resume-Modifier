@@ -899,7 +899,8 @@ const vFocus = {
 };
 
 function formattedDescription(description) {
-  return description.replace(/\n/g, '<br>');
+  if(description)
+    return description.replace(/\n/g, '<br>');
 }
 // 控制编辑状态
 const isEditingName = ref(false);

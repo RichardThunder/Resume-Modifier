@@ -17,6 +17,9 @@
 
 </template>
 
+
+
+
 <script setup>
 import PersonalForm from './components/PersonalForm.vue';
 import ResumePreview from './components/ResumePreview.vue';

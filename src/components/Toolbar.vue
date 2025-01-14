@@ -151,7 +151,6 @@ const submitDataJD = async () => {
     alert('Please provide a job description ');
     return;
   }
-  console.log("model:"+model);
   // convertModel(model,htmlToPlainText);
   const formData = new FormData();
   formData.append('job_description', jobDescription.value);
