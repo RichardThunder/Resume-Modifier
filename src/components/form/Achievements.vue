@@ -1,6 +1,15 @@
+<!--
+ * @Author: Richard yuetingpei888@gmail.com
+ * @Date: 2024-12-28 21:01:45
+ * @LastEditors: Richard yuetingpei888@gmail.com
+ * @LastEditTime: 2025-01-13 21:18:28
+ * @FilePath: /Resume-Modifier/src/components/form/Achievements.vue
+ * @Description: 
+ * 
+-->
 <script setup>
 import {ref} from 'vue';
-import {analysis, model} from '../../model.js';
+import {model} from '../../model.js';
 import {scoreToColors} from '../../methods.js';
 
 // 是否显示表单
@@ -31,17 +40,17 @@ function deleteAchieve() {
     <h3 class="toggle-header">
       <span >Your Achievements</span>
       <div class="block-utils">
-        <v-tooltip v-if="analysis.achievements"
-            :text="analysis.achievements.comment"
+        <v-tooltip v-if="model.achievements.score"
+            :text="model.achievements.comment"
                    location="bottom"
                    max-width="500px"
                    close-delay="200"
         >
           <template v-slot:activator="{ props }">
               <span v-bind="props">
-                <v-progress-circular :size="45" :width="5" :model-value="analysis.achievements.score"
-                                     :color="scoreToColors(analysis.achievements.score)">
-                  <template v-slot:default> <span class="score">{{ analysis.achievements.score }}</span></template>
+                <v-progress-circular :size="45" :width="5" :model-value="model.achievements.score"
+                                     :color="scoreToColors(model.achievements.score)">
+                  <template v-slot:default> <span class="score">{{ model.achievements.score }}</span></template>
                 </v-progress-circular>
               </span>
           </template>

@@ -1,6 +1,6 @@
 <script setup>
 import {ref, watch} from 'vue';
-import {analysis, model} from '../../model.js';
+import {model} from '../../model.js';
 import {scoreToColors} from '../../methods.js';
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
@@ -89,16 +89,16 @@ function saveExperience(index) {
       <h3 @click="toggleShow(index)" class="toggle-header">
         <span>Work Experience #{{ index + 1 }}</span>
         <div class="block-utils">
-          <v-tooltip v-if="analysis.workExperience[index]"
-              :text="analysis.workExperience[index].comment"
+          <v-tooltip v-if="model.workExperience[index].score"
+              :text="model.workExperience[index].comment"
                      location="bottom"
                      max-width="500px"
                      close-delay="200"
           >
             <template v-slot:activator="{ props }">
               <span v-bind="props">
-                <v-progress-circular :size="45" :width="5" :model-value="analysis.workExperience[index].score" :color="scoreToColors(analysis.workExperience[index].score)">
-                  <template v-slot:default> <span class="score">{{analysis.workExperience[index].score}}</span></template>
+                <v-progress-circular :size="45" :width="5" :model-value="model.workExperience[index].score" :color="scoreToColors(model.workExperience[index].score)">
+                  <template v-slot:default> <span class="score">{{model.workExperience[index].score}}</span></template>
                 </v-progress-circular>
               </span>
             </template>

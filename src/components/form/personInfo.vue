@@ -1,6 +1,15 @@
+<!--
+ * @Author: Richard yuetingpei888@gmail.com
+ * @Date: 2024-12-25 13:24:17
+ * @LastEditors: Richard yuetingpei888@gmail.com
+ * @LastEditTime: 2025-01-13 21:21:50
+ * @FilePath: /Resume-Modifier/src/components/form/personInfo.vue
+ * @Description: 
+ * 
+-->
 <script setup>
 import {ref} from 'vue';
-import {analysis, model} from '../../model.js';
+import {model} from '../../model.js';
 import {scoreToColors} from '../../methods.js';
 
 const isVisible = ref(true);
@@ -15,15 +24,15 @@ function toggleShow() {
     <h2 @click="toggleShow" class="toggle-header">
       <span>ℹ️ Personal Information</span>
       <div>
-        <v-tooltip :text="analysis.overallAnalysis.comment"
+        <v-tooltip v-if="model?.overallAnalysis?.score" :text="model.overallAnalysis.comment"
                    location="bottom"
                    max-width="500px"
                    close-delay="200"
         >
           <template v-slot:activator="{ props }">
               <span v-bind="props">
-                <v-progress-circular :size="45" :width="5" :model-value="analysis.overallAnalysis.score" :color="scoreToColors(analysis.overallAnalysis.score)">
-                  <template v-slot:default> <span class="score">{{analysis.overallAnalysis.score}}</span></template>
+                <v-progress-circular :size="45" :width="5" :model-value="model.overallAnalysis.score" :color="scoreToColors(model.overallAnalysis.score)">
+                  <template v-slot:default> <span class="score">{{model.overallAnalysis.score}}</span></template>
                 </v-progress-circular>
               </span>
           </template>

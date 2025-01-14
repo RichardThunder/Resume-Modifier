@@ -81,7 +81,7 @@
 
 <script setup>
 import axios from 'axios';
-import {model, fileName, analysis} from '../model.js';
+import {model, fileName} from '../model.js';
 import {nextTick, ref} from 'vue';
 import html2pdf from 'html2pdf.js';
 import {convertModel, htmlToPlainText, textToHtml} from '../methods.js';
@@ -95,7 +95,6 @@ const showModalJD = ref(false);
 const jobDescription = ref('');
 const selectedFile = ref(null);
 const isLoading = ref(false);
-
 //TODO: toolbar 没有充满容器而是窗口
 
 const toggleModalRM = () => {
@@ -152,19 +151,19 @@ const submitDataJD = async () => {
     alert('Please provide a job description ');
     return;
   }
+  console.log("model:"+model);
   // convertModel(model,htmlToPlainText);
   const formData = new FormData();
   formData.append('job_description', jobDescription.value);
-  formData.append('json', model);
+  formData.append('json',JSON.stringify(model));
   // 设置加载状态为 true
   isLoading.value = true;
   try {
-    const response = await axios.post('api/job_description_upload/', formData, {
-      headers: {'Content-Type': 'multipart/form-data'}
-    });
+      const response = await axios.post('http://localhost:8080/api/job_description_upload', formData,
+       {headers: {"Content-Type":"multipart/form-data"}});
     if (response.data.status === 200) {
-      console.log('Data received from server:', response.data);
-      Object.assign(analysis, response.data.data.analysis);
+      console.log('Data received from server:', response.data.data);
+      Object.assign(model, response.data.data);
     } else {
       console.error('Error uploading data:', response.data);
     }

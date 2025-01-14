@@ -1,6 +1,6 @@
 <script setup>
 import {ref, watch} from 'vue';
-import {analysis, model} from '../../model.js';
+import {model} from '../../model.js';
 import {scoreToColors} from '../../methods.js';
 
 const visibleIndexes = ref([]);
@@ -58,16 +58,16 @@ function deleteProject(index) {
     <h3 @click="toggleShow(index)" class="toggle-header">
       <span>Project #{{ index + 1 }}</span>
       <div class="block-utils">
-        <v-tooltip v-if="analysis.project[index]"
-            :text="analysis.project[index].comment"
+        <v-tooltip v-if="model.projects[index].score"
+            :text="model.projects[index].comment"
                    location="bottom"
                    max-width="500px"
                    close-delay="200"
         >
           <template v-slot:activator="{ props }">
               <span v-bind="props">
-                <v-progress-circular :size="45" :width="5" :model-value="analysis.project[index].score" :color="scoreToColors(analysis.project[index].score)">
-                  <template v-slot:default> <span class="score">{{analysis.project[index].score}}</span></template>
+                <v-progress-circular :size="45" :width="5" :model-value="model.projects[index].score" :color="scoreToColors(model.projects[index].score)">
+                  <template v-slot:default> <span class="score">{{model.projects[index].score}}</span></template>
                 </v-progress-circular>
               </span>
           </template>
@@ -127,7 +127,4 @@ function deleteProject(index) {
 </template>
 
 <style scoped>
-v-tooltip{
-
-}
 </style>

@@ -1,6 +1,6 @@
 <script setup>
 import {ref, watch} from 'vue';
-import {analysis, model} from '../../model.js';
+import {model} from '../../model.js';
 import {scoreToColors} from '../../methods.js';
 
 // 控制每个组件的显示/隐藏状态
@@ -62,16 +62,16 @@ function deleteEducation(index) {
       <h3 @click="toggleShow(index)" class="toggle-header">
         <span>Education #{{ index + 1 }}</span>
         <div class="block-utils">
-          <v-tooltip v-if="analysis.education[index]"
-              :text="analysis.education[index].comment"
+          <v-tooltip v-if="model.education[index].score"
+              :text="model.education[index].comment"
                      location="bottom"
                      max-width="500px"
                      close-delay="200"
           >
             <template v-slot:activator="{ props }">
               <span v-bind="props">
-                <v-progress-circular :size="45" :width="5" :model-value="analysis.education[index].score" :color="scoreToColors(analysis.education[index].score)">
-                  <template v-slot:default> <span class="score">{{analysis.education[index].score}}</span></template>
+                <v-progress-circular :size="45" :width="5" :model-value="model.education[index].score" :color="scoreToColors(model.education[index].score)">
+                  <template v-slot:default> <span class="score">{{model.education[index].score}}</span></template>
                 </v-progress-circular>
               </span>
             </template>

@@ -111,7 +111,7 @@
 
                 <!-- 日期：isPresent / fromDate / toDate -->
                 <i v-if="job.isPresent">
-                  (<span
+                  <span
                     v-if="!editingWorkFields[index]?.fromDate"
                     @dblclick="enableWorkEdit(index, 'fromDate')"
                 >
@@ -124,7 +124,7 @@
                       v-focus
                       @blur="disableWorkEdit(index, 'fromDate')"
                   />
-                  - Present)
+                  - Present
                 </i>
                 <i v-else>
         <span
@@ -301,7 +301,7 @@
 
                 <!-- 日期 -->
                 <i v-if="project.isPresent">
-                  (
+                  
                   <span
                       v-if="!editingProjectFields[index]?.fromDate"
                       @dblclick="enableProjectEdit(index, 'fromDate')"
@@ -315,7 +315,7 @@
                       v-focus
                       @blur="disableProjectEdit(index, 'fromDate')"
                   />
-                  - Present)
+                  - Present
                 </i>
                 <i v-else>
           <span
@@ -684,7 +684,7 @@
                 <!-- 时间 (isPresent / fromDate / toDate) -->
                 <template v-if="volunteer.isPresent">
                   <i>
-                    (
+                    
                     <span
                         v-if="!editingVolunteeringFields[index]?.fromDate"
                         @dblclick="enableVolunteeringEdit(index, 'fromDate')"
@@ -699,7 +699,7 @@
                         @blur="disableVolunteeringEdit(index, 'fromDate')"
                     />
                     - Present
-                    )
+                    
                   </i>
                 </template>
                 <template v-else>

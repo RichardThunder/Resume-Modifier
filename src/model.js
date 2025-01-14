@@ -111,54 +111,5 @@ export const model = reactive({
     }
   ]
 });
-export const analysis = reactive({
-      achievements: {
-        comment: 'The resume lacks specific achievements or awards related to the required technologies (Python, Flask) for the job.',
-        score: 50
-      },
-      education: [
-        {
-          comment: 'A Master\'s degree in Computer Science provides a strong foundation for software engineering, although the resume does not specify courses related to Python or Flask.',
-          degree: 'M.S.',
-          institutionName: 'UNIVERSITY OF ARIZONA',
-          score: 80
-        },
-        {
-          comment: 'A Bachelor\'s degree in Management Information Systems complements the technical skills with business and information systems knowledge.',
-          degree: 'B.S.B.A.',
-          institutionName: 'UNIVERSITY OF ARIZONA',
-          score: 75
-        }
-      ],
-      overallAnalysis: {
-        comment: 'The candidate has a solid background in software engineering, with strong experience in Java and JavaScript frameworks, as well as significant experience with Docker. However, the resume does not mention Python or Flask, which are key requirements for the job. The candidate has experience with RESTful APIs and some cloud deployment tools, but lacks direct experience with the desired technologies.',
-        score: 10
-      },
-      project: [
-        {
-          comment: 'This project showcases the candidate\'s ability to use Docker and build RESTful APIs, which are relevant skills. However, there is no indication of Python or Flask usage.',
-          score: 70,
-          title: 'PicoShell'
-        },
-        {
-          comment: 'Demonstrates skills in front-end engineering and DevOps, particularly with React Native and continuous integration using CircleCI and Heroku. Lacks Python and Flask experience.',
-          score: 60,
-          title: 'TagMe'
-        },
-        {
-          comment: 'Shows the candidate\'s ability to integrate APIs and work with OAuth authentication. However, it does not involve Python or Flask.',
-          score: 55,
-          title: 'Roadtrip Mood Music Generator'
-        }
-      ],
-      workExperience: [
-        {
-          comment: 'The candidate has demonstrated strong skills in application development and optimization, with a focus on Java and SQL. They have experience with RESTful APIs, which is relevant, and have worked on large-scale applications. However, there is no mention of Python or Flask experience.',
-          companyName: 'WALMART, INC.',
-          jobTitle: 'Programmer Analyst, Call Center Engineering Team',
-          score: 60
-        }
-      ]
-    }
-);
+
 export const fileName = ref('resume.pdf');
