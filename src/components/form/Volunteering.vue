@@ -1,6 +1,7 @@
 <script setup>
 import {ref, watch} from 'vue';
-import {store} from '../../store.js';
+import {analysis, model} from '../../model.js';
+import {scoreToColors} from '../../methods.js';
 
 // 控制每个组件的显示/隐藏状态
 const visibleIndexes = ref([]);
@@ -12,15 +13,15 @@ function toggleShow(index) {
 
 // 初始化 visibleIndexes 的状态
 function initializeVisibility() {
-  while (visibleIndexes.value.length < store.volunteering.length) {
+  while (visibleIndexes.value.length < model.volunteering.length) {
     visibleIndexes.value.push(false); // 新增的默认值为 false
   }
-  if (visibleIndexes.value.length > store.volunteering.length) {
-    visibleIndexes.value.splice(store.volunteering.length);
+  if (visibleIndexes.value.length > model.volunteering.length) {
+    visibleIndexes.value.splice(model.volunteering.length);
   }
 }
 watch(
-    () => store.volunteering,
+    () => model.volunteering,
     () => {
       initializeVisibility();
     },
@@ -30,7 +31,7 @@ watch(
 initializeVisibility();
 
 function addVolunteer() {
-  store.volunteering.push({
+  model.volunteering.push({
     name: '',
     role: '',
     city: '',
@@ -42,7 +43,7 @@ function addVolunteer() {
   visibleIndexes.value.push(true);
 }
 function deleteVolunteer(index) {
-  store.volunteering.splice(index, 1); // 从 store.workExperience 中删除指定索引的项目
+  model.volunteering.splice(index, 1); // 从 model.workExperience 中删除指定索引的项目
   visibleIndexes.value.splice(index, 1); // 同步更新 visibleIndexes 的状态
 }
 </script>
@@ -54,10 +55,24 @@ function deleteVolunteer(index) {
     </div>
 
 
-    <div v-for="(volunteering, index) in store.volunteering" :key="index" class="blockComponent">
+    <div v-for="(volunteering, index) in model.volunteering" :key="index" class="blockComponent">
       <h3 @click="toggleShow(index)" class="toggle-header">
         <span>Volunteering #{{ index + 1 }}</span>
         <div class="block-utils">
+          <v-tooltip v-if="analysis.volunteering[index]?.score"
+                     :text="analysis.volunteering[index]?.comment"
+                     location="bottom"
+                     max-width="500px"
+                     close-delay="200"
+          >
+            <template v-slot:activator="{ props }">
+              <span v-bind="props">
+                <v-progress-circular :size="45" :width="5" :model-value="analysis.volunteering[index]?.score" :color="scoreToColors(analysis.volunteering[index]?.score)">
+                  <template v-slot:default> <span class="score">{{analysis.volunteering[index]?.score}}</span></template>
+                </v-progress-circular>
+              </span>
+            </template>
+          </v-tooltip>
           <img class="delete-block" src="../../assets/block-delete.svg" @click="deleteVolunteer(index)">
           <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
         </div>
@@ -89,7 +104,7 @@ function deleteVolunteer(index) {
           </div>
           <div class="form-group">
             <label>To Date</label>
-            <input type="date" v-model="volunteering.toDate"/>
+            <input type="date" v-model="volunteering.toDate">
           </div>
         </div>
         <div class="form-group">

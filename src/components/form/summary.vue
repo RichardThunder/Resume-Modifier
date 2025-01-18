@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import {store} from '../../store.js';
+import {model} from '../../model.js';
 
 
 // 显示/隐藏状态
@@ -25,7 +25,7 @@ function toggleShow() {
           <label for="summary">Brief Summary</label>
           <textarea
               id="summary"
-              v-model="store.summary"
+              v-model="model.summary"
               placeholder="Write a brief summary about your professional background and skills."
           ></textarea>
         </div>

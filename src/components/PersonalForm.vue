@@ -1,5 +1,6 @@
 <template>
   <div class="editor-panel">
+
     <person-info />
     <resume-summary/>
     <work-experience />
@@ -28,11 +29,20 @@ import Certification from './form/certification.vue';
 import Publications from './form/Publications.vue';
 import Volunteering from './form/Volunteering.vue';
 import References from './form/References.vue';
-
+import {analysis, model} from '../model.js';
+import Forms from './Forms.vue';
+import {scoreToColors} from '../methods.js';
+const titles= {
+  userInfo:'ℹ️ Personal Information',
+}
 
 </script>
 
 <style>
+/* 调整 Quill 编辑器的高度 */
+.ql-editor {
+  min-height: 150px;
+}
 .editor-panel{
   display: flex;
   flex-direction: column;
@@ -170,6 +180,10 @@ textarea:focus {
 .block-utils{
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: space-between;
+
+}
+.score{
+  color: black;
 }
 </style>
