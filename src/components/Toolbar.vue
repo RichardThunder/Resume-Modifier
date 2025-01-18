@@ -86,9 +86,7 @@ import axios from 'axios';
 import {model, fileName, analysis} from '../model.js';
 import {nextTick, ref} from 'vue';
 import html2pdf from 'html2pdf.js';
-import {convertModel, htmlToPlainText, textToHtml} from '../methods.js';
 
-const showUpload = ref(false);
 const fileInput = ref(null);
 const isEditing = ref(false);
 const fileNameInput = ref(null);
@@ -124,7 +122,7 @@ const submitDataRM = async () => {
   try {
     // 设置加载状态为 true
     isLoading.value = true;
-    const response = await axios.post('http://richardthunder.shop:5001/api/pdfupload', formData, {
+    const response = await axios.post('http://localhost:5001/api/pdfupload', formData, {
       headers: {'Content-Type': 'multipart/form-data'},
 
       withCredentials: true
@@ -169,7 +167,7 @@ const submitDataJD = async () => {
   isLoading.value = true;
   try {
     const response = await axios.post(
-        'http://richardthunder.shop:5001/api/job_description_upload',
+        'http://localhost:5001/api/job_description_upload',
         jobDescription.value,
         {
       headers: {'Content-Type': 'text/plain'},
