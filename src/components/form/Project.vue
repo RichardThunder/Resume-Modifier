@@ -19,7 +19,7 @@ function initializeVisibility() {
     visibleIndexes.value.splice(model.education.length);
   }}
 watch(
-    () => model.projects,
+    () => model.project,
     () => {
       initializeVisibility();
     },
@@ -29,7 +29,7 @@ watch(
 initializeVisibility();
 // 定义项目经历的响应式数据
 function addProject(){
-  model.projects.push({
+  model.project.push({
     title: '',
     projectRole: '',
     city: '',
@@ -44,7 +44,7 @@ function addProject(){
   console.log(visibleIndexes.value);
 }
 function deleteProject(index) {
-  model.projects.splice(index, 1); // 从 model.workExperience 中删除指定索引的项目
+  model.project.splice(index, 1); // 从 model.workExperience 中删除指定索引的项目
   visibleIndexes.value.splice(index, 1); // 同步更新 visibleIndexes 的状态
 }
 </script>
@@ -54,7 +54,7 @@ function deleteProject(index) {
     <h2 class="section-title">📁 Projects</h2>
     <button @click="addProject" class="add-button">Add</button>
   </div>
-  <div v-for="(project, index) in model.projects" :key="index" class="blockComponent">
+  <div v-for="(project, index) in model.project" :key="index" class="blockComponent">
     <h3 @click="toggleShow(index)" class="toggle-header">
       <span>Project #{{ index + 1 }}</span>
       <div class="block-utils">

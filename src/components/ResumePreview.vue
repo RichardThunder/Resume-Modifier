@@ -237,11 +237,11 @@
           </div>
         </section>
 
-        <section v-if="model.projects.length" class="resume-section">
+        <section v-if="model.project.length" class="resume-section">
           <h2>Projects</h2>
           <ul>
             <li
-                v-for="(project, index) in model.projects"
+                v-for="(project, index) in model.project"
                 :key="index"
                 class="list-block"
             >
@@ -981,7 +981,7 @@ function saveAchievementsEdit() {
   isEditingAchievements.value = false;
 }
 
-// 新增：projects 的编辑状态
+// 新增：project 的编辑状态
 const editingProjectFields = ref({});
 
 function enableProjectEdit(index, field) {

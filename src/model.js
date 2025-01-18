@@ -29,7 +29,7 @@ export const model = reactive({
       toDate: '2011'
     }
   ],
-  projects: [
+  project: [
     {
       city: '',
       country: '',

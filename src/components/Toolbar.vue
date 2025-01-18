@@ -121,8 +121,10 @@ const submitDataRM = async () => {
   isLoading.value = true;
 
   try {
-    const response = await axios.post('http://localhost:5001/api/pdfupload', formData, {
-      headers: {'Content-Type': 'multipart/form-data'}
+    const response = await axios.post('http://richardthunder.shop:5001/api/pdfupload', formData, {
+      headers: {'Content-Type': 'multipart/form-data'},
+
+      withCredentials: true
     });
     if (response.data.status === 200) {
       console.log('Data received from server:', response.data);
@@ -155,15 +157,20 @@ const submitDataJD = async () => {
     return;
   }
   // convertModel(model,htmlToPlainText);
-  const formData = new FormData();
-  formData.append('job_description', jobDescription.value);
-  formData.append('json', model);
+  //const formData = new FormData();
+  //formData.append('job_description', jobDescription.value);
+  // formData.append('json', model);
   // 设置加载状态为 true
   isLoading.value = true;
   try {
-    const response = await axios.post('http://localhost:5001/api/job_description_upload/', formData, {
-      headers: {'Content-Type': 'multipart/form-data'}
-    });
+    const response = await axios.post(
+        'http://richardthunder.shop:5001/api/job_description_upload',
+        jobDescription.value,
+        {
+      headers: {'Content-Type': 'text/plain'},
+          withCredentials: true
+    }
+    );
     if (response.data.status === 200) {
       console.log('Data received from server:', response.data);
       Object.assign(analysis, response.data.data.analysis);
