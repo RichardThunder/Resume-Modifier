@@ -125,6 +125,7 @@ const submitDataRM = async () => {
       headers: {'Content-Type': 'multipart/form-data'}
     });
     if (response.data.status === 200) {
+      console.log('Data received from server:', response.data);
       fileName.value = selectedFile.value.name;
       // 1) 先删除旧属性
       Object.keys(model).forEach(key => {
