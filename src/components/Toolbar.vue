@@ -133,6 +133,7 @@ const submitDataRM = async () => {
       })
       // 2) 把 newData 的属性合并进来
       Object.assign(model, response.data.data);
+      console.log(model);
       // convertModel(model,textToHtml);
     } else {
       console.error('Error uploading data:', response.data);
