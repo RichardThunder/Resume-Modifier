@@ -1,9 +1,5 @@
 <template>
   <div class="toolbar">
-    <!-- Spinner -->
-    <div v-if="isLoading" class="spinner-overlay">
-      <div class="spinner"></div>
-    </div>
     <div v-if="!isEditing" class="filename-edit">
       <button class="toolbar-btn rename" @click="editFileName">
         <img src="../assets/toolbar/ep_edit.svg" alt="edit"/>Rename
@@ -38,7 +34,10 @@
   </div>
   <!-- 弹出窗口 -->
   <div v-if="showModalRM" class="modal-overlay">
-    <div class="modal">
+    <div v-if="isLoading" class="spinner-overlay">
+      <div class="spinner"></div>
+    </div>
+    <div v-else class="modal">
       <h3>Upload File</h3>
       <div class="choose-and-filename">
         <div class="choose-file">
@@ -62,7 +61,10 @@
   </div>
   <!-- 弹出窗口 -->
   <div v-if="showModalJD" class="modal-overlay">
-    <div class="modal">
+    <div v-if="isLoading" class="spinner-overlay">
+      <div class="spinner"></div>
+    </div>
+    <div v-else class="modal">
       <h3>Upload Job Description</h3>
       <label for="jobDescription">Job Description:</label>
       <textarea
@@ -117,16 +119,17 @@ const submitDataRM = async () => {
   }
   const formData = new FormData();
   formData.append('file', selectedFile.value);
-  // 设置加载状态为 true
-  isLoading.value = true;
+
 
   try {
+    // 设置加载状态为 true
+    isLoading.value = true;
     const response = await axios.post('http://richardthunder.shop:5001/api/pdfupload', formData, {
       headers: {'Content-Type': 'multipart/form-data'},
 
       withCredentials: true
     });
-    if (response.data.status === 200) {
+    if (response.data.status === 100) {
       console.log('Data received from server:', response.data);
       fileName.value = selectedFile.value.name;
       // 1) 先删除旧属性
@@ -138,9 +141,11 @@ const submitDataRM = async () => {
       console.log(model);
       // convertModel(model,textToHtml);
     } else {
+      alert('Failed to upload data. Please try again.');
       console.error('Error uploading data:', response.data);
     }
   } catch (error) {
+
     console.error('Failed to upload data:', error);
   } finally {
     // 结束加载状态
@@ -178,6 +183,7 @@ const submitDataJD = async () => {
       })
       Object.assign(analysis, response.data.data);
     } else {
+      alert('Failed to upload data. Please try again.');
       console.error('Error uploading data:', response.data);
     }
   } catch (error) {
@@ -304,7 +310,6 @@ const exportToPDF = () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
 }
 
 .modal {

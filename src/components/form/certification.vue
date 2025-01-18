@@ -57,8 +57,8 @@ function deleteCertification(index) {
     <h3 @click="toggleShow(index)" class="toggle-header">
       <span>Certification #{{ index + 1 }}</span>
       <div class="block-utils">
-        <v-tooltip v-if="analysis?.certifications[index]"
-                   :text="analysis?.certifications[index].comment"
+        <v-tooltip v-if="analysis.certifications[index]?.score"
+                   :text="analysis.certifications[index]?.comment"
                    location="bottom"
                    max-width="500px"
                    close-delay="200"

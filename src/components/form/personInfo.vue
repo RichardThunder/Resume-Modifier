@@ -15,7 +15,8 @@ function toggleShow() {
     <h2 @click="toggleShow" class="toggle-header">
       <span>ℹ️ Personal Information</span>
       <div>
-        <v-tooltip v-if="analysis?.overallAnalysis" :text="analysis.overallAnalysis?.comment"
+        <v-tooltip v-if="analysis.overallAnalysis?.score"
+                   :text="analysis.overallAnalysis?.comment"
                    location="bottom"
                    max-width="500px"
                    close-delay="200"

@@ -59,8 +59,8 @@ function deleteVolunteer(index) {
       <h3 @click="toggleShow(index)" class="toggle-header">
         <span>Volunteering #{{ index + 1 }}</span>
         <div class="block-utils">
-          <v-tooltip v-if="analysis?.volunteering[index]"
-                     :text="analysis?.volunteering[index].comment"
+          <v-tooltip v-if="analysis.volunteering[index]?.score"
+                     :text="analysis.volunteering[index]?.comment"
                      location="bottom"
                      max-width="500px"
                      close-delay="200"

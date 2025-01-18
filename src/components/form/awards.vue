@@ -56,7 +56,7 @@ function deleteAward(index) {
     <h3 @click="toggleShow(index)" class="toggle-header">
       <span>Award #{{ index + 1 }}</span>
       <div class="block-utils">
-        <v-tooltip v-if="analysis?.award[index]"
+        <v-tooltip v-if="analysis.award[index]?.score"
                    :text="analysis.award[index]?.comment"
                    location="bottom"
                    max-width="500px"

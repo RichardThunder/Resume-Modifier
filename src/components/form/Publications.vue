@@ -53,8 +53,8 @@ function deletePublication(index) {
       <h3 @click="toggleShow(index)" class="toggle-header">
         <span>Publication #{{ index + 1 }}</span>
         <div class="block-utils">
-          <v-tooltip v-if="analysis?.publications[index]"
-                     :text="analysis?.publications[index].comment"
+          <v-tooltip v-if="analysis.publications[index]?.score"
+                     :text="analysis.publications[index]?.comment"
                      location="bottom"
                      max-width="500px"
                      close-delay="200"

@@ -31,7 +31,7 @@ function deleteAchieve() {
     <h3 class="toggle-header">
       <span >Your Achievements</span>
       <div class="block-utils">
-        <v-tooltip v-if="analysis?.achievements"
+        <v-tooltip v-if="analysis.achievements?.score"
             :text="analysis.achievements?.comment"
                    location="bottom"
                    max-width="500px"

@@ -58,7 +58,7 @@ function deleteProject(index) {
     <h3 @click="toggleShow(index)" class="toggle-header">
       <span>Project #{{ index + 1 }}</span>
       <div class="block-utils">
-        <v-tooltip v-if="analysis?.project[index]"
+        <v-tooltip v-if="analysis.project[index]?.score"
             :text="analysis.project[index]?.comment"
                    location="bottom"
                    max-width="500px"
@@ -127,7 +127,5 @@ function deleteProject(index) {
 </template>
 
 <style scoped>
-v-tooltip{
 
-}
 </style>

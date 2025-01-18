@@ -89,7 +89,7 @@ function saveExperience(index) {
       <h3 @click="toggleShow(index)" class="toggle-header">
         <span>Work Experience #{{ index + 1 }}</span>
         <div class="block-utils">
-          <v-tooltip v-if="analysis?.workExperience[index]"
+          <v-tooltip v-if="analysis.workExperience[index]?.score"
               :text="analysis.workExperience[index]?.comment"
                      location="bottom"
                      max-width="500px"
