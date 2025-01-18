@@ -132,7 +132,7 @@ export const analysis = reactive({
       ],
       overallAnalysis: {
         comment: 'The candidate has a solid background in software engineering, with strong experience in Java and JavaScript frameworks, as well as significant experience with Docker. However, the resume does not mention Python or Flask, which are key requirements for the job. The candidate has experience with RESTful APIs and some cloud deployment tools, but lacks direct experience with the desired technologies.',
-        score: 10
+        score: 50
       },
       project: [
         {
@@ -158,7 +158,12 @@ export const analysis = reactive({
           jobTitle: 'Programmer Analyst, Call Center Engineering Team',
           score: 60
         }
-      ]
+      ],
+      award:[],
+  certifications:[],
+  publications:[],
+  volunteering:[],
+  references:[],
     }
 );
 export const fileName = ref('resume.pdf');

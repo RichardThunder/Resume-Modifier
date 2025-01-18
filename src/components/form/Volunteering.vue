@@ -1,6 +1,7 @@
 <script setup>
 import {ref, watch} from 'vue';
-import {model} from '../../model.js';
+import {analysis, model} from '../../model.js';
+import {scoreToColors} from '../../methods.js';
 
 // 控制每个组件的显示/隐藏状态
 const visibleIndexes = ref([]);
@@ -58,6 +59,20 @@ function deleteVolunteer(index) {
       <h3 @click="toggleShow(index)" class="toggle-header">
         <span>Volunteering #{{ index + 1 }}</span>
         <div class="block-utils">
+          <v-tooltip v-if="analysis?.volunteering[index]"
+                     :text="analysis?.volunteering[index].comment"
+                     location="bottom"
+                     max-width="500px"
+                     close-delay="200"
+          >
+            <template v-slot:activator="{ props }">
+              <span v-bind="props">
+                <v-progress-circular :size="45" :width="5" :model-value="analysis.volunteering[index]?.score" :color="scoreToColors(analysis.volunteering[index]?.score)">
+                  <template v-slot:default> <span class="score">{{analysis.volunteering[index]?.score}}</span></template>
+                </v-progress-circular>
+              </span>
+            </template>
+          </v-tooltip>
           <img class="delete-block" src="../../assets/block-delete.svg" @click="deleteVolunteer(index)">
           <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
         </div>

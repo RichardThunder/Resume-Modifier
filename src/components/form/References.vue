@@ -1,6 +1,7 @@
 <script setup>
 import {ref, watch} from 'vue';
-import {model} from '../../model.js';
+import {analysis, model} from '../../model.js';
+import {scoreToColors} from '../../methods.js';
 
 
 // 控制每个组件的显示/隐藏状态
@@ -57,6 +58,20 @@ function deleteReferences(index) {
       <h3 @click="toggleShow(index)" class="toggle-header">
         <span>Education #{{ index + 1 }}</span>
         <div class="block-utils">
+          <v-tooltip v-if="analysis?.references[index]"
+                     :text="analysis?.references[index].comment"
+                     location="bottom"
+                     max-width="500px"
+                     close-delay="200"
+          >
+            <template v-slot:activator="{ props }">
+              <span v-bind="props">
+                <v-progress-circular :size="45" :width="5" :model-value="analysis.references[index]?.score" :color="scoreToColors(analysis.references[index]?.score)">
+                  <template v-slot:default> <span class="score">{{analysis.references[index]?.score}}</span></template>
+                </v-progress-circular>
+              </span>
+            </template>
+          </v-tooltip>
           <img class="delete-block" src="../../assets/block-delete.svg" @click="deleteReferences(index)">
           <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
         </div>

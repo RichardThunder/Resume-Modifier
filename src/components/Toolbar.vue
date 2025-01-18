@@ -173,7 +173,10 @@ const submitDataJD = async () => {
     );
     if (response.data.status === 200) {
       console.log('Data received from server:', response.data);
-      Object.assign(analysis, response.data.data.analysis);
+      Object.keys(analysis).forEach(key => {
+        delete analysis[key]
+      })
+      Object.assign(analysis, response.data.data);
     } else {
       console.error('Error uploading data:', response.data);
     }

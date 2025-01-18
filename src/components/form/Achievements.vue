@@ -31,17 +31,17 @@ function deleteAchieve() {
     <h3 class="toggle-header">
       <span >Your Achievements</span>
       <div class="block-utils">
-        <v-tooltip v-if="analysis.achievements"
-            :text="analysis.achievements.comment"
+        <v-tooltip v-if="analysis?.achievements"
+            :text="analysis.achievements?.comment"
                    location="bottom"
                    max-width="500px"
                    close-delay="200"
         >
           <template v-slot:activator="{ props }">
               <span v-bind="props">
-                <v-progress-circular :size="45" :width="5" :model-value="analysis.achievements.score"
-                                     :color="scoreToColors(analysis.achievements.score)">
-                  <template v-slot:default> <span class="score">{{ analysis.achievements.score }}</span></template>
+                <v-progress-circular :size="45" :width="5" :model-value="analysis.achievements?.score"
+                                     :color="scoreToColors(analysis.achievements?.score)">
+                  <template v-slot:default> <span class="score">{{ analysis.achievements?.score }}</span></template>
                 </v-progress-circular>
               </span>
           </template>

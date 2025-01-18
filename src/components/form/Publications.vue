@@ -1,6 +1,7 @@
 <script setup>
 import {ref, watch} from 'vue';
-import {model} from '../../model.js';
+import {analysis, model} from '../../model.js';
+import {scoreToColors} from '../../methods.js';
 // 控制每个组件的显示/隐藏状态
 const visibleIndexes = ref([]);
 
@@ -52,6 +53,20 @@ function deletePublication(index) {
       <h3 @click="toggleShow(index)" class="toggle-header">
         <span>Publication #{{ index + 1 }}</span>
         <div class="block-utils">
+          <v-tooltip v-if="analysis?.publications[index]"
+                     :text="analysis?.publications[index].comment"
+                     location="bottom"
+                     max-width="500px"
+                     close-delay="200"
+          >
+            <template v-slot:activator="{ props }">
+              <span v-bind="props">
+                <v-progress-circular :size="45" :width="5" :model-value="analysis.publications[index]?.score" :color="scoreToColors(analysis.publications[index]?.score)">
+                  <template v-slot:default> <span class="score">{{analysis.publications[index]?.score}}</span></template>
+                </v-progress-circular>
+              </span>
+            </template>
+          </v-tooltip>
           <img class="delete-block" src="../../assets/block-delete.svg" @click="deletePublication(index)">
           <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
         </div>

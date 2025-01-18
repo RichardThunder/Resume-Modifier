@@ -15,15 +15,15 @@ function toggleShow() {
     <h2 @click="toggleShow" class="toggle-header">
       <span>ℹ️ Personal Information</span>
       <div>
-        <v-tooltip :text="analysis.overallAnalysis.comment"
+        <v-tooltip v-if="analysis?.overallAnalysis" :text="analysis.overallAnalysis?.comment"
                    location="bottom"
                    max-width="500px"
                    close-delay="200"
         >
           <template v-slot:activator="{ props }">
               <span v-bind="props">
-                <v-progress-circular :size="45" :width="5" :model-value="analysis.overallAnalysis.score" :color="scoreToColors(analysis.overallAnalysis.score)">
-                  <template v-slot:default> <span class="score">{{analysis.overallAnalysis.score}}</span></template>
+                <v-progress-circular :size="45" :width="5" :model-value="analysis.overallAnalysis?.score" :color="scoreToColors(analysis.overallAnalysis?.score)">
+                  <template v-slot:default> <span class="score">{{analysis.overallAnalysis?.score}}</span></template>
                 </v-progress-circular>
               </span>
           </template>
