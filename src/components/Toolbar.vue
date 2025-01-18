@@ -121,7 +121,7 @@ const submitDataRM = async () => {
   isLoading.value = true;
 
   try {
-    const response = await axios.post('http://localhost:8080/api/pdfupload', formData, {
+    const response = await axios.post('http://localhost:5001/api/pdfupload', formData, {
       headers: {'Content-Type': 'multipart/form-data'}
     });
     if (response.data.status === 200) {
@@ -159,7 +159,7 @@ const submitDataJD = async () => {
   // 设置加载状态为 true
   isLoading.value = true;
   try {
-    const response = await axios.post('api/job_description_upload/', formData, {
+    const response = await axios.post('http://localhost:5001/api/job_description_upload/', formData, {
       headers: {'Content-Type': 'multipart/form-data'}
     });
     if (response.data.status === 200) {
