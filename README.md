@@ -63,7 +63,9 @@ Any advice for common problems or issues are welcomed.
 
 ## License
 
-This project is licensed under the  GPL-3.0 license - see the LICENSE.md file for details
+This project is licensed under the  GPL-3.0 license 
+
+see the LICENSE.md file for details
 ## Acknowledgments
 [nochhz](https://github.com/enochhz)
 
