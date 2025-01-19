@@ -159,7 +159,6 @@ function saveExperience(index) {
               :options="editorOptions"
               @blur="saveExperience(index)"
           />
-          <button @click="showData(index)">showData</button>
         </div>
       </div>
     </div>

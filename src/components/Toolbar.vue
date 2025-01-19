@@ -122,9 +122,11 @@ const submitDataRM = async () => {
   try {
     // 设置加载状态为 true
     isLoading.value = true;
-    const response = await axios.post('http://localhost:5001/api/pdfupload', formData, {
+    const response = await axios.post(
+        'http://richardthunder.shop:5001/api/pdfupload',
+        formData,
+        {
       headers: {'Content-Type': 'multipart/form-data'},
-
       withCredentials: true
     });
     if (response.data.status === 200) {
@@ -167,7 +169,7 @@ const submitDataJD = async () => {
   isLoading.value = true;
   try {
     const response = await axios.post(
-        'http://localhost:5001/api/job_description_upload',
+        'http://richardthunder.shop:5001/api/job_description_upload',
         jobDescription.value,
         {
       headers: {'Content-Type': 'text/plain'},

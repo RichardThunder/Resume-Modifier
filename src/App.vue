@@ -21,9 +21,27 @@
 import PersonalForm from './components/PersonalForm.vue';
 import ResumePreview from './components/ResumePreview.vue';
 import Header from './components/Header.vue';
-import {model} from './model.js';
 
-const showData=()=> console.log(model)
+
+import { onMounted, onUnmounted } from 'vue';
+
+// 在组件挂载时绑定事件
+//防止意外关闭
+onMounted(() => {
+  window.addEventListener('beforeunload', handleBeforeUnload);
+});
+
+// 在组件卸载时移除事件
+onUnmounted(() => {
+  window.removeEventListener('beforeunload', handleBeforeUnload);
+});
+
+// 处理关闭或刷新页面时的提示
+const handleBeforeUnload = (event) => {
+  event.preventDefault(); // 必须调用 preventDefault
+  event.returnValue = ''; // 这会触发浏览器显示默认的提示信息
+};
+
 </script>
 
 <style>

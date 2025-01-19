@@ -29,12 +29,7 @@ import Certification from './form/certification.vue';
 import Publications from './form/Publications.vue';
 import Volunteering from './form/Volunteering.vue';
 import References from './form/References.vue';
-import {analysis, model} from '../model.js';
-import Forms from './Forms.vue';
-import {scoreToColors} from '../methods.js';
-const titles= {
-  userInfo:'ℹ️ Personal Information',
-}
+
 
 </script>
 
