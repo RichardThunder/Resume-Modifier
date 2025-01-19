@@ -1,4 +1,4 @@
-version: '3.8'
+
 
 services:
   app:
@@ -18,7 +18,7 @@ services:
     depends_on:
       - app # 等待构建完成
     ports:
-      - "8081:80" # 映射本地 8080 到 Nginx 的 80 端口
+      - "3001:80" # 映射本地 8080 到 Nginx 的 80 端口
     volumes:
       - ./dist:/usr/share/nginx/html # 将构建后的文件挂载到 Nginx 的静态文件目录
     networks:

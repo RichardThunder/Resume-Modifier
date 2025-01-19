@@ -1,0 +1,6 @@
+services:
+  editor-frontend:
+    image: editor-frontend:latest
+    container_name: editor-frontend
+    ports:
+      - "3001:80" # 映射本地 8080 到 Nginx 的 80 端口
