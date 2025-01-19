@@ -35,7 +35,7 @@ jobs:
     # Build the Docker image
     - name: Build Docker image
       run: |
-        docker build -f Dockerfile.server -t ${{env.ECR_REPOSITORY}}:latest .
+        docker build -f Dockerfile -t ${{env.ECR_REPOSITORY}}:latest .
 
     # Tag the Docker image
     - name: Tag Docker image
