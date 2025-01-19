@@ -127,7 +127,7 @@ const submitDataRM = async () => {
 
       withCredentials: true
     });
-    if (response.data.status === 100) {
+    if (response.data.status === 200) {
       console.log('Data received from server:', response.data);
       fileName.value = selectedFile.value.name;
       // 1) 先删除旧属性
