@@ -1,3 +1,5 @@
+import {model} from './model.js';
+
 export const scoreToColors = (score) => {
   if (score < 0 || score > 100) {
     throw new Error('Score must be between 0 and 100');
@@ -83,3 +85,37 @@ export const convertModel = (item, callback) => {
   });
 
 };
+
+
+export const feedBack = async (data) => {
+  if (!data.feedback) {
+    alert('Please provide feedback');
+    return;
+  }
+  const formData = new FormData();
+  formData.append('data', data);
+  let content = '';
+  try {
+    const response = await axios.post(
+        'http://richardthunder.shop:5001/api/feedback/',
+        formData,
+        {
+          headers: {'Content-Type': 'multipart/form-data'},
+          withCredentials: true
+        });
+
+    if (response.data.status === 200) {
+      console.log('Data received from server:', response.data);
+      content = response.data.data.Content;
+      return content;
+    } else {
+      alert('Failed to upload data. Please try again.');
+      console.error('Error uploading data:', response.data);
+    }
+  } catch (e) {
+    console.error('Failed to upload data:', error);
+  }
+};
+
+
+

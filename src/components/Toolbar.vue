@@ -95,8 +95,9 @@ const showModalJD = ref(false);
 const jobDescription = ref('');
 const selectedFile = ref(null);
 const isLoading = ref(false);
+const API_URL = import.meta.env.VUE_APP_API_URL;
 
-//TODO: toolbar 没有充满容器而是窗口
+//TODO: toolbar样式需要调整, 没有充满容器而是窗口
 
 const toggleModalRM = () => {
   showModalRM.value = !showModalRM.value;
@@ -123,7 +124,7 @@ const submitDataRM = async () => {
     // 设置加载状态为 true
     isLoading.value = true;
     const response = await axios.post(
-        'http://richardthunder.shop:5001/api/pdfupload',
+        `${API_URL}/pdfupload`,
         formData,
         {
       headers: {'Content-Type': 'multipart/form-data'},
@@ -161,15 +162,10 @@ const submitDataJD = async () => {
     alert('Please provide a job description ');
     return;
   }
-  // convertModel(model,htmlToPlainText);
-  //const formData = new FormData();
-  //formData.append('job_description', jobDescription.value);
-  // formData.append('json', model);
-  // 设置加载状态为 true
   isLoading.value = true;
   try {
     const response = await axios.post(
-        'http://richardthunder.shop:5001/api/job_description_upload',
+        `${API_URL}/job_description_upload`,
         jobDescription.value,
         {
       headers: {'Content-Type': 'text/plain'},
@@ -208,7 +204,7 @@ const disableEditing = () => {
     fileName.value = 'Untitled.pdf';
   }
 };
-
+//TODO: pdf 样式需要调整, 分页会将文字上下截断
 const exportToPDF = () => {
   const element = document.querySelector('.resume-container'); // 选择需要导出的内容
   console.log(element + '' + 'element');

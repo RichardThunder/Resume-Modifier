@@ -1,7 +1,7 @@
 <script setup>
 import {ref, watch} from 'vue';
 import {analysis, model} from '../../model.js';
-import {scoreToColors} from '../../methods.js';
+import {feedBack, scoreToColors} from '../../methods.js';
 
 // 控制每个组件的显示/隐藏状态
 const visibleIndexes = ref([]);
@@ -48,6 +48,35 @@ function addEducation(){
 function deleteEducation(index) {
   model.education.splice(index, 1); // 从 model.workExperience 中删除指定索引的项目
   visibleIndexes.value.splice(index, 1); // 同步更新 visibleIndexes 的状态
+}
+
+// feedback with array
+const isModalVisible = ref(false);
+const handleFeedBack = async (index) =>{
+  loading.value = true;
+  console.log(data.feedback);
+  console.log(model.education[index].description);
+  // Call the feedBack function and get content
+  try {
+    data.section = model.education[index].description;
+    const content = await feedBack(data);
+    if(!content){
+      loading.value = false;
+      return;
+    }
+    model.education[index].description = content;
+  }catch (e){
+    console.error("Error load feedback");
+  }
+  finally{
+    loading.value=false;
+    // toggleModal();
+  }
+  loading.value = true;
+}
+const loading = ref(false);
+const toggleModal = ()=> {
+  isModalVisible.value = !isModalVisible.value;
 }
 </script>
 
@@ -134,7 +163,26 @@ function deleteEducation(index) {
               v-model="model.education[index].description"
               placeholder="Describe your education details, achievements, or notable projects"
           ></textarea>
+          <button
+              @click="toggleModal"
+              class="AI-writer align-right">
+            <span>AI Writer</span>
+          </button>
         </div>
+        <div v-if="isModalVisible" class="modal-overlay">
+          <div v-if="loading" class="spinner-overlay">
+            <div class="spinner"></div>
+          </div>
+          <div v-else class="modal">
+            <h3>Enter Feedback</h3>
+            <textarea v-model="data.feedback" placeholder="Enter your feedback..."></textarea>
+            <div style="display: flex;justify-content: space-between">
+              <button  class="AI-writer" @click="toggleModal">Cancel</button>
+              <button  class="AI-writer" @click="handleFeedBack(index)">Submit</button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 </template>

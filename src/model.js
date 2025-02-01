@@ -1,4 +1,5 @@
 import {reactive, ref} from 'vue';
+
 export const model = reactive({
   achievements: [],
   award: [],
@@ -90,8 +91,8 @@ export const model = reactive({
     linkedInURL: 'linkedin.com/in/sampleresume',
     phoneNumber: '(480) 123‐5689',
     websiteOrOtherProfileURL: '',
-    city:"chongqing",
-    country:"China"
+    city: 'chongqing',
+    country: 'China'
   },
   volunteering: [],
   workExperience: [
@@ -123,7 +124,7 @@ export const analysis = reactive({
           // degree: 'M.S.',
           // institutionName: 'UNIVERSITY OF ARIZONA',
           // score: 80
-        },
+        }
       ],
       overallAnalysis: {
         // comment: 'The candidate has a solid background in software engineering, with strong experience in Java and JavaScript frameworks, as well as significant experience with Docker. However, the resume does not mention Python or Flask, which are key requirements for the job. The candidate has experience with RESTful APIs and some cloud deployment tools, but lacks direct experience with the desired technologies.',
@@ -134,7 +135,7 @@ export const analysis = reactive({
           // comment: 'This project showcases the candidate\'s ability to use Docker and build RESTful APIs, which are relevant skills. However, there is no indication of Python or Flask usage.',
           // score: 70,
           // title: 'PicoShell'
-        },
+        }
 
       ],
       workExperience: [
@@ -145,11 +146,16 @@ export const analysis = reactive({
           // score: 60
         }
       ],
-      award:[],
-  certifications:[],
-  publications:[],
-  volunteering:[],
-  references:[],
+      award: [],
+      certifications: [],
+      publications: [],
+      volunteering: [],
+      references: []
     }
 );
 export const fileName = ref('resume.pdf');
+
+export const data = reactive({
+  feedback: '',
+  section: ''
+});

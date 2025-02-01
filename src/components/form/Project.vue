@@ -1,7 +1,7 @@
 <script setup>
 import {ref, watch} from 'vue';
-import {analysis, model} from '../../model.js';
-import {scoreToColors} from '../../methods.js';
+import {analysis,data, model} from '../../model.js';
+import {feedBack, scoreToColors} from '../../methods.js';
 
 const visibleIndexes = ref([]);
 
@@ -46,6 +46,35 @@ function addProject(){
 function deleteProject(index) {
   model.project.splice(index, 1); // 从 model.workExperience 中删除指定索引的项目
   visibleIndexes.value.splice(index, 1); // 同步更新 visibleIndexes 的状态
+}
+
+// feedback with array
+const isModalVisible = ref(false);
+const handleFeedBack = async (index) =>{
+  loading.value = true;
+  console.log(data.feedback);
+
+  // Call the feedBack function and get content
+  try {
+    data.section = model.project[index].description;
+    const content = await feedBack(data);
+    if(!content){
+      loading.value = false;
+      return;
+    }
+    model.project[index].description = content; // Update the summary with feedback data
+  }catch (e){
+    console.error("Error load feedback");
+  }
+  finally{
+    loading.value=false;
+    // toggleModal();
+  }
+  loading.value = true;
+}
+const loading = ref(false);
+const toggleModal = ()=> {
+  isModalVisible.value = !isModalVisible.value;
 }
 </script>
 
@@ -121,6 +150,24 @@ function deleteProject(index) {
             v-model="project.description"
             placeholder="Describe the project, responsibilities, and achievements"
         ></textarea>
+        <button
+            @click="toggleModal"
+            class="AI-writer align-right">
+          <span>AI Writer</span>
+        </button>
+      </div>
+      <div v-if="isModalVisible" class="modal-overlay">
+        <div v-if="loading" class="spinner-overlay">
+          <div class="spinner"></div>
+        </div>
+        <div v-else class="modal">
+          <h3>Enter Feedback</h3>
+          <textarea v-model="data.feedback" placeholder="Enter your feedback..."></textarea>
+          <div style="display: flex;justify-content: space-between">
+            <button  class="AI-writer" @click="toggleModal">Cancel</button>
+            <button  class="AI-writer" @click="handleFeedBack(index)">Submit</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
