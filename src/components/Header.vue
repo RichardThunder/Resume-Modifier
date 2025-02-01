@@ -5,21 +5,24 @@
     <h1>ResumeBot</h1>
     <nav>
       <ul>
-        <li>My Resume</li>
+
+        <li><router-link to="/my-resume">My Resume</router-link></li>
         <li class="highlighted">Hot Template</li>
         <li>Job Market</li>
         <li>Profile</li>
       </ul>
       <div class="avatar"><img src="../assets/Avatar.png" alt="avatar"></div>
-      <button class="signIn">Sign In</button>
+      <button class="signIn" @click="goToLogin">Sign In</button>
     </nav>
   </header>
 </template>
 
-<script>
-export default {
-  name: 'Header',
-};
+<script setup>
+import router from '@/router/index.js';
+const goToLogin =()=>{
+  router.push("/login");
+}
+
 </script>
 
 <style>
@@ -70,8 +73,6 @@ export default {
   font-size: 18px;
   font-weight: bold;
   white-space: nowrap;
-}
-.header li{
   padding: 10px 0;
 }
 
@@ -94,5 +95,12 @@ export default {
 }
 .header .avatar {
   cursor: pointer;
+}
+.header nav ul router-link{
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  white-space: nowrap;
+  padding: 10px 0;
 }
 </style>
