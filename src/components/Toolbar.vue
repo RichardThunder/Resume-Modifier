@@ -25,8 +25,11 @@
       <img src="../assets/toolbar/mynaui_redo.svg" alt="redo"/>Re-Analyze
     </button>
     <!--    <button class="toolbar-btn" @click="btnForTest">Button-for-test</button>-->
-    <button class="toolbar-btn undo">
+    <button class="toolbar-btn undo" :disabled="history.length <= 1" @click="undo">
       <img src="../assets/toolbar/material-symbols-light_undo.svg" alt="undo"/>Undo
+    </button>
+    <button class="toolbar-btn redo" :disabled="future.length === 0"  @click="redo">
+      <img src="../assets/toolbar/material-symbols-light_redo.svg" alt="redo"/>Redo
     </button>
     <button class="toolbar-btn export" @click="exportToPDF">
       <img src="../assets/toolbar/material-symbols-light_download.svg" alt="export"/>Export
@@ -84,9 +87,10 @@
 <script setup>
 import axios from 'axios';
 import {model, fileName, analysis} from '../model.js';
-import {nextTick, ref} from 'vue';
+import {nextTick, ref, watch} from 'vue';
 import html2pdf from 'html2pdf.js';
-
+import {cloneDeep} from 'lodash-es';
+import {tr} from 'vuetify/locale'; // 引入 lodash.clonedeep 用于深拷贝
 const fileInput = ref(null);
 const isEditing = ref(false);
 const fileNameInput = ref(null);
@@ -96,7 +100,45 @@ const jobDescription = ref('');
 const selectedFile = ref(null);
 const isLoading = ref(false);
 const API_URL = import.meta.env.VUE_APP_API_URL;
+const history = ref([]); // 历史状态栈
+const future = ref([]); // 未来状态栈 (用于 redo)
+let ignoreChange = ref(false);
 
+//监听model变化, 记录历史
+watch(model, (newModel)=>{
+  if(!ignoreChange.value){
+    history.value.push(cloneDeep(newModel));
+    future.value = []; // 清空 redo 栈
+    console.log("History:", history.value);
+  }else{
+    ignoreChange.value=false; //重置标志位
+  }
+},{deep:true});
+
+const undo =()=>{
+  if(history.value.length>1){
+    future.value.push(cloneDeep(model));
+    history.value.pop();
+    ignoreChange.value = true;
+    Object.assign(model,cloneDeep(history.value[history.value.length-1]));
+    console.log("Undo History:",history.value);
+    console.log("Future:", future.value);
+  }else{
+    console.log("Nothing to undo");
+  }
+}
+
+const redo = () => {
+  if (future.value.length > 0) {
+    history.value.push(cloneDeep(model)); // 当前状态推入 history 栈
+    ignoreChange.value = true; // 避免重复记录
+    Object.assign(model, cloneDeep(future.value.pop()));  // 恢复到 future 栈顶状态
+    console.log("Redo. Future:", future.value);
+    console.log("History:", history.value)
+  } else {
+    console.log("Nothing to redo.");
+  }
+};
 //TODO: toolbar样式需要调整, 没有充满容器而是窗口
 
 const toggleModalRM = () => {
@@ -256,7 +298,12 @@ const exportToPDF = () => {
 .toolbar .toolbar-btn:active {
   transform: scale(0.98);
 }
-
+.toolbar .toolbar-btn:disabled {  /*  禁用状态样式  */
+  background-color: #ddd; /*  或其他你想要的颜色  */
+  color: #999;
+  cursor: not-allowed; /*  鼠标变为禁止图标  */
+  opacity: 0.9;        /* 稍微降低透明度  */
+}
 .toolbar button {
   padding: 5px 5px;
 }
@@ -416,4 +463,5 @@ const exportToPDF = () => {
     transform: rotate(360deg);
   }
 }
+
 </style>
