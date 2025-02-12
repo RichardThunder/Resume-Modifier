@@ -2,8 +2,8 @@
   <div class="editor-panel">
     <person-info />
     <resume-summary/>
-    <work-experience />
     <education />
+    <work-experience />
     <skills />
     <achievements />
     <projects />

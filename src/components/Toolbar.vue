@@ -21,9 +21,9 @@
     <button class="toolbar-btn upload" @click="toggleModalJD">
       <img src="../assets/toolbar/circum_export.svg" alt="upload JD"/>JD
     </button>
-    <button class="toolbar-btn reanalyze">
-      <img src="../assets/toolbar/mynaui_redo.svg" alt="redo"/>Re-Analyze
-    </button>
+<!--    <button class="toolbar-btn reanalyze">-->
+<!--      <img src="../assets/toolbar/mynaui_redo.svg" alt="redo"/>Re-Analyze-->
+<!--    </button>-->
     <!--    <button class="toolbar-btn" @click="btnForTest">Button-for-test</button>-->
     <button class="toolbar-btn undo" :disabled="history.length <= 1" @click="undo">
       <img src="../assets/toolbar/material-symbols-light_undo.svg" alt="undo"/>Undo
@@ -32,8 +32,11 @@
       <img src="../assets/toolbar/material-symbols-light_redo.svg" alt="redo"/>Redo
     </button>
     <button class="toolbar-btn export" @click="exportToPDF">
-      <img src="../assets/toolbar/material-symbols-light_download.svg" alt="export"/>Export
+      <img src="../assets/toolbar/material-symbols-light_download.svg" alt="export"/>Export PDF
     </button>
+<!--    <button class="toolbar-btn export" @click="exportToDoc">-->
+<!--      <img src="../assets/toolbar/material-symbols-light_download.svg" alt="export"/>Export Doc-->
+<!--    </button>-->
   </div>
   <!-- 弹出窗口 -->
   <div v-if="showModalRM" class="modal-overlay">
@@ -88,9 +91,13 @@
 import axios from 'axios';
 import {model, fileName, analysis} from '../model.js';
 import {nextTick, ref, watch} from 'vue';
-import html2pdf from 'html2pdf.js';
 import {cloneDeep} from 'lodash-es';
 import {tr} from 'vuetify/locale'; // 引入 lodash.clonedeep 用于深拷贝
+import html2pdf from 'html2pdf.js';
+
+
+
+
 const fileInput = ref(null);
 const isEditing = ref(false);
 const fileNameInput = ref(null);
@@ -246,21 +253,16 @@ const disableEditing = () => {
     fileName.value = 'Untitled.pdf';
   }
 };
-//TODO: pdf 样式需要调整, 分页会将文字上下截断
-const exportToPDF = () => {
-  const element = document.querySelector('.resume-container'); // 选择需要导出的内容
-  console.log(element + '' + 'element');
-  const options = {
-    margin: 0,
-    filename: fileName.value,
-    image: {type: 'jpeg', quality: 0.98},
-    html2canvas: {scale: 3, useCORS: true},
-    jsPDF: {unit: 'in', format: [11, 17], orientation: 'portrait'},
-    enableLinks: true
-  };
 
-  html2pdf().set(options).from(element).save();
+const exportToPDF = async () => {
+  const element = document.querySelector('.resume-container');
+  const tmpTitle = document.title;
+  document.title = fileName.value;
+  window.print();
+  document.title = tmpTitle;
 };
+
+
 </script>
 
 <style>
@@ -272,6 +274,8 @@ const exportToPDF = () => {
   padding: 10px;
   border-bottom: 1px solid #ccc;
   gap: 10px;
+  min-width: 210mm;
+  width:100%;
 }
 
 .toolbar .toolbar-btn {

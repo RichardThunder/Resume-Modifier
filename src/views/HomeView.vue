@@ -54,6 +54,7 @@ const handleBeforeUnload = (event) => {
 
 .resume-preview {
   flex: 3;
+  flex-direction: column;
   padding: 5px;
   background-color: white;
   overflow-y: auto;
