@@ -9,6 +9,7 @@
 -->
 
 <template>
+
      <div class="login-page">
        <h1 class="title">Sign In</h1>
         <LoginForm @login="handleLogin" />

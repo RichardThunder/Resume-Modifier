@@ -4,7 +4,6 @@
       <button class="toolbar-btn rename" @click="editFileName">
         <img src="../assets/toolbar/ep_edit.svg" alt="edit"/>Rename
       </button>
-      <!--      <span class="file-name" >{{ fileName }}</span>-->
     </div>
 
     <div v-else class="filename-edit">
@@ -21,10 +20,6 @@
     <button class="toolbar-btn upload" @click="toggleModalJD">
       <img src="../assets/toolbar/circum_export.svg" alt="upload JD"/>JD
     </button>
-<!--    <button class="toolbar-btn reanalyze">-->
-<!--      <img src="../assets/toolbar/mynaui_redo.svg" alt="redo"/>Re-Analyze-->
-<!--    </button>-->
-    <!--    <button class="toolbar-btn" @click="btnForTest">Button-for-test</button>-->
     <button class="toolbar-btn undo" :disabled="history.length <= 1" @click="undo">
       <img src="../assets/toolbar/material-symbols-light_undo.svg" alt="undo"/>Undo
     </button>
@@ -34,16 +29,14 @@
     <button class="toolbar-btn export" @click="exportToPDF">
       <img src="../assets/toolbar/material-symbols-light_download.svg" alt="export"/>Export PDF
     </button>
-<!--    <button class="toolbar-btn export" @click="exportToDoc">-->
-<!--      <img src="../assets/toolbar/material-symbols-light_download.svg" alt="export"/>Export Doc-->
-<!--    </button>-->
   </div>
   <!-- 弹出窗口 -->
   <div v-if="showModalRM" class="modal-overlay">
-    <div v-if="isLoading" class="spinner-overlay">
+<!--    <div v-if="isLoading" class="spinner-overlay">
       <div class="spinner"></div>
-    </div>
-    <div v-else class="modal">
+    </div>-->
+<!--    <div v-else class="modal">-->
+    <div class="my-modal">
       <h3>Upload File</h3>
       <div class="choose-and-filename">
         <div class="choose-file">
@@ -70,7 +63,7 @@
     <div v-if="isLoading" class="spinner-overlay">
       <div class="spinner"></div>
     </div>
-    <div v-else class="modal">
+    <div v-else class="my-modal">
       <h3>Upload Job Description</h3>
       <label for="jobDescription">Job Description:</label>
       <textarea
@@ -92,11 +85,6 @@ import axios from 'axios';
 import {model, fileName, analysis} from '../model.js';
 import {nextTick, ref, watch} from 'vue';
 import {cloneDeep} from 'lodash-es';
-import {tr} from 'vuetify/locale'; // 引入 lodash.clonedeep 用于深拷贝
-import html2pdf from 'html2pdf.js';
-
-
-
 
 const fileInput = ref(null);
 const isEditing = ref(false);
@@ -146,7 +134,6 @@ const redo = () => {
     console.log("Nothing to redo.");
   }
 };
-//TODO: toolbar样式需要调整, 没有充满容器而是窗口
 
 const toggleModalRM = () => {
   showModalRM.value = !showModalRM.value;
@@ -265,8 +252,9 @@ const exportToPDF = async () => {
 
 </script>
 
-<style>
+<style >
 .toolbar {
+  position: sticky;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -275,7 +263,7 @@ const exportToPDF = async () => {
   border-bottom: 1px solid #ccc;
   gap: 10px;
   min-width: 210mm;
-  width:100%;
+
 }
 
 .toolbar .toolbar-btn {
@@ -316,16 +304,6 @@ const exportToPDF = async () => {
   display: flex;
 }
 
-/*
-.file-name {
-  margin-left: 10px;
-  font-size: 14px;
-  color: #333;
-  font-weight: bold;
-  align-items: center;
-}
-*/
-
 .file-name-input {
   font-size: 14px;
   color: #333;
@@ -347,7 +325,6 @@ const exportToPDF = async () => {
   display: flex;
   align-items: center;
 }
-
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -358,15 +335,17 @@ const exportToPDF = async () => {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 
-.modal {
+.my-modal {
   background: white;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   width: 400px;
   max-width: 90%;
+
 }
 
 .modal h3 {
@@ -433,6 +412,20 @@ const exportToPDF = async () => {
   font-size: 14px;
   color: #fffdfd;
 }
+
+
+@keyframes modal-in {
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+
 
 /* Spinner Overlay */
 .spinner-overlay {

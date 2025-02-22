@@ -34,7 +34,7 @@ export const model = reactive({
     {
       city: '',
       country: '',
-      description: `Collaborative coding platform with a linux terminal, code editor, file browser, chat window, and video collection.
+      description: `• Collaborative coding platform with a linux terminal, code editor, file browser, chat window, and video collection.
 • Connected users using Socket.io to chat and see immediate changes to collaborators’ code editor and terminal.
 • Used Docker to emulate a UNIX environment in browser with drag and drop file upload and file download.
 • Created an API for Docker container control and NodeJS / ExpressJS server with a MySQL DB for user data.
@@ -49,7 +49,7 @@ export const model = reactive({
     {
       city: '',
       country: '',
-      description: `Photo diary and photo organizer that uses photo-recognition APIs to tag and caption photos.
+      description: `• Photo diary and photo organizer that uses photo-recognition APIs to tag and caption photos.
 • Expanded and refined functionality of React Native codebase.
 • Implemented search, geo-tags, and content sort using ExponentJS to improve UX.
 • Configured continuous integration using CircleCI and Heroku to streamline build, test, and deployment.
@@ -63,7 +63,7 @@ export const model = reactive({
     {
       city: '',
       country: '',
-      description: `Spotify playlist generator based on time of day and weather forecast of any given roadtrip route.
+      description: `• Spotify playlist generator based on time of day and weather forecast of any given roadtrip route.
 • Integrated OAuth authentication with Spotify using PassportJS.
 • Generated Spotify playlists tailored to user’s roadtrip route using Google Maps and Accuweather forecast.`,
       fromDate: '',
@@ -100,8 +100,9 @@ export const model = reactive({
       city: 'Bentonville',
       companyName: 'WALMART, INC.',
       country: 'Arkansas',
-      description: `• Architected financial services hotline app for 8 countries in Central and South America.
-• Implemented benefits hotline app rollout every year for US and Canada serving 1.4 million employees.
+      description: `
+      • Architected financial services hotline app for 8 countries in Central and South America.
+      • Implemented benefits hotline app rollout every year for US and Canada serving 1.4 million employees.
 • Optimized manual application tuning process with Java to fetch and process data, making process 20x faster.
 • Connected user-facing web applications with SQL DBs using Spring REST web services.
 • Integrated agent monitoring system, improving call center efficiency by 30%. [Employee of the Month - Dec 2012]`,

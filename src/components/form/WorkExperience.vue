@@ -18,13 +18,15 @@ function toggleShow(index) {
 
 // 初始化 visibleIndexes 的状态
 function initializeVisibility() {
-  // 确保 visibleIndexes 长度与 model.workExperience 一致
-  while (visibleIndexes.value.length < model.workExperience.length) {
-    visibleIndexes.value.push(false); // 新增的默认值为 false
-  }
-  // 如果 visibleIndexes 长度超过 model.workExperience，则截断
-  if (visibleIndexes.value.length > model.workExperience.length) {
-    visibleIndexes.value.splice(model.workExperience.length);
+  if (model.workExperience?.length > 0) {
+    // 确保 visibleIndexes 长度与 model.workExperience 一致
+    while (visibleIndexes.value.length < model.workExperience.length) {
+      visibleIndexes.value.push(false); // 新增的默认值为 false
+    }
+    // 如果 visibleIndexes 长度超过 model.workExperience，则截断
+    if (visibleIndexes.value.length > model.workExperience.length) {
+      visibleIndexes.value.splice(model.workExperience.length);
+    }
   }
 }
 

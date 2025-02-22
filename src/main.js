@@ -15,10 +15,21 @@ import router from './router/index.js';
 // Vuetify
 import "vuetify/styles";
 import { createVuetify } from "vuetify";
+import { aliases, mdi } from 'vuetify/iconsets/mdi'
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'
+import 'bootstrap-icons/font/bootstrap-icons.css'
 const vuetify = createVuetify({
   components,
   directives,
+  icons:{
+    defaultSet: 'mdi',
+    aliases,
+    sets: {
+      mdi,
+    }
+  }
 });
 createApp(App).use(vuetify).use(router).mount("#app");

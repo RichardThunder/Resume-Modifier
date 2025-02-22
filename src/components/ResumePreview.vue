@@ -34,21 +34,22 @@
       <section v-if="model.summary" class="resume-section">
         <h2>SUMMARY</h2>
         <div v-if="!isEditingSummary" @dblclick="enableSummaryEdit">
-          <p v-html="formattedDescription(model.summary)"></p>
+          <p>{{model.summary}}</p>
         </div>
         <div v-else>
     <textarea
         v-model="model.summary"
-
+        @input="autoResize($refs.summaryTextarea)"
         v-focus
         @blur="saveSummaryEdit"
         rows="3"
+        ref="summaryTextarea"
         style="width: 100%; font-size: 16px; border: 1px solid #ccc; padding: 5px; resize: none;"
     ></textarea>
         </div>
 
       </section>
-      <section v-if="model.education.length" class="resume-section">
+      <section v-if="model.education?.length" class="resume-section">
         <h2>EDUCATION</h2>
         <ul>
           <li
@@ -210,7 +211,7 @@
         </ul>
       </section>
 
-      <section v-if="model.workExperience.length" class="resume-section">
+      <section v-if="model.workExperience?.length" class="resume-section">
         <h2>WORK EXPERIENCE</h2>
         <ul>
           <li
@@ -355,7 +356,7 @@
         </ul>
       </section>
 
-      <section v-if="model.skills.length" class="resume-section">
+      <section v-if="model.skills?.length" class="resume-section">
         <h2>Skills</h2>
         <ul>
           <li v-for="(skill, index) in model.skills" :key="index">
@@ -378,12 +379,12 @@
           </li>
         </ul>
       </section>
-      <section v-if="model.achievements.length!==0" class="resume-section">
+      <section v-if="model.achievements?.length!==0" class="resume-section">
         <h2>Achievements</h2>
 
         <!-- 非编辑状态 -->
         <div v-if="!isEditingAchievements" @dblclick="enableAchievementsEdit">
-          <p>{{ model.achievements }}</p>
+          <p v-html="formattedDescription(model.achievements)"></p>
         </div>
 
         <!-- 编辑状态 -->
@@ -398,7 +399,7 @@
         </div>
       </section>
 
-      <section v-if="model.project.length" class="resume-section">
+      <section v-if="model.project?.length" class="resume-section">
         <h2>Projects</h2>
         <ul>
           <li
@@ -547,7 +548,7 @@
           </li>
         </ul>
       </section>
-      <section v-if="model.award.length" class="resume-section">
+      <section v-if="model.award?.length" class="resume-section">
         <h2>Awards</h2>
         <ul>
           <li
@@ -629,7 +630,7 @@
           </li>
         </ul>
       </section>
-      <section v-if="model.certifications.length" class="resume-section">
+      <section v-if="model.certifications?.length" class="resume-section">
         <h2>Certifications</h2>
         <ul>
           <li
@@ -729,7 +730,7 @@
           </li>
         </ul>
       </section>
-      <section v-if="model.publications.length" class="resume-section">
+      <section v-if="model.publications?.length" class="resume-section">
         <h2>Publications</h2>
         <ul>
           <li
@@ -799,7 +800,7 @@
           </li>
         </ul>
       </section>
-      <section v-if="model.volunteering.length" class="resume-section">
+      <section v-if="model.volunteering?.length" class="resume-section">
         <h2>Volunteering</h2>
         <ul>
           <li
@@ -946,7 +947,7 @@
           </li>
         </ul>
       </section>
-      <section v-if="model.references.length" class="resume-section">
+      <section v-if="model.references?.length" class="resume-section">
         <h2>References</h2>
         <ul>
           <li
@@ -1062,10 +1063,40 @@ const vFocus = {
     el.focus();
   }
 };
-
+// 自动调整高度
+const autoResize = (textareaRef) => {
+  const textarea = $refs[textareaRef];
+  if (textarea) {
+    textarea.style.height = 'auto';  // 重置高度
+    textarea.style.height = `${textarea.scrollHeight}px`;  // 设置为内容的高度
+  }
+};
 function formattedDescription(description) {
-  // return description.replace(/\n/g, '<br>');
-  return description;
+
+  if (typeof description !== 'string') {
+
+    if (description === null || description === undefined) {
+
+      return '';
+    } else {
+
+      description = String(description);
+    }
+  }
+// 1. 按换行符拆分文本
+  const lines = description.split('\n').map(line => line.trim()).filter(line => line !== '');
+
+  // 2. 对每一行添加 '•'，并确保不重复添加
+  const formattedLines = lines.map(line => {
+    if (!line.startsWith('•')) {
+      return `• ${line}`;
+    }
+    return line;  // 如果已经有了 '•' 符号，就不再添加
+  });
+
+  // 3. 将每行包装成 <li> 标签并返回
+  return formattedLines.map(line => `<li style="line-height: 1.2; margin-bottom: 5px;">${line}</li>`).join('');
+
 }
 
 // 控制编辑状态

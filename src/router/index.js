@@ -10,14 +10,34 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { isAuthenticated } from "../utils/auth";
 import LoginPage from '@/views/LoginPage.vue';
-import HomeView from '@/views/HomeView.vue';
-
+import ResumeView from '@/views/ResumeView.vue';
+import ProfilePage from '@/views/ProfilePage.vue';
+import TemplateView from '@/views/TemplateView.vue';
+import RegisterView from '@/views/RegisterView.vue';
 
 const routes=[
   {
-    path: '/my-resume',
+    path: '/login',
+    name: 'Login',
+    component: LoginPage
+  },
+  {
+    path: '/',
     name: 'Home',
-    component: HomeView,
+    component: ResumeView,
+    beforeEnter:(to,from,next)=>{
+      if(!isAuthenticated()){
+        next({name: 'Login'});
+      }else{
+        next();
+      }
+    }
+  },
+
+  {
+    path: '/resume',
+    name: 'Resume',
+    component: ResumeView,
     beforeEnter:(to,from,next)=>{
       if(!isAuthenticated()){
         next({name: 'Login'});
@@ -27,9 +47,33 @@ const routes=[
     }
   },
   {
-    path: '/login',
-    name: 'Login',
-    component: LoginPage
+    path: '/template',
+    name: 'Template',
+    component: TemplateView,
+    beforeEnter:(to,from,next)=>{
+      if(!isAuthenticated()){
+        next({name: 'Login'});
+      }else{
+        next();
+      }
+    }
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: ProfilePage,
+    beforeEnter:(to,from,next)=>{
+      if(!isAuthenticated()){
+        next({name: 'Login'});
+      }else{
+        next();
+      }
+    }
+  },
+  {
+    path: '/register',
+    name:'Register',
+    component: RegisterView
   }
 ];
 

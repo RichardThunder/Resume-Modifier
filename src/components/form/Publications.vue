@@ -12,13 +12,14 @@ function toggleShow(index) {
 
 // 初始化 visibleIndexes 的状态
 function initializeVisibility() {
+  if (model.publications?.length > 0) {
   while (visibleIndexes.value.length < model.publications.length) {
     visibleIndexes.value.push(false); // 新增的默认值为 false
   }
   if (visibleIndexes.value.length > model.publications.length) {
     visibleIndexes.value.splice(model.publications.length);
   }
-}
+}}
 watch(
     () => model.publications,
     () => {

@@ -13,11 +13,13 @@ function toggleShow(index) {
 
 // 初始化 visibleIndexes 的状态
 function initializeVisibility() {
-  while (visibleIndexes.value.length < model.volunteering.length) {
-    visibleIndexes.value.push(false); // 新增的默认值为 false
-  }
-  if (visibleIndexes.value.length > model.volunteering.length) {
-    visibleIndexes.value.splice(model.volunteering.length);
+  if (model.volunteering?.length > 0) {
+    while (visibleIndexes.value.length < model.volunteering.length) {
+      visibleIndexes.value.push(false); // 新增的默认值为 false
+    }
+    if (visibleIndexes.value.length > model.volunteering.length) {
+      visibleIndexes.value.splice(model.volunteering.length);
+    }
   }
 }
 watch(

@@ -1,4 +1,5 @@
 import {model} from './model.js';
+import axios from 'axios';
 
 export const scoreToColors = (score) => {
   if (score < 0 || score > 100) {
@@ -97,7 +98,7 @@ export const feedBack = async (data) => {
   let content = '';
   try {
     const response = await axios.post(
-        'http://richardthunder.shop:5001/api/feedback/',
+        `${API_URL}/api/feedback/`,
         formData,
         {
           headers: {'Content-Type': 'multipart/form-data'},
