@@ -117,6 +117,7 @@ const validateForm = () => {
 const clearError = (field) => {
   errors[field] = '';
 };
+const emit = defineEmits();
 
 const handleSubmit = async () => {
   if (!validateForm()) {
@@ -127,7 +128,7 @@ const handleSubmit = async () => {
 
   try {
     // Simulate the registration process
-    await this.$emit('register', registerForm.username, registerForm.email, registerForm.password);
+    await emit('register', registerForm.username, registerForm.email, registerForm.password);
   } catch (error) {
     console.error('Registration failed:', error);
   } finally {

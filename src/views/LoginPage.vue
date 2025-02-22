@@ -24,9 +24,9 @@ import {useRouter} from 'vue-router';
 
 const router = useRouter();
 
-const handleLogin = async (username, password)=>{
+const handleLogin = async (email, password)=>{
   try{
-    const data = await login(username, password);
+    const data = await login(email, password);
     setToken(data.token);
     await router.push({name: 'Home'});
   }catch(error){

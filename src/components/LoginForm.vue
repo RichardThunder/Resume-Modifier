@@ -10,15 +10,15 @@
 <template>
   <form class="login-form" @submit.prevent="handleSubmit">
     <div class="form-group">
-      <label for="username">Username</label>
+      <label for="email">email</label>
       <input
           type="text"
-          id="username"
-          v-model="loginForm.username"
-          :class="{ 'error': errors.username }"
-          @focus="clearError('username')"
+          id="email"
+          v-model="loginForm.email"
+          :class="{ 'error': errors.email }"
+          @focus="clearError('email')"
       />
-      <span class="error-message" v-if="errors.username">{{ errors.username }}</span>
+      <span class="error-message" v-if="errors.email">{{ errors.email }}</span>
     </div>
 
     <div class="form-group">
@@ -57,23 +57,23 @@ import axios from 'axios';
 import {reactive, ref} from 'vue';
 
 const loginForm = reactive({
-    username: "",
+    email: "",
     password: "",
     remember: false,
 })
 const errors = reactive({
-  username: '',
+  email: '',
   password: '',
 });
 const isLoading = ref(false);
 
 const validateForm=()=>{
   let isValid = true
-  errors.username="";
+  errors.email="";
   errors.password="";
 
-  if (!loginForm.username.trim()) {
-    errors.username = 'Username required!';
+  if (!loginForm.email.trim()) {
+    errors.email = 'Username required!';
     isValid = false;
   }
 
@@ -89,6 +89,7 @@ const validateForm=()=>{
 const clearError=(field)=> {
   errors[field] = '';
 };
+const emit = defineEmits(['login']);
 const handleSubmit= async ()=> {
   if (!validateForm()) {
     return;
@@ -97,7 +98,7 @@ const handleSubmit= async ()=> {
   isLoading.value = true
   try {
     // 发送登录信息给父组件处理
-    await this.$emit('login',loginForm.username,loginForm.password);
+    await emit('login',loginForm.email,loginForm.password);
   } catch (error) {
     console.error('表单提交失败:', error)
   } finally {

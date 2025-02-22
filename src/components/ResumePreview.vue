@@ -358,14 +358,14 @@
 
       <section v-if="model.skills?.length" class="resume-section">
         <h2>Skills</h2>
-        <ul>
-          <li v-for="(skill, index) in model.skills" :key="index">
+        <ul class="list-unstyled">
+          <li v-for="(skill, index) in model.skills" :key="index" class="d-inline">
             <!-- 非编辑状态 -->
             <span
                 v-if="!editingSkillFields[index]"
                 @dblclick="enableSkillEdit(index)"
             >
-        {{ skill }} {{ }}
+        {{ skill }}, {{ }}
       </span>
 
             <!-- 编辑状态 -->

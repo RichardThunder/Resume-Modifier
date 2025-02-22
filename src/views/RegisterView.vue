@@ -7,19 +7,10 @@
 
 <script setup>
 import RegisterForm from '@/components/RegisterForm.vue';
-import { useRouter } from 'vue-router';
-
-const router = useRouter();
-
-const handleRegister = async (username, email, password) => {
-  try {
-    // Simulate registration logic (e.g., calling an API to create a user)
-    console.log('User registered:', username, email, password);
-    // Redirect user to login page after successful registration
-    await router.push({ name: 'Login' });
-  } catch (error) {
-    console.error('Registration failed:', error);
-  }
+import {register} from '@/services/registerService.js';
+const handleRegister = (formData) => {
+  console.log(formData);
+    register(formData)
 };
 </script>
 

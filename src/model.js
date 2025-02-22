@@ -75,12 +75,11 @@ export const model = reactive({
   ],
   publications: [],
   references: [],
-  skills: [
-    'JavaScript: ReactJS, AngularJS 1.x, ExpressJS, NodeJS, jQuery, HTML/CSS',
-    'Mobile: React Native, ExponentJS',
-    'Java: Spring, Maven',
-    'Databases: MongoDB, SQL',
-    'Build/Deploy: Docker, Tomcat, Grunt, Heroku, CircleCI'
+  skills: ["ReactJS","AngularJS 1.x","ExpressJS","NodeJS","jQuery","HTML/CSS",
+
+    "React Native", "ExponentJS",
+    " Spring", "Mave",
+    "MongoDB", "SQL",
   ],
   summary: `An analytical and results‐driven software engineer with experience in application development, scripting and coding, automation, web application design, product testing and deployment, UI testing, and requirements gathering. Proven aptitude for implementing innovative solutions to streamline and automate processes, enhance efficiency, improve customer satisfaction, and achieve financial savings.`,
   userInfo: {

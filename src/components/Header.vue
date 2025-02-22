@@ -1,14 +1,13 @@
 <template>
-  <nav class="navbar navbar-expand-lg fixed-top bg-white shadow-sm py-2">
+  <nav class="navbar navbar-expand-lg fixed-top bg-white shadow-sm py-2" >
     <div class="container-fluid px-4">
       <!-- Logo and Brand -->
       <a class="navbar-brand d-flex align-items-center" href="#">
         <img src="../assets/bot.svg" alt="Logo" width="40" height="40" class="me-2">
         <span class="fw-bold fs-4">ResumeBot</span>
       </a>
-
       <!-- Mobile Toggle Button -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
@@ -57,7 +56,7 @@
 </template>
 
 <script setup>
-import {reactive} from 'vue';
+import {onMounted, reactive} from 'vue';
 import router from '@/router/index.js';
 import Avatar from '@/assets/Avatar.png';
 
@@ -65,6 +64,12 @@ const messages = reactive({
   avatar: Avatar
 });
 
+onMounted(() => {
+  const navbarContent = document.getElementById('navbarContent');
+  if (navbarContent) {
+    new bootstrap.Collapse(navbarContent);
+  }
+});
 
 </script>
 
