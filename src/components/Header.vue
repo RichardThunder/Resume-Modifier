@@ -59,17 +59,17 @@
 import {onMounted, reactive} from 'vue';
 import router from '@/router/index.js';
 import Avatar from '@/assets/Avatar.png';
-
+import 'bootstrap';
 const messages = reactive({
   avatar: Avatar
 });
 
-onMounted(() => {
+/*onMounted(() => {
   const navbarContent = document.getElementById('navbarContent');
   if (navbarContent) {
     new bootstrap.Collapse(navbarContent);
   }
-});
+});*/
 
 </script>
 

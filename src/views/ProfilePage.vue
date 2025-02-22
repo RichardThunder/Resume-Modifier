@@ -64,7 +64,6 @@
             </div>
           </div>
         </div>
-
         <!-- Edit Profile Modal -->
         <div class="modal fade" id="editProfileModal" tabindex="-1" ref="modalRef">
           <div class="modal-dialog">
@@ -142,13 +141,13 @@
 
 <script setup>
 import {ref, reactive, onMounted} from 'vue';
-import {Modal} from 'bootstrap';
 import axios from 'axios';
 import {model} from '@/model.js';
 import router from '@/router/index.js';
-
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 const modalRef = ref(null);
+
 let bootstrapModal = null;
 
 const profile = reactive({
@@ -170,7 +169,9 @@ const resumeHistory = ref([]);
 
 const editProfile = () => {
   Object.assign(editedProfile, profile);
-  bootstrapModal = new Modal(modalRef.value);
+  if (!bootstrapModal) {
+    bootstrapModal = new Modal(modalRef.value);
+  }
   bootstrapModal.show();
 };
 
