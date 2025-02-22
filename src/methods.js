@@ -98,7 +98,7 @@ export const feedBack = async (data) => {
   let content = '';
   try {
     const response = await axios.post(
-        `${API_URL}/api/feedback/`,
+        `${API_URL}/feedback/`,
         formData,
         {
           headers: {'Content-Type': 'multipart/form-data'},
