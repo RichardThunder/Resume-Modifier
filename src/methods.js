@@ -1,3 +1,7 @@
+import axios from 'axios';
+import {getToken} from '@/utils/auth.js';
+import router from '@/router/index.js';
+
 export const scoreToColors = (score) => {
   if (score < 0 || score > 100) {
     throw new Error('Score must be between 0 and 100');
@@ -83,3 +87,45 @@ export const convertModel = (item, callback) => {
   });
 
 };
+
+
+export const feedBack = async (data) => {
+  const jwtToken = getToken('token');
+  if (!jwtToken) {
+    console.error('JWT token not found');
+    alert('You need to Login to continue');
+    await router.push({name: 'Login'});
+    return;
+  }
+  if (!data.feedback) {
+    alert('Please provide feedback');
+    return;
+  }
+  const formData = new FormData();
+  formData.append('data', data);
+  let content = '';
+  const API_URL = import.meta.env.VITE_API_URL;
+  try {
+    const response = await axios.post(
+        `${API_URL}/feedback/`,
+        formData,
+        {
+          headers: {'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${jwtToken}`}
+        });
+
+    if (response.data.status === 200) {
+      console.log('Data received from server:', response.data);
+      content = response.data.data.Content;
+      return content;
+    } else {
+      alert('Failed to upload data. Please try again.');
+      console.error('Error uploading data:', response.data);
+    }
+  } catch (e) {
+    console.error('Failed to upload data:', error);
+  }
+};
+
+
+

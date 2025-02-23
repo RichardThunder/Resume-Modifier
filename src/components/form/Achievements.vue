@@ -1,7 +1,7 @@
 <script setup>
 import {ref} from 'vue';
 import {analysis, model} from '../../model.js';
-import {scoreToColors} from '../../methods.js';
+import {feedBack, scoreToColors} from '../../methods.js';
 
 // 是否显示表单
 const isVisible = ref(false);
@@ -19,6 +19,33 @@ function addAchieve() {
 function deleteAchieve() {
   model.achievements = ''; // 从 model.workExperience 中删除指定索引的项目
   isVisible.value = false;// 同步更新 visibleIndexes 的状态
+}
+// feedback
+const isModalVisible = ref(false);
+const handleFeedBack = async () =>{
+  loading.value = true;
+  console.log(data.feedback);
+  // Call the feedBack function and get content
+  try {
+    data.section = model.achievements;
+    const content = await feedBack(data);
+    if(!content){
+      loading.value = false;
+      return;
+    }
+    model.achievements = content;
+  }catch (e){
+    console.error("Error load feedback");
+  }
+  finally{
+    loading.value=false;
+    // toggleModal();
+  }
+  loading.value = true;
+}
+const loading = ref(false);
+const toggleModal = ()=> {
+  isModalVisible.value = !isModalVisible.value;
 }
 </script>
 

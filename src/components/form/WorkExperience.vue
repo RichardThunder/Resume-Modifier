@@ -1,7 +1,7 @@
 <script setup>
 import {ref, watch} from 'vue';
-import {analysis, model} from '../../model.js';
-import {scoreToColors} from '../../methods.js';
+import {analysis, data, model} from '../../model.js';
+import {feedBack, scoreToColors} from '../../methods.js';
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
@@ -18,13 +18,15 @@ function toggleShow(index) {
 
 // 初始化 visibleIndexes 的状态
 function initializeVisibility() {
-  // 确保 visibleIndexes 长度与 model.workExperience 一致
-  while (visibleIndexes.value.length < model.workExperience.length) {
-    visibleIndexes.value.push(false); // 新增的默认值为 false
-  }
-  // 如果 visibleIndexes 长度超过 model.workExperience，则截断
-  if (visibleIndexes.value.length > model.workExperience.length) {
-    visibleIndexes.value.splice(model.workExperience.length);
+  if (model.workExperience?.length > 0) {
+    // 确保 visibleIndexes 长度与 model.workExperience 一致
+    while (visibleIndexes.value.length < model.workExperience.length) {
+      visibleIndexes.value.push(false); // 新增的默认值为 false
+    }
+    // 如果 visibleIndexes 长度超过 model.workExperience，则截断
+    if (visibleIndexes.value.length > model.workExperience.length) {
+      visibleIndexes.value.splice(model.workExperience.length);
+    }
   }
 }
 
@@ -76,10 +78,38 @@ function saveExperience(index) {
   console.log(`Saved Work Experience #${index + 1}`);
   console.log(model.workExperience);
 }
+
+// feedback with array
+const isModalVisible = ref(false);
+const handleFeedBack = async (index) =>{
+  loading.value = true;
+  console.log(data.feedback);
+  console.log(model.workExperience[index].description);
+  // Call the feedBack function and get content
+  try {
+    data.section = model.workExperience[index].description;
+    const content = await feedBack(data);
+    if(!content){
+      loading.value = false;
+      return;
+    }
+    model.workExperience[index].description = content;
+  }catch (e){
+    console.error("Error load feedback");
+  }
+  finally{
+    loading.value=false;
+    // toggleModal();
+  }
+  loading.value = true;
+}
+const loading = ref(false);
+const toggleModal = ()=> {
+  isModalVisible.value = !isModalVisible.value;
+}
 </script>
 
 <template>
-
     <div class="block-header">
       <h2 class="section-title">💼 Work Experience</h2>
       <button @click="addExperience" class="add-button">Add</button>
@@ -159,6 +189,24 @@ function saveExperience(index) {
               :options="editorOptions"
               @blur="saveExperience(index)"
           />
+          <button
+              @click="toggleModal"
+              class="AI-writer align-right">
+            <span>AI Writer</span>
+          </button>
+        </div>
+        <div v-if="isModalVisible" class="modal-overlay">
+          <div v-if="loading" class="spinner-overlay">
+            <div class="spinner"></div>
+          </div>
+          <div v-else class="modal">
+            <h3>Enter Feedback</h3>
+            <textarea v-model="data.feedback" placeholder="Enter your feedback..."></textarea>
+            <div style="display: flex;justify-content: space-between">
+              <button  class="AI-writer" @click="toggleModal">Cancel</button>
+              <button  class="AI-writer" @click="handleFeedBack(index)">Submit</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

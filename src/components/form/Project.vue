@@ -1,7 +1,7 @@
 <script setup>
 import {ref, watch} from 'vue';
-import {analysis, model} from '../../model.js';
-import {scoreToColors} from '../../methods.js';
+import {analysis, data, model} from '../../model.js';
+import {feedBack, scoreToColors} from '../../methods.js';
 
 const visibleIndexes = ref([]);
 
@@ -12,23 +12,28 @@ function toggleShow(index) {
 
 // 初始化 visibleIndexes 的状态
 function initializeVisibility() {
-  while (visibleIndexes.value.length < model.education.length) {
-    visibleIndexes.value.push(false); // 新增的默认值为 false
+  if (model.project?.length > 0) {
+    while (visibleIndexes.value.length < model.education.length) {
+      visibleIndexes.value.push(false); // 新增的默认值为 false
+    }
+    if (visibleIndexes.value.length > model.education.length) {
+      visibleIndexes.value.splice(model.education.length);
+    }
   }
-  if (visibleIndexes.value.length > model.education.length) {
-    visibleIndexes.value.splice(model.education.length);
-  }}
+}
+
 watch(
     () => model.project,
     () => {
       initializeVisibility();
     },
-    { deep: true } // 深度监听以捕获数组内容的变化
+    {deep: true} // 深度监听以捕获数组内容的变化
 );
 // 初始化显示状态
 initializeVisibility();
+
 // 定义项目经历的响应式数据
-function addProject(){
+function addProject() {
   model.project.push({
     title: '',
     projectRole: '',
@@ -36,17 +41,46 @@ function addProject(){
     country: '',
     fromDate: '',
     toDate: '',
-    isPresent:false,
-    description: '',
-  })
+    isPresent: false,
+    description: ''
+  });
   visibleIndexes.value.push(true);
   console.log(model);
   console.log(visibleIndexes.value);
 }
+
 function deleteProject(index) {
   model.project.splice(index, 1); // 从 model.workExperience 中删除指定索引的项目
   visibleIndexes.value.splice(index, 1); // 同步更新 visibleIndexes 的状态
 }
+
+// feedback with array
+const isModalVisible = ref(false);
+const handleFeedBack = async (index) => {
+  loading.value = true;
+  console.log(data.feedback);
+
+  // Call the feedBack function and get content
+  try {
+    data.section = model.project[index].description;
+    const content = await feedBack(data);
+    if (!content) {
+      loading.value = false;
+      return;
+    }
+    model.project[index].description = content; // Update the summary with feedback data
+  } catch (e) {
+    console.error('Error load feedback');
+  } finally {
+    loading.value = false;
+    // toggleModal();
+  }
+  loading.value = true;
+};
+const loading = ref(false);
+const toggleModal = () => {
+  isModalVisible.value = !isModalVisible.value;
+};
 </script>
 
 <template>
@@ -59,15 +93,16 @@ function deleteProject(index) {
       <span>Project #{{ index + 1 }}</span>
       <div class="block-utils">
         <v-tooltip v-if="analysis.project[index]?.score"
-            :text="analysis.project[index]?.comment"
+                   :text="analysis.project[index]?.comment"
                    location="bottom"
                    max-width="500px"
                    close-delay="200"
         >
           <template v-slot:activator="{ props }">
               <span v-bind="props">
-                <v-progress-circular :size="45" :width="5" :model-value="analysis.project[index]?.score" :color="scoreToColors(analysis.project[index]?.score)">
-                  <template v-slot:default> <span class="score">{{analysis.project[index]?.score}}</span></template>
+                <v-progress-circular :size="45" :width="5" :model-value="analysis.project[index]?.score"
+                                     :color="scoreToColors(analysis.project[index]?.score)">
+                  <template v-slot:default> <span class="score">{{ analysis.project[index]?.score }}</span></template>
                 </v-progress-circular>
               </span>
           </template>
@@ -79,7 +114,7 @@ function deleteProject(index) {
     <div v-if="visibleIndexes[index]" class="form-container">
       <div class="form-group">
         <label>Project Title</label>
-        <input type="text" v-model="project.title" placeholder="Project Title" />
+        <input type="text" v-model="project.title" placeholder="Project Title"/>
       </div>
       <div class="form-group">
         <label>Role in Project</label>
@@ -92,26 +127,26 @@ function deleteProject(index) {
       <div class="form-row">
         <div class="form-group">
           <label>City</label>
-          <input type="text" v-model="project.city" placeholder="City" />
+          <input type="text" v-model="project.city" placeholder="City"/>
         </div>
         <div class="form-group">
           <label>Country</label>
-          <input type="text" v-model="project.country" placeholder="Country" />
+          <input type="text" v-model="project.country" placeholder="Country"/>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
           <label>From Date</label>
-          <input type="date" v-model="project.fromDate" />
+          <input type="date" v-model="project.fromDate"/>
         </div>
         <div class="form-group">
           <label>To Date</label>
-          <input type="date" v-model="project.toDate" :disabled="project.isPresent" />
+          <input type="date" v-model="project.toDate" :disabled="project.isPresent"/>
         </div>
       </div>
       <div class="form-group">
         <label>
-          <input type="checkbox" v-model="project.isPresent" /> Currently Working on
+          <input type="checkbox" v-model="project.isPresent"/> Currently Working on
           this Project
         </label>
       </div>
@@ -121,6 +156,24 @@ function deleteProject(index) {
             v-model="project.description"
             placeholder="Describe the project, responsibilities, and achievements"
         ></textarea>
+        <button
+            @click="toggleModal"
+            class="AI-writer align-right">
+          <span>AI Writer</span>
+        </button>
+      </div>
+      <div v-if="isModalVisible" class="modal-overlay">
+        <div v-if="loading" class="spinner-overlay">
+          <div class="spinner"></div>
+        </div>
+        <div v-else class="modal">
+          <h3>Enter Feedback</h3>
+          <textarea v-model="data.feedback" placeholder="Enter your feedback..."></textarea>
+          <div style="display: flex;justify-content: space-between">
+            <button class="AI-writer" @click="toggleModal">Cancel</button>
+            <button class="AI-writer" @click="handleFeedBack(index)">Submit</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

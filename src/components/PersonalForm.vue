@@ -1,10 +1,9 @@
 <template>
   <div class="editor-panel">
-
     <person-info />
     <resume-summary/>
-    <work-experience />
     <education />
+    <work-experience />
     <skills />
     <achievements />
     <projects />
@@ -17,15 +16,15 @@
 </template>
 
 <script setup>
-import PersonInfo from './form/personInfo.vue';
-import ResumeSummary from './form/summary.vue';
-import WorkExperience from './form/work-experience.vue';
+import PersonInfo from './form/PersonInfo.vue';
+import ResumeSummary from './form/Summary.vue';
+import WorkExperience from './form/WorkExperience.vue';
 import Education from './form/Education.vue';
 import Skills from './form/Skills.vue';
 import Achievements from './form/Achievements.vue';
 import Projects from './form/Project.vue';
-import Awards from './form/awards.vue';
-import Certification from './form/certification.vue';
+import Awards from './form/Awards.vue';
+import Certification from './form/Certification.vue';
 import Publications from './form/Publications.vue';
 import Volunteering from './form/Volunteering.vue';
 import References from './form/References.vue';
@@ -181,4 +180,48 @@ textarea:focus {
 .score{
   color: black;
 }
+
+.AI-writer{
+  background-color: var(--button-primary-color);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  max-width: 100px;
+  margin: 5px 5px 5px 5px;
+  transition: background-color 0.3s ease;
+}
+.align-right{
+  margin-left: auto;
+}
+.AI-writer:hover{
+  opacity: 0.9;
+}
+.AI-writer:active{
+  transform: scale(0.98);
+}
+
+.AI-writer.loading {
+  background-color: gray;  /* Set background to gray while loading */
+  pointer-events: none;    /* Disable clicking while loading */
+}
+
+.spinner {
+  border: 3px solid #f3f3f3;  /* Light gray border */
+  border-top: 3px solid #3498db;  /* Blue color for spinner */
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  animation: spin 2s linear infinite; /* Spin animation */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 </style>

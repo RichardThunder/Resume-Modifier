@@ -1,7 +1,7 @@
 <script setup>
 import {ref, watch} from 'vue';
 import {analysis, model} from '../../model.js';
-import {scoreToColors} from '../../methods.js';
+import {feedBack, scoreToColors} from '../../methods.js';
 // 控制每个组件的显示/隐藏状态
 const visibleIndexes = ref([]);
 
@@ -12,13 +12,14 @@ function toggleShow(index) {
 
 // 初始化 visibleIndexes 的状态
 function initializeVisibility() {
+  if (model.publications?.length > 0) {
   while (visibleIndexes.value.length < model.publications.length) {
     visibleIndexes.value.push(false); // 新增的默认值为 false
   }
   if (visibleIndexes.value.length > model.publications.length) {
     visibleIndexes.value.splice(model.publications.length);
   }
-}
+}}
 watch(
     () => model.publications,
     () => {
@@ -42,6 +43,7 @@ function deletePublication(index) {
   model.publications.splice(index, 1); // 从 model.workExperience 中删除指定索引的项目
   visibleIndexes.value.splice(index, 1); // 同步更新 visibleIndexes 的状态
 }
+
 </script>
 
 <template>
@@ -57,6 +59,7 @@ function deletePublication(index) {
                      :text="analysis.publications[index]?.comment"
                      location="bottom"
                      max-width="500px"
+
                      close-delay="200"
           >
             <template v-slot:activator="{ props }">

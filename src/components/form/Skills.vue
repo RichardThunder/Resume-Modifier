@@ -32,7 +32,7 @@ function removeSkill(index) {
 
         <div v-for="(skill, index) in model.skills" :key="index" class="form-row">
           <span class="skill-item">{{ skill }}</span>
-          <button @click="removeSkill(index)" class="add-button">Remove️</button>
+          <button @click="removeSkill(index)" class="add-button" style="margin-left:auto;margin-top:auto;margin-bottom:auto;height: 40px">Remove️</button>
         </div>
       </div>
       <div class="add-skill-row">

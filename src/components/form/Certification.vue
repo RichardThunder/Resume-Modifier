@@ -1,7 +1,7 @@
 <script setup>
 import {ref, watch} from 'vue';
-import {analysis, model} from '../../model.js';
-import {scoreToColors} from '../../methods.js';
+import {analysis, data, model} from '../../model.js';
+import {feedBack, scoreToColors} from '../../methods.js';
 
 // 控制每个组件的显示/隐藏状态
 const visibleIndexes = ref([]);
@@ -13,11 +13,14 @@ function toggleShow(index) {
 
 // 初始化 visibleIndexes 的状态
 function initializeVisibility() {
-  while (visibleIndexes.value.length < model.certifications.length) {
-    visibleIndexes.value.push(false); // 新增的默认值为 false
-  }
-  if (visibleIndexes.value.length > model.certifications.length) {
-    visibleIndexes.value.splice(model.certifications.length);
+
+  if (model.certifications?.length > 0) {
+    while (visibleIndexes.value.length < model.certifications.length) {
+      visibleIndexes.value.push(false); // 新增的默认值为 false
+    }
+    if (visibleIndexes.value.length > model.certifications.length) {
+      visibleIndexes.value.splice(model.certifications.length);
+    }
   }
 }
 
@@ -26,7 +29,7 @@ watch(
     () => {
       initializeVisibility();
     },
-    { deep: true } // 深度监听以捕获数组内容的变化
+    {deep: true} // 深度监听以捕获数组内容的变化
 );
 // 初始化显示状态
 initializeVisibility();
@@ -42,10 +45,40 @@ function addCertification() {
   });
   visibleIndexes.value.push(true);
 }
+
 function deleteCertification(index) {
   model.certifications.splice(index, 1); //
   visibleIndexes.value.splice(index, 1); // 同步更新 visibleIndexes 的状态
 }
+
+// feedback with array
+const isModalVisible = ref(false);
+const handleFeedBack = async (index) => {
+  loading.value = true;
+  console.log(data.feedback);
+
+  // Call the feedBack function and get content
+  try {
+    data.section = model.certifications[index].description;
+    const content = await feedBack(data);
+    if (!content) {
+      loading.value = false;
+      return;
+    }
+    model.certifications[index].description = content;
+  } catch (e) {
+    console.error('Error load feedback');
+  } finally {
+    loading.value = false;
+    // toggleModal();
+  }
+  loading.value = true;
+};
+const loading = ref(false);
+const toggleModal = () => {
+  isModalVisible.value = !isModalVisible.value;
+};
+
 </script>
 
 <template>
@@ -65,8 +98,10 @@ function deleteCertification(index) {
         >
           <template v-slot:activator="{ props }">
               <span v-bind="props">
-                <v-progress-circular :size="45" :width="5" :model-value="analysis.certifications[index]?.score" :color="scoreToColors(analysis.certifications[index]?.score)">
-                  <template v-slot:default> <span class="score">{{analysis.certifications[index]?.score}}</span></template>
+                <v-progress-circular :size="45" :width="5" :model-value="analysis.certifications[index]?.score"
+                                     :color="scoreToColors(analysis.certifications[index]?.score)">
+                  <template v-slot:default> <span
+                      class="score">{{ analysis.certifications[index]?.score }}</span></template>
                 </v-progress-circular>
               </span>
           </template>
@@ -109,6 +144,24 @@ function deleteCertification(index) {
             v-model="certification.description"
             placeholder="Describe the certification, its importance, or related details"
         ></textarea>
+        <button
+            @click="toggleModal"
+            class="AI-writer align-right">
+          <span>AI Writer</span>
+        </button>
+      </div>
+      <div v-if="isModalVisible" class="modal-overlay">
+        <div v-if="loading" class="spinner-overlay">
+          <div class="spinner"></div>
+        </div>
+        <div v-else class="modal">
+          <h3>Enter Feedback</h3>
+          <textarea v-model="data.feedback" placeholder="Enter your feedback..."></textarea>
+          <div style="display: flex;justify-content: space-between">
+            <button class="AI-writer" @click="toggleModal">Cancel</button>
+            <button class="AI-writer" @click="handleFeedBack(index)">Submit</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

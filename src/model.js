@@ -1,4 +1,5 @@
 import {reactive, ref} from 'vue';
+
 export const model = reactive({
   achievements: [],
   award: [],
@@ -33,7 +34,7 @@ export const model = reactive({
     {
       city: '',
       country: '',
-      description: `Collaborative coding platform with a linux terminal, code editor, file browser, chat window, and video collection.
+      description: `• Collaborative coding platform with a linux terminal, code editor, file browser, chat window, and video collection.
 • Connected users using Socket.io to chat and see immediate changes to collaborators’ code editor and terminal.
 • Used Docker to emulate a UNIX environment in browser with drag and drop file upload and file download.
 • Created an API for Docker container control and NodeJS / ExpressJS server with a MySQL DB for user data.
@@ -48,7 +49,7 @@ export const model = reactive({
     {
       city: '',
       country: '',
-      description: `Photo diary and photo organizer that uses photo-recognition APIs to tag and caption photos.
+      description: `• Photo diary and photo organizer that uses photo-recognition APIs to tag and caption photos.
 • Expanded and refined functionality of React Native codebase.
 • Implemented search, geo-tags, and content sort using ExponentJS to improve UX.
 • Configured continuous integration using CircleCI and Heroku to streamline build, test, and deployment.
@@ -62,7 +63,7 @@ export const model = reactive({
     {
       city: '',
       country: '',
-      description: `Spotify playlist generator based on time of day and weather forecast of any given roadtrip route.
+      description: `• Spotify playlist generator based on time of day and weather forecast of any given roadtrip route.
 • Integrated OAuth authentication with Spotify using PassportJS.
 • Generated Spotify playlists tailored to user’s roadtrip route using Google Maps and Accuweather forecast.`,
       fromDate: '',
@@ -74,12 +75,11 @@ export const model = reactive({
   ],
   publications: [],
   references: [],
-  skills: [
-    'JavaScript: ReactJS, AngularJS 1.x, ExpressJS, NodeJS, jQuery, HTML/CSS',
-    'Mobile: React Native, ExponentJS',
-    'Java: Spring, Maven',
-    'Databases: MongoDB, SQL',
-    'Build/Deploy: Docker, Tomcat, Grunt, Heroku, CircleCI'
+  skills: ["ReactJS","AngularJS 1.x","ExpressJS","NodeJS","jQuery","HTML/CSS",
+
+    "React Native", "ExponentJS",
+    " Spring", "Mave",
+    "MongoDB", "SQL",
   ],
   summary: `An analytical and results‐driven software engineer with experience in application development, scripting and coding, automation, web application design, product testing and deployment, UI testing, and requirements gathering. Proven aptitude for implementing innovative solutions to streamline and automate processes, enhance efficiency, improve customer satisfaction, and achieve financial savings.`,
   userInfo: {
@@ -90,8 +90,8 @@ export const model = reactive({
     linkedInURL: 'linkedin.com/in/sampleresume',
     phoneNumber: '(480) 123‐5689',
     websiteOrOtherProfileURL: '',
-    city:"chongqing",
-    country:"China"
+    city: 'chongqing',
+    country: 'China'
   },
   volunteering: [],
   workExperience: [
@@ -99,8 +99,9 @@ export const model = reactive({
       city: 'Bentonville',
       companyName: 'WALMART, INC.',
       country: 'Arkansas',
-      description: `• Architected financial services hotline app for 8 countries in Central and South America.
-• Implemented benefits hotline app rollout every year for US and Canada serving 1.4 million employees.
+      description: `
+      • Architected financial services hotline app for 8 countries in Central and South America.
+      • Implemented benefits hotline app rollout every year for US and Canada serving 1.4 million employees.
 • Optimized manual application tuning process with Java to fetch and process data, making process 20x faster.
 • Connected user-facing web applications with SQL DBs using Spring REST web services.
 • Integrated agent monitoring system, improving call center efficiency by 30%. [Employee of the Month - Dec 2012]`,
@@ -123,7 +124,7 @@ export const analysis = reactive({
           // degree: 'M.S.',
           // institutionName: 'UNIVERSITY OF ARIZONA',
           // score: 80
-        },
+        }
       ],
       overallAnalysis: {
         // comment: 'The candidate has a solid background in software engineering, with strong experience in Java and JavaScript frameworks, as well as significant experience with Docker. However, the resume does not mention Python or Flask, which are key requirements for the job. The candidate has experience with RESTful APIs and some cloud deployment tools, but lacks direct experience with the desired technologies.',
@@ -134,7 +135,7 @@ export const analysis = reactive({
           // comment: 'This project showcases the candidate\'s ability to use Docker and build RESTful APIs, which are relevant skills. However, there is no indication of Python or Flask usage.',
           // score: 70,
           // title: 'PicoShell'
-        },
+        }
 
       ],
       workExperience: [
@@ -145,11 +146,16 @@ export const analysis = reactive({
           // score: 60
         }
       ],
-      award:[],
-  certifications:[],
-  publications:[],
-  volunteering:[],
-  references:[],
+      award: [],
+      certifications: [],
+      publications: [],
+      volunteering: [],
+      references: []
     }
 );
 export const fileName = ref('resume.pdf');
+
+export const data = reactive({
+  feedback: '',
+  section: ''
+});

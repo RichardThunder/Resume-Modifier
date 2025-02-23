@@ -1,98 +1,99 @@
 <template>
-  <header class="header">
+  <nav class="navbar navbar-expand-lg fixed-top bg-white shadow-sm py-2" >
+    <div class="container-fluid px-4">
+      <!-- Logo and Brand -->
+      <a class="navbar-brand d-flex align-items-center" href="#">
+        <img src="../assets/bot.svg" alt="Logo" width="40" height="40" class="me-2">
+        <span class="fw-bold fs-4">ResumeBot</span>
+      </a>
+      <!-- Mobile Toggle Button -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <img src="../assets/bot.svg" alt="Logo" />
-    <h1>ResumeBot</h1>
-    <nav>
-      <ul>
-        <li>My Resume</li>
-        <li class="highlighted">Hot Template</li>
-        <li>Job Market</li>
-        <li>Profile</li>
-      </ul>
-      <div class="avatar"><img src="../assets/Avatar.png" alt="avatar"></div>
-      <button class="signIn">Sign In</button>
-    </nav>
-  </header>
+      <!-- Nav Content -->
+      <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+        <ul class="navbar-nav  mb-2 mb-lg-0">
+          <li class="nav-item">
+            <router-link class="nav-link fw-bold" to="/">Home</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link fw-bold" to="/Chart">Chart</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link fw-bold" to="/job_market">Job Market</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link fw-bold" to="/resume">Resume Editor</router-link>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link fw-bold text-primary" href="/template">Hot Template</a>
+          </li>
+        </ul>
+
+        <!-- Avatar and Sign In -->
+        <div class="d-flex align-items-center gap-3">
+          <router-link  v-if="!isUserAuthenticated" to="/login">
+            <button
+                class="btn btn-primary">
+              Sign In
+            </button>
+          </router-link>
+          <router-link v-if="isUserAuthenticated" to="/profile">
+            <img
+                v-if="messages.avatar"
+                :src="messages.avatar"
+                alt="Avatar"
+                class="rounded-circle cursor-pointer"
+                style="width: 36px; height: 36px; object-fit: cover;"
+            >
+          </router-link>
+
+        </div>
+      </div>
+    </div>
+  </nav>
 </template>
 
-<script>
-export default {
-  name: 'Header',
-};
+<script setup>
+import {ref,onMounted, reactive} from 'vue';
+import Avatar from '@/assets/Avatar.png';
+import 'bootstrap';
+import {isAuthenticated} from '@/utils/auth.js';
+const messages = reactive({
+  avatar: Avatar
+});
+const isUserAuthenticated = ref(isAuthenticated());
+
+onMounted(() => {
+  // 监听用户认证状态变化
+  window.addEventListener('storage', () => {
+    isUserAuthenticated.value = isAuthenticated();
+  });
+});
+
 </script>
 
-<style>
-.header {
-  position: fixed; /* 固定定位 */
-  top: 0; /* 紧贴页面顶部 */
-  left: 0; /* 紧贴页面左侧 */
-  width:100%; /* 占满页面宽度 */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* 添加阴影 */
-  z-index: 1000; /* 保证 Header 在其他内容之上 */
+<style scoped>
+.navbar {
   background-color: var(--background-color);
-  padding: 10px 10px 10px 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-sizing: border-box;
 }
 
-.header img {
-  width: 40px;
-  height: 40px;
-  margin-right: 10px;
-}
-.header h1 {
-  align-items: center;
-  display: flex;
-  margin: 0 auto 0 0;
-  font-weight: bold;
-  font-size: 32px;
-}
-
-.header nav{
-  display: flex;
-  align-items: center;
-  gap:15px;
-}
-.header nav ul {
-  list-style: none;
-  display: flex;
-  gap: 15px;
-  margin: 0;
-  padding: 0;
-
-}
-
-.header nav ul li {
+.cursor-pointer {
   cursor: pointer;
-  font-size: 18px;
-  font-weight: bold;
-  white-space: nowrap;
-}
-.header li{
-  padding: 10px 0;
 }
 
-.header .highlighted {
-  color: var(--fuchsia-100);
-}
-
-.signIn {
-  color: white;
-  border: none;
-  cursor: pointer;
-
-}
-.header button {
+/* 保持原有的主题色 */
+.btn-primary {
   background-color: var(--button-primary-color);
-  border: none;
-  padding: 8px 12px;
-  cursor: pointer;
-
+  border-color: var(--button-primary-color);
 }
-.header .avatar {
-  cursor: pointer;
+
+.text-primary {
+  color: var(--fuchsia-100) !important;
+}
+
+.nav-link {
+  font-size: 18px;
 }
 </style>
