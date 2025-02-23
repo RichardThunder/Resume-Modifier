@@ -53,7 +53,6 @@
 </template>
 
 <script setup>
-import axios from 'axios';
 import {reactive, ref} from 'vue';
 
 const loginForm = reactive({
@@ -73,7 +72,7 @@ const validateForm=()=>{
   errors.password="";
 
   if (!loginForm.email.trim()) {
-    errors.email = 'Username required!';
+    errors.email = 'Email required!';
     isValid = false;
   }
 
@@ -98,7 +97,11 @@ const handleSubmit= async ()=> {
   isLoading.value = true
   try {
     // 发送登录信息给父组件处理
-    await emit('login',loginForm.email,loginForm.password);
+    emit('login',loginForm.email,loginForm.password);
+    if(loginForm.remember){
+      localStorage.setItem('email',loginForm.email);
+      localStorage.setItem('password',loginForm.password);
+    }
   } catch (error) {
     console.error('表单提交失败:', error)
   } finally {

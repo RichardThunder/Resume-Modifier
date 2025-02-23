@@ -1,83 +1,111 @@
 <template>
-  <div class="toolbar">
+  <div class="toolbar d-flex align-items-center justify-content-between bg-toolbar p-2 border-bottom">
     <div v-if="!isEditing" class="filename-edit">
-      <button class="toolbar-btn rename" @click="editFileName">
-        <img src="../assets/toolbar/ep_edit.svg" alt="edit"/>Rename
+      <button class="btn btn-sm btn-custom btn-outline-dark rename" @click="editFileName">
+        <img src="../assets/toolbar/ep_edit.svg" alt="edit" class="me-1" style="width: 16px; height: 16px;" />Rename
       </button>
     </div>
 
-    <div v-else class="filename-edit">
-      <button class="toolbar-btn rename" @click="disableEditing">
-        <img src="../assets/toolbar/save.svg" alt="save"/>Save
+    <div v-else class="filename-edit d-flex align-items-center">
+      <button class="btn btn-sm btn-success me-2" @click="disableEditing">
+        <img src="../assets/toolbar/save.svg" alt="save" class="me-1" style="width: 16px; height: 16px;"/>Save
       </button>
-      <input type="text" class="file-name-input" ref="fileNameInput" v-model="fileName" @blur="disableEditing"
-             @keyup.enter="disableEditing"/>
+      <input type="text" class="form-control form-control-sm file-name-input" ref="fileNameInput" v-model="fileName"
+             @blur="disableEditing" @keyup.enter="disableEditing"/>
     </div>
 
-    <button class="toolbar-btn upload" @click="toggleModalRM">
-      <img src="../assets/toolbar/circum_export.svg" alt="upload Resume"/>Resume
-    </button>
-    <button class="toolbar-btn upload" @click="toggleModalJD">
-      <img src="../assets/toolbar/circum_export.svg" alt="upload JD"/>JD
-    </button>
-    <button class="toolbar-btn undo" :disabled="history.length <= 1" @click="undo">
-      <img src="../assets/toolbar/material-symbols-light_undo.svg" alt="undo"/>Undo
-    </button>
-    <button class="toolbar-btn redo" :disabled="future.length === 0"  @click="redo">
-      <img src="../assets/toolbar/material-symbols-light_redo.svg" alt="redo"/>Redo
-    </button>
-    <button class="toolbar-btn export" @click="exportToPDF">
-      <img src="../assets/toolbar/material-symbols-light_download.svg" alt="export"/>Export PDF
-    </button>
+    <div>
+      <button class="btn btn-sm btn-custom me-4" @click="toggleModalRM">
+        <img src="../assets/toolbar/circum_export.svg" alt="upload Resume" class="me-1" style="width: 16px; height: 16px;" />Resume
+      </button>
+      <button class="btn btn-sm btn-custom me-4" @click="toggleModalJD">
+        <img src="../assets/toolbar/circum_export.svg" alt="upload JD" class="me-1" style="width: 16px; height: 16px;"/>JD
+      </button>
+      <button class="btn btn-sm btn-custom me-4 " :disabled="history.length <= 1" @click="undo">
+        <img src="../assets/toolbar/material-symbols-light_undo.svg" alt="undo" class="me-1" style="width: 16px; height: 16px;"/>Undo
+      </button>
+      <button class="btn btn-sm btn-custom me-4" :disabled="future.length === 0"  @click="redo">
+        <img src="../assets/toolbar/material-symbols-light_redo.svg" alt="redo" class="me-1" style="width: 16px; height: 16px;"/>Redo
+      </button>
+      <button class="btn btn-sm btn-primary me-4" @click="saveResume">
+        <img src="../assets/toolbar/save.svg" alt="save" class="me-1" style="width: 16px; height: 16px;"/>Save
+      </button>
+      <button class="btn btn-sm btn-primary" @click="exportToPDF">
+        <img src="../assets/toolbar/material-symbols-light_download.svg" alt="export" class="me-1" style="width: 16px; height: 16px;"/>Export PDF
+      </button>
+    </div>
   </div>
-  <!-- 弹出窗口 -->
-  <div v-if="showModalRM" class="modal-overlay">
-<!--    <div v-if="isLoading" class="spinner-overlay">
-      <div class="spinner"></div>
-    </div>-->
-<!--    <div v-else class="modal">-->
-    <div class="my-modal">
-      <h3>Upload File</h3>
-      <div class="choose-and-filename">
-        <div class="choose-file">
-          <label for="fileUpload">Choose a file</label>
-          <input
-              id="fileUpload"
-              type="file"
-              ref="fileInput"
-              class="file-input"
-              accept=".pdf"
-              @change="handleFileChange"
-          />
+
+  <!-- Resume Modal -->
+  <div v-if="showModalRM" class="modal fade show" tabindex="-1" role="dialog" style="display: block; background-color: rgba(0, 0, 0, 0.5);">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Upload Resume</h5>
+          <button type="button" class="btn-close" @click="toggleModalRM"></button>
         </div>
-        <span v-if="selectedFile" style="font-weight: bold">{{ selectedFile.name }}</span>
-      </div>
-      <div class="modal-actions">
-        <button class="modal-btn cancel" @click="toggleModalRM">Cancel</button>
-        <button class="modal-btn" @click="submitDataRM">Submit</button>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="fileUpload" class="form-label">Choose a file</label>
+            <input
+                id="fileUpload"
+                type="file"
+                ref="fileInput"
+                class="form-control"
+                accept=".pdf"
+                @change="handleFileChange"
+            />
+          </div>
+          <div v-if="selectedFile">
+            <span style="font-weight: bold">{{ selectedFile.name }}</span>
+          </div>
+          <div v-if="isLoading" class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" @click="toggleModalRM">Cancel</button>
+          <button type="button" class="btn btn-primary" @click="submitDataRM">Submit</button>
+        </div>
       </div>
     </div>
   </div>
-  <!-- 弹出窗口 -->
-  <div v-if="showModalJD" class="modal-overlay">
-    <div v-if="isLoading" class="spinner-overlay">
-      <div class="spinner"></div>
-    </div>
-    <div v-else class="my-modal">
-      <h3>Upload Job Description</h3>
-      <label for="jobDescription">Job Description:</label>
-      <textarea
-          id="jobDescription"
-          v-model="jobDescription"
-          placeholder="Enter Job Description"
-          class="modal-input"
-      />
-      <div class="modal-actions">
-        <button class="modal-btn cancel" @click="toggleModalJD">Cancel</button>
-        <button class="modal-btn" @click="submitDataJD">Submit</button>
+
+  <!-- Job Description Modal -->
+  <div v-if="showModalJD" class="modal fade show" tabindex="-1" role="dialog" style="display: block; background-color: rgba(0, 0, 0, 0.5);">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Upload Job Description</h5>
+          <button type="button" class="btn-close" @click="toggleModalJD"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="jobDescription" class="form-label">Job Description:</label>
+            <textarea
+                id="jobDescription"
+                v-model="jobDescription"
+                placeholder="Enter Job Description"
+                class="form-control"
+            />
+          </div>
+          <div v-if="isLoading" class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" @click="toggleModalJD">Cancel</button>
+          <button type="button" class="btn btn-primary" @click="submitDataJD">Submit</button>
+        </div>
       </div>
     </div>
   </div>
+  <!-- Modal Backdrop -->
+  <div v-if="showModalRM || showModalJD" class="modal-backdrop fade show"></div>
 </template>
 
 <script setup>
@@ -85,6 +113,8 @@ import axios from 'axios';
 import {model, fileName, analysis} from '../model.js';
 import {nextTick, ref, watch} from 'vue';
 import {cloneDeep} from 'lodash-es';
+import {getToken} from '@/utils/auth.js';
+import router from '@/router/index.js';
 
 const fileInput = ref(null);
 const isEditing = ref(false);
@@ -94,7 +124,7 @@ const showModalJD = ref(false);
 const jobDescription = ref('');
 const selectedFile = ref(null);
 const isLoading = ref(false);
-const API_URL = import.meta.env.VUE_APP_API_URL;
+const API_URL = import.meta.env.VITE_API_URL;
 const history = ref([]); // 历史状态栈
 const future = ref([]); // 未来状态栈 (用于 redo)
 let ignoreChange = ref(false);
@@ -148,13 +178,19 @@ const handleFileChange = (event) => {
 };
 
 const submitDataRM = async () => {
+  const jwtToken = getToken('token');
+  if (!jwtToken) {
+    console.error('JWT token not found');
+    alert('You need to Login to continue');
+    await router.push({name: 'Login'});
+    return;
+  }
   if (!selectedFile.value) {
     alert('Please provide a file.');
     return;
   }
   const formData = new FormData();
   formData.append('file', selectedFile.value);
-
 
   try {
     // 设置加载状态为 true
@@ -163,9 +199,11 @@ const submitDataRM = async () => {
         `${API_URL}/pdfupload`,
         formData,
         {
-      headers: {'Content-Type': 'multipart/form-data'},
-      withCredentials: true
-    });
+          headers: {'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${getToken('token')}`
+          }
+
+        });
     if (response.data.status === 200) {
       console.log('Data received from server:', response.data);
       fileName.value = selectedFile.value.name;
@@ -194,19 +232,27 @@ const submitDataRM = async () => {
 };
 
 const submitDataJD = async () => {
+  const jwtToken = getToken('token');
+  if (!jwtToken) {
+    console.error('JWT token not found');
+    alert('You need to Login to continue');
+    await router.push({name: 'Login'});
+    return;
+  }
   if (!jobDescription.value) {
     alert('Please provide a job description ');
     return;
   }
   isLoading.value = true;
+
   try {
     const response = await axios.post(
         `${API_URL}/job_description_upload`,
         jobDescription.value,
         {
-      headers: {'Content-Type': 'text/plain'},
-          withCredentials: true
-    }
+          headers: {'Content-Type': 'text/plain'},
+          'Authorization': `Bearer ${getToken('token')}`
+        }
     );
     if (response.data.status === 200) {
       console.log('Data received from server:', response.data);
@@ -242,223 +288,82 @@ const disableEditing = () => {
 };
 
 const exportToPDF = async () => {
-  const element = document.querySelector('.resume-container');
+  // const element = document.querySelector('.resume-container');
   const tmpTitle = document.title;
   document.title = fileName.value;
   window.print();
   document.title = tmpTitle;
 };
 
+const saveResume = async () => {
+  const jwtToken = getToken('token');
+  if (!jwtToken) {
+    console.error('JWT token not found');
+    alert('You need to Login to continue');
+    await router.push({name: 'Login'});
+  }
+  else {
+    try {
+      const response = await axios.put(
+          `${API_URL}/save_resume`,
+          model,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${jwtToken}`
+            }
+          }
+      );
+      if (response.data.status === 200) {
+        console.log('Data saved successfully:', response.data);
+      }
+      else {
+        console.error('Error saving data:', response.data);
+      }
+    }catch (error) {
+      console.error('Error saving data:', error);
+    }
+  }
+}
+
 
 </script>
 
-<style >
+<style scoped>
 .toolbar {
-  position: sticky;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #CDCDCD;
-  padding: 10px;
-  border-bottom: 1px solid #ccc;
-  gap: 10px;
   min-width: 210mm;
-
 }
-
-.toolbar .toolbar-btn {
-  background-color: var(--button-primary-color);
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  cursor: pointer;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-}
-
-.toolbar .toolbar-btn.export {
-  background-color: var(--button-thirdary-color); /* 使用不同颜色区分导出按钮 */
-}
-
-.toolbar .toolbar-btn:hover {
-  opacity: 0.9;
-}
-
-.toolbar .toolbar-btn:active {
-  transform: scale(0.98);
-}
-.toolbar .toolbar-btn:disabled {  /*  禁用状态样式  */
-  background-color: #ddd; /*  或其他你想要的颜色  */
-  color: #999;
-  cursor: not-allowed; /*  鼠标变为禁止图标  */
-  opacity: 0.9;        /* 稍微降低透明度  */
-}
-.toolbar button {
-  padding: 5px 5px;
-}
-
-.file-input {
-  display: flex;
+/* Modal styles (Bootstrap handles most) */
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .file-name-input {
-  font-size: 14px;
-  color: #333;
-  font-weight: bold;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 2px 5px;
   width: auto;
-  flex-shrink: 0;
+  flex-shrink: 0; /* Prevent input from shrinking */
+}
+/* Spinner styles */
+.spinner-border {
+  width: 2rem;
+  height: 2rem;
 }
 
-.file-name-input:focus {
-  outline: none;
-  border-color: #007BFF;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}
-
-.filename-edit {
-  display: flex;
-  align-items: center;
-}
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.my-modal {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  width: 400px;
-  max-width: 90%;
-
-}
-
-.modal h3 {
-  margin-top: 0;
-}
-
-.modal-input {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.modal-actions {
-  display: flex;
-  justify-content: space-between;
-}
-
-.modal-btn {
-  padding: 10px 20px;
+/* Custom button style */
+.btn-custom {
+  background-color: #4a95ce;
+  color: white;
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  background-color: var(--button-secondary-color);
 }
 
-.modal-btn.cancel {
+.btn-custom:hover {
+  background-color: #357ab5;
+}
+
+.btn-custom:focus {
+  box-shadow: 0 0 0 0.2rem rgba(74, 149, 206, 0.5);
+}
+/* Tool bar background color */
+.bg-toolbar {
   background-color: #ccc;
 }
-
-.modal-btn:hover {
-  opacity: 0.9;
-}
-
-.choose-file {
-  justify-content: space-between;
-  gap: 10px;
-  white-space: nowrap;
-  background-color: var(--button-primary-color); /* 按钮背景颜色 */
-  color: white; /* 按钮文字颜色 */
-  padding: 10px 16px; /* 按钮内边距 */
-  border-radius: 6px; /* 按钮圆角 */
-  font-size: 14px; /* 字体大小 */
-  font-weight: bold; /* 字体加粗 */
-  display: inline-block; /* 使其看起来像按钮 */
-  cursor: pointer; /* 鼠标悬浮变为手形 */
-  text-align: center; /* 文字居中 */
-  transition: background-color 0.3s ease, transform 0.2s ease; /* 交互动画 */
-}
-
-.file-input {
-  display: none; /* 隐藏默认的文件选择框 */
-}
-
-.choose-and-filename {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.modal-file-upload span {
-  margin-left: 10px;
-  font-size: 14px;
-  color: #fffdfd;
-}
-
-
-@keyframes modal-in {
-  0% {
-    transform: scale(0.7);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-
-
-/* Spinner Overlay */
-.spinner-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-/* Spinner */
-.spinner {
-  border: 8px solid #f3f3f3;
-  border-top: 8px solid var(--button-primary-color);
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  animation: spin 1s linear infinite;
-}
-
-/* Spinner Animation */
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
 </style>

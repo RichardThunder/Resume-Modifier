@@ -15,7 +15,7 @@
       <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
         <ul class="navbar-nav  mb-2 mb-lg-0">
           <li class="nav-item">
-            <router-link class="nav-link fw-bold" to="/home">Home</router-link>
+            <router-link class="nav-link fw-bold" to="/">Home</router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link fw-bold" to="/Chart">Chart</router-link>
@@ -33,22 +33,22 @@
 
         <!-- Avatar and Sign In -->
         <div class="d-flex align-items-center gap-3">
-          <router-link to="/profile">
+          <router-link  v-if="!isUserAuthenticated" to="/login">
+            <button
+                class="btn btn-primary">
+              Sign In
+            </button>
+          </router-link>
+          <router-link v-if="isUserAuthenticated" to="/profile">
             <img
                 v-if="messages.avatar"
                 :src="messages.avatar"
                 alt="Avatar"
                 class="rounded-circle cursor-pointer"
                 style="width: 36px; height: 36px; object-fit: cover;"
-
             >
           </router-link>
-          <router-link to="/login">
-          <button
-              class="btn btn-primary">
-            Sign In
-          </button>
-          </router-link>
+
         </div>
       </div>
     </div>
@@ -56,20 +56,21 @@
 </template>
 
 <script setup>
-import {onMounted, reactive} from 'vue';
-import router from '@/router/index.js';
+import {ref,onMounted, reactive} from 'vue';
 import Avatar from '@/assets/Avatar.png';
 import 'bootstrap';
+import {isAuthenticated} from '@/utils/auth.js';
 const messages = reactive({
   avatar: Avatar
 });
+const isUserAuthenticated = ref(isAuthenticated());
 
-/*onMounted(() => {
-  const navbarContent = document.getElementById('navbarContent');
-  if (navbarContent) {
-    new bootstrap.Collapse(navbarContent);
-  }
-});*/
+onMounted(() => {
+  // 监听用户认证状态变化
+  window.addEventListener('storage', () => {
+    isUserAuthenticated.value = isAuthenticated();
+  });
+});
 
 </script>
 
@@ -81,11 +82,6 @@ const messages = reactive({
 .cursor-pointer {
   cursor: pointer;
 }
-
-/* 确保导航栏下方内容不会被遮挡 */
-/*.navbar + * {
-  margin-top: 76px;
-}*/
 
 /* 保持原有的主题色 */
 .btn-primary {

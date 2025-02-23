@@ -7,7 +7,6 @@
  * @Description:
  *
  */
-import {tr} from 'vuetify/locale';
 
 export const getToken = () => {
   return localStorage.getItem("jwt_token");
@@ -22,6 +21,6 @@ export const removeToken = () => {
 };
 
 export const isAuthenticated = () => {
-  return true;
-  // return !!getToken();
+  console.log(!!getToken());
+  return !!getToken();
 };

@@ -1,5 +1,6 @@
-import {model} from './model.js';
 import axios from 'axios';
+import {getToken} from '@/utils/auth.js';
+import router from '@/router/index.js';
 
 export const scoreToColors = (score) => {
   if (score < 0 || score > 100) {
@@ -89,6 +90,13 @@ export const convertModel = (item, callback) => {
 
 
 export const feedBack = async (data) => {
+  const jwtToken = getToken('token');
+  if (!jwtToken) {
+    console.error('JWT token not found');
+    alert('You need to Login to continue');
+    await router.push({name: 'Login'});
+    return;
+  }
   if (!data.feedback) {
     alert('Please provide feedback');
     return;
@@ -96,13 +104,14 @@ export const feedBack = async (data) => {
   const formData = new FormData();
   formData.append('data', data);
   let content = '';
+  const API_URL = import.meta.env.VITE_API_URL;
   try {
     const response = await axios.post(
         `${API_URL}/feedback/`,
         formData,
         {
-          headers: {'Content-Type': 'multipart/form-data'},
-          withCredentials: true
+          headers: {'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${jwtToken}`}
         });
 
     if (response.data.status === 200) {

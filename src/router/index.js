@@ -14,6 +14,7 @@ import ResumeView from '@/views/ResumeView.vue';
 import ProfilePage from '@/views/ProfilePage.vue';
 import TemplateView from '@/views/TemplateView.vue';
 import RegisterView from '@/views/RegisterView.vue';
+import HomeView from '@/views/HomeView.vue';
 
 const routes=[
   {
@@ -24,9 +25,10 @@ const routes=[
   {
     path: '/',
     name: 'Home',
-    component: ResumeView,
+    component: HomeView,
     beforeEnter:(to,from,next)=>{
       if(!isAuthenticated()){
+        console.log('Please login first');
         next({name: 'Login'});
       }else{
         next();
@@ -40,6 +42,7 @@ const routes=[
     component: ResumeView,
     beforeEnter:(to,from,next)=>{
       if(!isAuthenticated()){
+        console.log('Please login first');
         next({name: 'Login'});
       }else{
         next();
@@ -52,6 +55,7 @@ const routes=[
     component: TemplateView,
     beforeEnter:(to,from,next)=>{
       if(!isAuthenticated()){
+        console.log('Please login first');
         next({name: 'Login'});
       }else{
         next();
@@ -64,6 +68,7 @@ const routes=[
     component: ProfilePage,
     beforeEnter:(to,from,next)=>{
       if(!isAuthenticated()){
+        console.log('Please login first');
         next({name: 'Login'});
       }else{
         next();
@@ -78,7 +83,7 @@ const routes=[
 ];
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(import.meta.env.VITE_BASE_URL),
   routes
 });
 

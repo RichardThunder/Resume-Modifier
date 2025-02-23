@@ -9,14 +9,18 @@
  */
 import axios from "axios";
 
-const API_URL = import.meta.env.API_URL;
-
+const API_URL = import.meta.env.VITE_API_URL;
 export const login = async (email, password) => {
   try {
-    const response = await axios.post(`${API_URL}/login`, {
+    console.log(import.meta.env);
+    console.log(`${API_URL}/login`);
+    const response = await axios.put(`${API_URL}/login`, {
       email: email.trim(),
       password: password,
-    });
+    }, {headers: {
+      'Content-Type': 'application/json'
+    }}
+    );
     return response.data;
   } catch (error) {
     console.error(`Error login: ${error.response.data}`);

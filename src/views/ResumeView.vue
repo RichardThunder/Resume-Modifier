@@ -37,7 +37,7 @@
 <script setup>
 import PersonalForm from '@/components/PersonalForm.vue';
 import ResumePreview from '@/components/ResumePreview.vue';
-import { ref, onMounted, onUnmounted, computed } from 'vue';
+import { ref, computed } from 'vue';
 
 const showForm = ref(true);
 const isSmallScreen = ref(window.innerWidth < 768); // Adjust breakpoint as needed (Bootstrap's sm is 768px)
@@ -51,7 +51,7 @@ const toggleForm = () => {
   }
 };
 
-// 在组件挂载时绑定事件
+/*// 在组件挂载时绑定事件
 onMounted(() => {
   window.addEventListener('beforeunload', handleBeforeUnload);
   window.addEventListener('resize', handleResize);
@@ -67,7 +67,7 @@ onUnmounted(() => {
 const handleBeforeUnload = (event) => {
   event.preventDefault();
   event.returnValue = '';
-};
+};*/
 
 // 监听屏幕尺寸变化
 const handleResize = () => {

@@ -43,6 +43,7 @@ button {
     /*保证按钮内的文本不换行*/
     white-space: nowrap;
 }
+
 button:hover {
     opacity: 0.9;
 }

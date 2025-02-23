@@ -17,7 +17,9 @@
               <button type="button" class="btn btn-primary me-2" @click="editProfile">
                 Edit Profile
               </button>
-              <!--              <button type="button" class="btn btn-outline-primary">Message</button>-->
+              <button type="button" class="btn btn-danger" @click="handleLogout">
+                Log Out
+              </button>
             </div>
           </div>
         </div>
@@ -124,7 +126,7 @@
                   <div>
                     <strong>{{ resume.resume_title }}</strong>
                     <br>
-                    <small class="text-muted">Last Editsd: {{ resume.created_at }}</small>
+                    <small class="text-muted">Last Edit: {{ resume.created_at }}</small>
                   </div>
                   <div>
                     <button
@@ -144,6 +146,23 @@
         </div>
       </div>
     </div>
+    <div v-if="showLogoutConfirmation" class="modal fade show" style="display: block; background-color: rgba(0, 0, 0, 0.5);" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Confirm Logout</h5>
+            <button type="button" class="btn-close" @click="showLogoutConfirmation = false"></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to log out?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" @click="showLogoutConfirmation = false">Cancel</button>
+            <button type="button" class="btn btn-danger" @click="logOut">Log Out</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -153,10 +172,9 @@ import {Modal} from 'bootstrap';
 import axios from 'axios';
 import {model} from '@/model.js';
 import router from '@/router/index.js';
-import {getToken, setToken} from '@/utils/auth.js';
-import {ca} from 'vuetify/locale';
-
-const API_URL = import.meta.env.API_URL;
+import {getToken, removeToken} from '@/utils/auth.js';
+const showLogoutConfirmation = ref(false);
+const API_URL = import.meta.env.VITE_API_URL;
 
 const modalRef = ref(null);
 let bootstrapModal = null;
@@ -195,9 +213,11 @@ const saveProfile = () => {
 
 const getProfile = async () => {
   /*
-  const jwtToken = getToken();
+  const jwtToken = getToken('token');
   if (!jwtToken) {
-    console.error('No JWT token found.');
+    console.error('JWT token not found');
+    alert('You need to Login to continue');
+    await router.push({name: 'Login'});
     return;
   }
   try {
@@ -236,9 +256,11 @@ const getProfile = async () => {
 };
 
 const setProfile = async () => {
-  const jwtToken = getToken();
+  const jwtToken = getToken('token');
   if (!jwtToken) {
-    console.error('No JWT token found.');
+    console.error('JWT token not found');
+    alert('You need to Login to continue');
+    await router.push({name: 'Login'});
     return;
   }
   try {
@@ -270,8 +292,11 @@ const setProfile = async () => {
 
 const fetchResumeHistory = async () => {
   /*const jwtToken = getToken();
+  const jwtToken = getToken('token');
   if (!jwtToken) {
-    console.error('No JWT token found.');
+    console.error('JWT token not found');
+    alert('You need to Login to continue');
+    await router.push({name: 'Login'});
     return;
   }
   try {
@@ -438,7 +463,15 @@ const viewResume = async (resumeId) => {
     await router.push('/resume');
   }
 
-  /*const response = await axios.get(`${API_URL}/get_resume/${resumeId}`)
+  /*
+  const jwtToken = getToken('token');
+  if (!jwtToken) {
+    console.error('JWT token not found');
+    alert('You need to Login to continue');
+    await router.push({name: 'Login'});
+    return;
+  }
+  const response = await axios.get(`${API_URL}/get_resume/${resumeId}`)
   if(response.status === 200){
     // 1) 先删除旧属性
     Object.keys(model).forEach(key => {
@@ -453,6 +486,16 @@ const viewResume = async (resumeId) => {
   }*/
 };
 
+const handleLogout = async () => {
+  showLogoutConfirmation.value = true;
+
+};
+
+const logOut = () => {
+  console.log("logout");
+  removeToken();
+  router.push({name: 'Login'});
+};
 </script>
 
 <style scoped>
