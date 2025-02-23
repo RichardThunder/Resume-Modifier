@@ -14,7 +14,7 @@ export const login = async (email, password) => {
   try {
     console.log(import.meta.env);
     console.log(`${API_URL}/login`);
-    const response = await axios.put(`${API_URL}/login`, {
+    const response = await axios.post(`${API_URL}/login`, {
       email: email.trim(),
       password: password,
     }, {headers: {
