@@ -6,7 +6,7 @@
         <div class="card mb-4 border-none">
           <div class="card-body text-center">
             <img
-                src="@/assets/avatar.png"
+                src="@/assets/Avatar.png"
                 alt="Profile Picture"
                 class="rounded-circle img-fluid mb-3"
                 style="width: 150px;"

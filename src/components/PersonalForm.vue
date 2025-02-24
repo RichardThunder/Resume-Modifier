@@ -16,18 +16,18 @@
 </template>
 
 <script setup>
-import PersonInfo from './form/PersonInfo.vue';
-import ResumeSummary from './form/Summary.vue';
-import WorkExperience from './form/WorkExperience.vue';
-import Education from './form/Education.vue';
-import Skills from './form/Skills.vue';
-import Achievements from './form/Achievements.vue';
-import Projects from './form/Project.vue';
-import Awards from './form/Awards.vue';
-import Certification from './form/Certification.vue';
-import Publications from './form/Publications.vue';
-import Volunteering from './form/Volunteering.vue';
-import References from './form/References.vue';
+import PersonInfo from '@/components/form/PersonInfo.vue';
+import ResumeSummary from '@/components/form/Summary.vue';
+import WorkExperience from '@/components/form/WorkExperience.vue';
+import Education from '@/components/form/Education.vue';
+import Skills from '@/components/form/Skills.vue';
+import Achievements from '@/components/form/Achievements.vue';
+import Projects from '@/components/form/Project.vue';
+import Awards from '@/components/form/Awards.vue';
+import Certification from '@/components/form/Certification.vue';
+import Publications from '@/components/form/Publications.vue';
+import Volunteering from '@/components/form/Volunteering.vue';
+import References from '@/components/form/References.vue';
 
 
 </script>

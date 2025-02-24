@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import path from 'path';
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [vue()],
   //添加@->src
@@ -12,6 +11,7 @@ export default defineConfig({
   },
   // change port to 3001
   server: {
+    host: "0.0.0.0",
     port: 3001, 
   },
 

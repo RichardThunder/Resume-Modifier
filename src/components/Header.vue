@@ -6,13 +6,12 @@
         <img src="../assets/bot.svg" alt="Logo" width="40" height="40" class="me-2">
         <span class="fw-bold fs-4">ResumeBot</span>
       </a>
-      <!-- Mobile Toggle Button -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" @click="toggleNavbar"  :aria-expanded="isNavbarOpen.toString()" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <!-- Nav Content -->
-      <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+       <div :class="['collapse', 'navbar-collapse', 'justify-content-end', { show: isNavbarOpen }]" id="navbarNavContent">
         <ul class="navbar-nav  mb-2 mb-lg-0">
           <li class="nav-item">
             <router-link class="nav-link fw-bold" to="/">Home</router-link>
@@ -64,7 +63,10 @@ const messages = reactive({
   avatar: Avatar
 });
 const isUserAuthenticated = ref(isAuthenticated());
-
+const isNavbarOpen = ref(false);
+const toggleNavbar = () => {
+      isNavbarOpen.value = !isNavbarOpen.value;
+    }
 onMounted(() => {
   // 监听用户认证状态变化
   window.addEventListener('storage', () => {
