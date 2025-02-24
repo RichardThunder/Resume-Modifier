@@ -42,6 +42,7 @@
     </div>
 
     <button type="submit" :disabled="isLoading">
+      <span v-if="isLoading" class="spinner-border spinner-border-sm"></span>
       {{ isLoading ? 'Loading...' : 'Sign In' }}
     </button>
       <div class="register-link">

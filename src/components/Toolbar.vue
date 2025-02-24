@@ -64,15 +64,13 @@
           <div v-if="selectedFile">
             <span style="font-weight: bold">{{ selectedFile.name }}</span>
           </div>
-          <div v-if="isLoading" class="d-flex justify-content-center">
-            <div class="spinner-border" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" @click="toggleModalRM">Cancel</button>
-          <button type="button" class="btn btn-primary" @click="submitDataRM">Submit</button>
+          <button type="button" class="btn btn-primary" @click="submitDataRM" :disabled="isRMLoading">
+            <span v-if="isRMLoading" class="spinner-border spinner-border-sm"></span>
+           Submit
+          </button>
         </div>
       </div>
     </div>
@@ -97,15 +95,13 @@
                 class="form-control"
             />
           </div>
-          <div v-if="isLoading" class="d-flex justify-content-center">
-            <div class="spinner-border" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" @click="toggleModalJD">Cancel</button>
-          <button type="button" class="btn btn-primary" @click="submitDataJD">Submit</button>
+          <button type="button" class="btn btn-primary" @click="submitDataJD" :disabled="isJDLoading">
+            <span v-if="isJDLoading" class="spinner-border spinner-border-sm"></span>
+            Submit
+          </button>
         </div>
       </div>
     </div>
@@ -129,11 +125,12 @@ const showModalRM = ref(false);
 const showModalJD = ref(false);
 const jobDescription = ref('');
 const selectedFile = ref(null);
-const isLoading = ref(false);
 const API_URL = import.meta.env.VITE_API_URL;
 const history = ref([]); // 历史状态栈
 const future = ref([]); // 未来状态栈 (用于 redo)
 let ignoreChange = ref(false);
+const isRMLoading = ref(false);
+const isJDLoading = ref(false);
 
 //监听model变化, 记录历史
 watch(model, (newModel) => {
@@ -184,9 +181,9 @@ const handleFileChange = (event) => {
 };
 
 const submitDataRM = async () => {
+
   const jwtToken = getToken('token');
   if (!jwtToken) {
-    console.error('JWT token not found');
     alert('You need to Login to continue');
     await router.push({name: 'Login'});
     return;
@@ -199,8 +196,7 @@ const submitDataRM = async () => {
   formData.append('file', selectedFile.value);
 
   try {
-    // 设置加载状态为 true
-    isLoading.value = true;
+    isRMLoading.value = true;
     const response = await axios.post(
         `${API_URL}/pdfupload`,
         formData,
@@ -230,15 +226,15 @@ const submitDataRM = async () => {
 
     console.error('Failed to upload data:', error);
   } finally {
-    // 结束加载状态
-    isLoading.value = false;
+    isRMLoading.value = false;
     toggleModalRM();
-    // jobDescription.value = '';
-    // selectedFile.value = null;
+    selectedFile.value = null;
+
   }
 };
 
 const submitDataJD = async () => {
+
   const jwtToken = getToken('token');
   if (!jwtToken) {
     console.error('JWT token not found');
@@ -250,9 +246,9 @@ const submitDataJD = async () => {
     alert('Please provide a job description ');
     return;
   }
-  isLoading.value = true;
 
   try {
+    isJDLoading.value = true;
     const response = await axios.post(
         `${API_URL}/job_description_upload`,
         {
@@ -280,8 +276,9 @@ const submitDataJD = async () => {
     console.error('Failed to upload data:', error);
   } finally {
     // 设置加载状态为 false
-    isLoading.value = false;
+    isJDLoading.value = false;
     toggleModalJD();
+    jobDescription.value = null;
   }
 };
 
@@ -354,11 +351,7 @@ const saveResume = async () => {
   flex-shrink: 0; /* Prevent input from shrinking */
 }
 
-/* Spinner styles */
-.spinner-border {
-  width: 2rem;
-  height: 2rem;
-}
+
 
 /* Custom button style */
 .btn-custom {

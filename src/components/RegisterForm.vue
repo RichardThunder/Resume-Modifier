@@ -36,7 +36,8 @@
       <span class="error-message" v-if="errors.confirmPassword">{{ errors.confirmPassword }}</span>
     </div>
 
-    <button type="submit" :disabled="isLoading">
+    <button type="submit" :disabled="isLoading" >
+      <span v-if="isLoading" class="spinner-border spinner-border-sm"></span>
       {{ isLoading ? 'Loading...' : 'Sign Up' }}
     </button>
 
