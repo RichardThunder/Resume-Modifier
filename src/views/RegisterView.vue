@@ -1,16 +1,44 @@
+<!--
+ * @Author: Richard yuetingpei888@gmail.com
+ * @Date: 2025-02-24 06:33:02
+ * @LastEditors: Richard yuetingpei888@gmail.com
+ * @LastEditTime: 2025-02-24 15:47:28
+ * @FilePath: /Resume-Modifier/src/views/RegisterView.vue
+ * @Description: 
+ * 
+-->
 <template>
   <div class="register-page">
     <h1 class="title">Sign Up</h1>
     <RegisterForm @register="handleRegister" />
+    <div v-if="error" class="alert alert-danger mt-3" role="alert">
+      {{ error }}
+    </div>
+      <div v-if="userEmail" class="alert alert-success">
+      <strong>Success!</strong> User Email: {{ userEmail }}
+    </div>
   </div>
 </template>
 
 <script setup>
 import RegisterForm from '@/components/RegisterForm.vue';
-import {register} from '@/services/registerService.js';
-const handleRegister = (formData) => {
-  console.log(formData);
-    register(formData)
+import { registerService } from '@/services/registerService';
+import {ref} from 'vue';
+
+const error = ref("");
+const userEmail = ref("");
+
+const handleRegister = async (email,password) => {
+   const result = await registerService.register(email,password);
+   console.log(result);
+   if (result.success) {
+    
+        userEmail.value = result.data.user.email;
+        error.value = null;  // 清除错误信息
+      } else {
+        // 注册失败，显示错误信息
+        error.value = result.error;
+      }
 };
 </script>
 

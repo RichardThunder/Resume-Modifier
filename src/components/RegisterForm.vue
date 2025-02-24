@@ -1,18 +1,6 @@
 <template>
   <form class="register-form" @submit.prevent="handleSubmit">
     <div class="form-group">
-      <label for="username">Username</label>
-      <input
-          type="text"
-          id="username"
-          v-model="registerForm.username"
-          :class="{ 'error': errors.username }"
-          @focus="clearError('username')"
-      />
-      <span class="error-message" v-if="errors.username">{{ errors.username }}</span>
-    </div>
-
-    <div class="form-group">
       <label for="email">Email</label>
       <input
           type="email"
@@ -63,14 +51,12 @@
 import { reactive, ref } from 'vue';
 
 const registerForm = reactive({
-  username: '',
   email: '',
   password: '',
   confirmPassword: '',
 });
 
 const errors = reactive({
-  username: '',
   email: '',
   password: '',
   confirmPassword: '',
@@ -80,15 +66,9 @@ const isLoading = ref(false);
 
 const validateForm = () => {
   let isValid = true;
-  errors.username = '';
   errors.email = '';
   errors.password = '';
   errors.confirmPassword = '';
-
-  if (!registerForm.username.trim()) {
-    errors.username = 'Username is required!';
-    isValid = false;
-  }
 
   if (!registerForm.email.trim()) {
     errors.email = 'Email is required!';
@@ -128,7 +108,7 @@ const handleSubmit = async () => {
 
   try {
     // Simulate the registration process
-    await emit('register', registerForm.username, registerForm.email, registerForm.password);
+    await emit('register', registerForm.email, registerForm.password);
   } catch (error) {
     console.error('Registration failed:', error);
   } finally {
