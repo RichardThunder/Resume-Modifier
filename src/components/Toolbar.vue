@@ -2,7 +2,7 @@
   <div class="toolbar d-flex align-items-center justify-content-between bg-toolbar p-2 border-bottom">
     <div v-if="!isEditing" class="filename-edit">
       <button class="btn btn-sm btn-custom btn-outline-dark rename" @click="editFileName">
-        <img src="../assets/toolbar/ep_edit.svg" alt="edit" class="me-1" style="width: 16px; height: 16px;" />Rename
+        <img src="../assets/toolbar/ep_edit.svg" alt="edit" class="me-1" style="width: 16px; height: 16px;"/>Rename
       </button>
     </div>
 
@@ -16,28 +16,33 @@
 
     <div>
       <button class="btn btn-sm btn-custom me-4" @click="toggleModalRM">
-        <img src="../assets/toolbar/circum_export.svg" alt="upload Resume" class="me-1" style="width: 16px; height: 16px;" />Resume
+        <img src="../assets/toolbar/circum_export.svg" alt="upload Resume" class="me-1"
+             style="width: 16px; height: 16px;"/>Resume
       </button>
       <button class="btn btn-sm btn-custom me-4" @click="toggleModalJD">
         <img src="../assets/toolbar/circum_export.svg" alt="upload JD" class="me-1" style="width: 16px; height: 16px;"/>JD
       </button>
       <button class="btn btn-sm btn-custom me-4 " :disabled="history.length <= 1" @click="undo">
-        <img src="../assets/toolbar/material-symbols-light_undo.svg" alt="undo" class="me-1" style="width: 16px; height: 16px;"/>Undo
+        <img src="../assets/toolbar/material-symbols-light_undo.svg" alt="undo" class="me-1"
+             style="width: 16px; height: 16px;"/>Undo
       </button>
-      <button class="btn btn-sm btn-custom me-4" :disabled="future.length === 0"  @click="redo">
-        <img src="../assets/toolbar/material-symbols-light_redo.svg" alt="redo" class="me-1" style="width: 16px; height: 16px;"/>Redo
+      <button class="btn btn-sm btn-custom me-4" :disabled="future.length === 0" @click="redo">
+        <img src="../assets/toolbar/material-symbols-light_redo.svg" alt="redo" class="me-1"
+             style="width: 16px; height: 16px;"/>Redo
       </button>
       <button class="btn btn-sm btn-primary me-4" @click="saveResume">
         <img src="../assets/toolbar/save.svg" alt="save" class="me-1" style="width: 16px; height: 16px;"/>Save
       </button>
       <button class="btn btn-sm btn-primary" @click="exportToPDF">
-        <img src="../assets/toolbar/material-symbols-light_download.svg" alt="export" class="me-1" style="width: 16px; height: 16px;"/>Export PDF
+        <img src="../assets/toolbar/material-symbols-light_download.svg" alt="export" class="me-1"
+             style="width: 16px; height: 16px;"/>Export PDF
       </button>
     </div>
   </div>
 
   <!-- Resume Modal -->
-  <div v-if="showModalRM" class="modal fade show" tabindex="-1" role="dialog" style="display: block; background-color: rgba(0, 0, 0, 0.5);">
+  <div v-if="showModalRM" class="modal fade show" tabindex="-1" role="dialog"
+       style="display: block; background-color: rgba(0, 0, 0, 0.5);">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -74,7 +79,8 @@
   </div>
 
   <!-- Job Description Modal -->
-  <div v-if="showModalJD" class="modal fade show" tabindex="-1" role="dialog" style="display: block; background-color: rgba(0, 0, 0, 0.5);">
+  <div v-if="showModalJD" class="modal fade show" tabindex="-1" role="dialog"
+       style="display: block; background-color: rgba(0, 0, 0, 0.5);">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -130,38 +136,38 @@ const future = ref([]); // 未来状态栈 (用于 redo)
 let ignoreChange = ref(false);
 
 //监听model变化, 记录历史
-watch(model, (newModel)=>{
-  if(!ignoreChange.value){
+watch(model, (newModel) => {
+  if (!ignoreChange.value) {
     history.value.push(cloneDeep(newModel));
     future.value = []; // 清空 redo 栈
-    console.log("History:", history.value);
-  }else{
-    ignoreChange.value=false; //重置标志位
+    console.log('History:', history.value);
+  } else {
+    ignoreChange.value = false; //重置标志位
   }
-},{deep:true});
+}, {deep: true});
 
-const undo =()=>{
-  if(history.value.length>1){
+const undo = () => {
+  if (history.value.length > 1) {
     future.value.push(cloneDeep(model));
     history.value.pop();
     ignoreChange.value = true;
-    Object.assign(model,cloneDeep(history.value[history.value.length-1]));
-    console.log("Undo History:",history.value);
-    console.log("Future:", future.value);
-  }else{
-    console.log("Nothing to undo");
+    Object.assign(model, cloneDeep(history.value[history.value.length - 1]));
+    console.log('Undo History:', history.value);
+    console.log('Future:', future.value);
+  } else {
+    console.log('Nothing to undo');
   }
-}
+};
 
 const redo = () => {
   if (future.value.length > 0) {
     history.value.push(cloneDeep(model)); // 当前状态推入 history 栈
     ignoreChange.value = true; // 避免重复记录
     Object.assign(model, cloneDeep(future.value.pop()));  // 恢复到 future 栈顶状态
-    console.log("Redo. Future:", future.value);
-    console.log("History:", history.value)
+    console.log('Redo. Future:', future.value);
+    console.log('History:', history.value);
   } else {
-    console.log("Nothing to redo.");
+    console.log('Nothing to redo.');
   }
 };
 
@@ -199,7 +205,8 @@ const submitDataRM = async () => {
         `${API_URL}/pdfupload`,
         formData,
         {
-          headers: {'Content-Type': 'multipart/form-data',
+          headers: {
+            'Content-Type': 'multipart/form-data',
             'Authorization': `Bearer ${getToken('token')}`
           }
 
@@ -209,8 +216,8 @@ const submitDataRM = async () => {
       fileName.value = selectedFile.value.name;
       // 1) 先删除旧属性
       Object.keys(model).forEach(key => {
-        delete model[key]
-      })
+        delete model[key];
+      });
       // 2) 把 newData 的属性合并进来
       Object.assign(model, response.data.data);
       console.log(model);
@@ -248,17 +255,22 @@ const submitDataJD = async () => {
   try {
     const response = await axios.post(
         `${API_URL}/job_description_upload`,
-        jobDescription.value,
         {
-          headers: {'Content-Type': 'text/plain'},
-          'Authorization': `Bearer ${getToken('token')}`
+          updated_resume: model,
+          job_description: jobDescription.value
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${jwtToken}`
+          }
         }
     );
     if (response.data.status === 200) {
       console.log('Data received from server:', response.data);
       Object.keys(analysis).forEach(key => {
-        delete analysis[key]
-      })
+        delete analysis[key];
+      });
       Object.assign(analysis, response.data.data);
     } else {
       alert('Failed to upload data. Please try again.');
@@ -301,8 +313,7 @@ const saveResume = async () => {
     console.error('JWT token not found');
     alert('You need to Login to continue');
     await router.push({name: 'Login'});
-  }
-  else {
+  } else {
     try {
       const response = await axios.put(
           `${API_URL}/save_resume`,
@@ -316,15 +327,14 @@ const saveResume = async () => {
       );
       if (response.data.status === 200) {
         console.log('Data saved successfully:', response.data);
-      }
-      else {
+      } else {
         console.error('Error saving data:', response.data);
       }
-    }catch (error) {
+    } catch (error) {
       console.error('Error saving data:', error);
     }
   }
-}
+};
 
 
 </script>
@@ -333,6 +343,7 @@ const saveResume = async () => {
 .toolbar {
   min-width: 210mm;
 }
+
 /* Modal styles (Bootstrap handles most) */
 .modal-backdrop {
   background-color: rgba(0, 0, 0, 0.5);
@@ -342,6 +353,7 @@ const saveResume = async () => {
   width: auto;
   flex-shrink: 0; /* Prevent input from shrinking */
 }
+
 /* Spinner styles */
 .spinner-border {
   width: 2rem;
@@ -362,6 +374,7 @@ const saveResume = async () => {
 .btn-custom:focus {
   box-shadow: 0 0 0 0.2rem rgba(74, 149, 206, 0.5);
 }
+
 /* Tool bar background color */
 .bg-toolbar {
   background-color: #ccc;

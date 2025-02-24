@@ -106,11 +106,11 @@ export const feedBack = async (data) => {
   let content = '';
   const API_URL = import.meta.env.VITE_API_URL;
   try {
-    const response = await axios.post(
+    const response = await axios.put(
         `${API_URL}/feedback/`,
-        formData,
+
         {
-          headers: {'Content-Type': 'multipart/form-data',
+          headers: {'Content-Type': 'application/json',
             'Authorization': `Bearer ${jwtToken}`}
         });
 
