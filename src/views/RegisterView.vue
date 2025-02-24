@@ -10,35 +10,54 @@
 <template>
   <div class="register-page">
     <h1 class="title">Sign Up</h1>
-    <RegisterForm @register="handleRegister" />
+    <RegisterForm @register="handleRegister" ref="registerFormRef"/>
     <div v-if="error" class="alert alert-danger mt-3" role="alert">
       {{ error }}
     </div>
-      <div v-if="userEmail" class="alert alert-success">
-      <strong>Success!</strong> User Email: {{ userEmail }}
+    <div v-if="userEmail" class="alert alert-success">
+      <strong>Success!</strong>  {{ countdown}} seconds return to login...
     </div>
   </div>
+
 </template>
 
 <script setup>
 import RegisterForm from '@/components/RegisterForm.vue';
-import { registerService } from '@/services/registerService';
+import {registerService} from '@/services/registerService.js';
 import {ref} from 'vue';
+import {useRouter} from 'vue-router';
 
-const error = ref("");
-const userEmail = ref("");
+const error = ref(null);
+const userEmail = ref(null);
+const registerFormRef = ref(null);
+const countdown = ref(5);
+const router = useRouter();
+
 
 const handleRegister = async (email,password) => {
-   const result = await registerService.register(email,password);
-   console.log(result);
-   if (result.success) {
-    
-        userEmail.value = result.data.user.email;
-        error.value = null;  // 清除错误信息
-      } else {
-        // 注册失败，显示错误信息
-        error.value = result.error;
+  error.value = null;
+  userEmail.value = null;
+  countdown.value = 5;
+  const result = await registerService.register(email,password);
+  if (result.success) {
+    userEmail.value = result.data.user.email;
+    error.value = null;  // 清除错误信息
+    registerFormRef.value.toggleLoading();
+    const intervalId = setInterval(() => {
+      countdown.value--;
+      if (countdown.value <= 0) {
+        clearInterval(intervalId);
+        router.push('/login');
       }
+    }, 1000);
+  } else {
+    // 注册失败，显示错误信息
+    error.value = result.error;
+    registerFormRef.value.toggleLoading();
+  }
+  setTimeout(() => {
+    error.value = null;
+  }, 3000);
 };
 </script>
 

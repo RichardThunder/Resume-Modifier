@@ -53,8 +53,19 @@
 </template>
 
 <script setup>
-import {reactive, ref} from 'vue';
+import {onMounted, reactive, ref} from 'vue';
+onMounted(() => {
+  const savedEmail = localStorage.getItem('email');
+  const savedPassword = localStorage.getItem('password');
 
+  if (savedEmail) {
+    loginForm.email = savedEmail;
+  }
+
+  if (savedPassword) {
+    loginForm.password = savedPassword;
+  }
+});
 const loginForm = reactive({
     email: "",
     password: "",
@@ -93,21 +104,32 @@ const handleSubmit= async ()=> {
   if (!validateForm()) {
     return;
   }
-
-  isLoading.value = true
+  toggleLoading();
   try {
     // 发送登录信息给父组件处理
     emit('login',loginForm.email,loginForm.password);
-    if(loginForm.remember){
-      localStorage.setItem('email',loginForm.email);
-      localStorage.setItem('password',loginForm.password);
+    if (loginForm.remember) {
+      localStorage.setItem('email', loginForm.email);
+      localStorage.setItem('password', loginForm.password);
+    } else {
+      localStorage.removeItem('email');
+      localStorage.removeItem('password');
     }
   } catch (error) {
     console.error('表单提交失败:', error)
-  } finally {
-    isLoading.value = false
   }
 }
+
+const toggleLoading = () => {
+  isLoading.value = !isLoading.value;
+  console.log(isLoading.value);
+};
+
+defineExpose(
+    {
+      toggleLoading,
+    }
+)
 </script>
 
 <style scoped>

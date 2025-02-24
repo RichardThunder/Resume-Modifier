@@ -1,7 +1,7 @@
 <template>
   <div class="resume-preview">
-      <!-- 引入功能区组件 -->
-      <Toolbar/>
+    <!-- 引入功能区组件 -->
+    <Toolbar/>
 
     <div class="resume-container">
       <header class="resume-header">
@@ -34,7 +34,7 @@
       <section v-if="model.summary" class="resume-section">
         <h2>SUMMARY</h2>
         <div v-if="!isEditingSummary" @dblclick="enableSummaryEdit">
-          <p>{{model.summary}}</p>
+          <p>{{ model.summary }}</p>
         </div>
         <div v-else>
     <textarea
@@ -532,9 +532,9 @@
 
               <!-- description -->
               <template v-if="!editingProjectFields[index]?.description">
-                  <p v-html="formattedDescription(project.description)"
-                        @dblclick="enableProjectEdit(index, 'description')">
-                  </p>
+                <p v-html="formattedDescription(project.description)"
+                   @dblclick="enableProjectEdit(index, 'description')">
+                </p>
               </template>
               <template v-else>
           <textarea
@@ -614,9 +614,9 @@
 
               <!-- description: 双击编辑 -->
               <template v-if="!editingAwardFields[index]?.description">
-                  <p v-html="formattedDescription(award.description)"
-                        @dblclick="enableAwardEdit(index, 'description')">
-                  </p>
+                <p v-html="formattedDescription(award.description)"
+                   @dblclick="enableAwardEdit(index, 'description')">
+                </p>
               </template>
               <template v-else>
           <textarea
@@ -696,9 +696,9 @@
 
               <!-- description: 双击可编辑 -->
               <template v-if="!editingCertFields[index]?.description">
-                  <p v-html="formattedDescription(cert.description)"
-                        @dblclick="enableCertEdit(index, 'description')">
-                  </p>
+                <p v-html="formattedDescription(cert.description)"
+                   @dblclick="enableCertEdit(index, 'description')">
+                </p>
               </template>
               <template v-else>
           <textarea
@@ -931,9 +931,9 @@
 
               <!-- description -->
               <template v-if="!editingVolunteeringFields[index]?.description">
-                  <p v-html="formattedDescription(volunteer.description)"
-                        @dblclick="enableVolunteeringEdit(index, 'description')">
-                  </p>
+                <p v-html="formattedDescription(volunteer.description)"
+                   @dblclick="enableVolunteeringEdit(index, 'description')">
+                </p>
               </template>
               <template v-else>
           <textarea
@@ -1031,9 +1031,9 @@
 
               <!-- description -->
               <template v-if="!editingReferencesFields[index]?.description">
-                  <p v-html="formattedDescription(reference.description)"
-                        @dblclick="enableReferencesEdit(index, 'description')">
-                  </p>
+                <p v-html="formattedDescription(reference.description)"
+                   @dblclick="enableReferencesEdit(index, 'description')">
+                </p>
               </template>
               <template v-else>
           <textarea
@@ -1071,6 +1071,7 @@ const autoResize = (textareaRef) => {
     textarea.style.height = `${textarea.scrollHeight}px`;  // 设置为内容的高度
   }
 };
+
 function formattedDescription(description) {
 
   if (typeof description !== 'string') {
@@ -1291,7 +1292,7 @@ input, textarea {
 }
 
 .resume-container {
-  font-family: Arial, sans-serif; /* 或其他你喜欢的字体 */
+  font-family: 'Times New Roman', Times, serif;
   box-sizing: border-box; /*  包含 padding 和 border 在尺寸计算中  */
   padding: 15mm; /* 设置页边距 */
   margin: 0 auto;
@@ -1301,6 +1302,7 @@ input, textarea {
   /*break-inside: avoid;*/
   /*overflow: hidden;*/
 }
+
 /* Prevent orphaned list items */
 .resume-container ul,
 .resume-container ol {
@@ -1313,7 +1315,7 @@ input, textarea {
 }*/
 @media print {
   /*  打印时隐藏不需要的元素，例如页眉、页脚等  */
-  body *{
+  body * {
     visibility: hidden;
   }
 
@@ -1325,7 +1327,7 @@ input, textarea {
     position: absolute;
     left: 0;
     top: 0;
-    box-shadow:none;
+    box-shadow: none;
     align-items: center;
   }
 }

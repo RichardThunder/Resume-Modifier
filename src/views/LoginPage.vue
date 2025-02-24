@@ -10,10 +10,16 @@
 
 <template>
 
-     <div class="login-page">
-       <h1 class="title">Sign In</h1>
-        <LoginForm @login="handleLogin" />
-     </div>
+  <div class="login-page">
+    <h1 class="title">Sign In</h1>
+    <LoginForm @login="handleLogin" ref="loginFormRef"/>
+    <div v-if="error" class="alert alert-danger mt-3" role="alert">
+      {{ error }}
+    </div>
+    <div v-if="success" class="alert alert-success pt-2">
+      <strong>Success!</strong>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -21,18 +27,30 @@ import LoginForm from '../components/LoginForm.vue';
 import {login} from '../services/authService.js';
 import {setToken} from '../utils/auth.js';
 import {useRouter} from 'vue-router';
+import {ref} from 'vue';
 
+const countdown = ref(10);
 const router = useRouter();
-
-const handleLogin = async (email, password)=>{
-  try{
-    const data = await login(email, password);
+const loginFormRef = ref(null);
+const success = ref(null);
+const error = ref(null);
+const handleLogin = async (email, password) => {
+  success.value = null;
+  error.value = null;
+  const data = await login(email, password);
+  if (data.success) {
     setToken(data.token);
-    await router.push({name: 'Home'});
-  }catch(error){
-    console.error(error);
+    success.value = data.success;
+    setTimeout(async () => {
+          await router.push({name: 'Home'});
+          window.location.reload();
+        },1000);
+  } else {
+    error.value = data.error;
   }
-}
+  loginFormRef.value.toggleLoading();
+};
+
 </script>
 <style scoped>
 /* 页面整体样式 */

@@ -17,10 +17,16 @@ export const setToken = (token) => {
 };
 
 export const removeToken = () => {
-  localStorage.removeItem("jwt_token");
+  if(getToken("jwt_token")) {
+    localStorage.removeItem("jwt_token");
+  }
 };
 
 export const isAuthenticated = () => {
   console.log(!!getToken());
   return !!getToken();
 };
+
+export const getLocalStorage = (item) => {
+  return localStorage.getItem(item);
+}

@@ -7,7 +7,6 @@
  * @Description: 
  * 
  */
-import router from '@/router/index.js';
 import axios from 'axios';
 export const registerService = {
   async register(email, password) {
@@ -26,20 +25,19 @@ export const registerService = {
         return { success: true, data: response.data }; // 返回成功的响应
       }
     } catch (error) {
-      console.log(error);
       if (error.response) {
         switch (error.response.status) {
           case 403:
             return { success: false, error: "API key is missing." };
           case 400:
             return { success: false, error: "Email already registered." };
-          case 500: 
+          case 500:
             return { success: false, error: "Registration failed." };
           default:
-            return { success: false, error: error.response.data.error }; 
+            return { success: false, error: error.response.data.error };
         }
       } else {
-        return { success: false, error: 'Network error or no response from server.' }; 
+        return { success: false, error: 'Network error or no response from server.' };
       }
     }
   }

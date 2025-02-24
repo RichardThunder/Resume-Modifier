@@ -103,18 +103,24 @@ const handleSubmit = async () => {
   if (!validateForm()) {
     return;
   }
-
-  isLoading.value = true;
-
+  toggleLoading();
   try {
-    // Simulate the registration process
-    await emit('register', registerForm.email, registerForm.password);
+     emit('register',registerForm.email,registerForm.password);
   } catch (error) {
     console.error('Registration failed:', error);
-  } finally {
-    isLoading.value = false;
   }
 };
+const toggleLoading = () => {
+  isLoading.value = !isLoading.value;
+  console.log(isLoading.value);
+};
+
+defineExpose(
+  {
+    toggleLoading,
+  }
+)
+
 </script>
 
 <style scoped>

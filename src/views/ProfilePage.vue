@@ -491,10 +491,10 @@ const handleLogout = async () => {
 
 };
 
-const logOut = () => {
-  console.log("logout");
+const logOut = async () => {
   removeToken();
-  router.push({name: 'Login'});
+  await router.push({name: 'Login'});
+  window.location.reload();
 };
 </script>
 

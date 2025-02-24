@@ -31,7 +31,7 @@
         </ul>
 
         <!-- Avatar and Sign In -->
-        <div class="d-flex align-items-center gap-3">
+        <div class="d-flex align-items-center gap-5">
           <router-link  v-if="!isUserAuthenticated" to="/login">
             <button
                 class="btn btn-primary">

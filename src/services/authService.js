@@ -12,8 +12,6 @@ import axios from "axios";
 const API_URL = import.meta.env.VITE_API_URL;
 export const login = async (email, password) => {
   try {
-    console.log(import.meta.env);
-    console.log(`${API_URL}/login`);
     const response = await axios.post(`${API_URL}/login`, {
       email: email.trim(),
       password: password,
@@ -21,8 +19,25 @@ export const login = async (email, password) => {
       'Content-Type': 'application/json'
     }}
     );
-    return response.data;
+    if(response.status === 200){
+      return {
+        token: response.data.token,
+        success: true,
+        email:response.data.user.email
+      }
+    }
   } catch (error) {
-    console.error(`Error login: ${error.response.data}`);
+    if (error.response) {
+      switch (error.response.status) {
+        case 401:
+          return { success: false, error: "Invalid email or password" };
+        case 400:
+          return { success: false, error: "Email and password required." };
+        default:
+          return { success: false, error: error.response.data.error };
+      }
+    } else {
+      return { success: false, error: 'Network error or no response from server.' };
+    }
   }
 };
