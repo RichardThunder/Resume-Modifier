@@ -116,14 +116,14 @@ const toggleModal = () => {
           <div class="col-md-6">
             <div class="mb-2">
               <label class="form-label">Institution Name</label>
-              <input type="text" class="form-control form-control-sm" v-model="model.education[index].institutionName"
+              <input type="text" class="form-control form-control-sm" v-model="education.institutionName"
                      placeholder="Institution Name" />
             </div>
           </div>
           <div class="col-md-6">
             <div class="mb-2">
               <label class="form-label">Field of Study</label>
-              <input type="text" class="form-control form-control-sm" v-model="model.education[index].fieldOfStudy"
+              <input type="text" class="form-control form-control-sm" v-model="education.fieldOfStudy"
                      placeholder="Field of Study" />
             </div>
           </div>
@@ -133,14 +133,14 @@ const toggleModal = () => {
           <div class="col-md-6">
             <div class="mb-2">
               <label class="form-label">Degree</label>
-              <input type="text" class="form-control form-control-sm" v-model="model.education[index].degree"
+              <input type="text" class="form-control form-control-sm" v-model="education.degree"
                      placeholder="Degree" />
             </div>
           </div>
           <div class="col-md-6">
             <div class="mb-2">
               <label class="form-label">Grade</label>
-              <input type="text" class="form-control form-control-sm" v-model="model.education[index].grade"
+              <input type="text" class="form-control form-control-sm" v-model="education.grade"
                      placeholder="Grade or Classification" />
             </div>
           </div>
@@ -150,14 +150,14 @@ const toggleModal = () => {
           <div class="col-md-6">
             <div class="mb-2">
               <label class="form-label">City</label>
-              <input type="text" class="form-control form-control-sm" v-model="model.education[index].city"
+              <input type="text" class="form-control form-control-sm" v-model="education.city"
                      placeholder="City" />
             </div>
           </div>
           <div class="col-md-6">
             <div class="mb-2">
               <label class="form-label">Country</label>
-              <input type="text" class="form-control form-control-sm" v-model="model.education[index].country"
+              <input type="text" class="form-control form-control-sm" v-model="education.country"
                      placeholder="Country" />
             </div>
           </div>
@@ -167,27 +167,27 @@ const toggleModal = () => {
           <div class="col-md-6">
             <div class="mb-2">
               <label class="form-label">From Date</label>
-              <input type="date" class="form-control form-control-sm" v-model="model.education[index].fromDate" />
+              <input type="date" class="form-control form-control-sm" v-model="education.fromDate" />
             </div>
           </div>
           <div class="col-md-6">
             <div class="mb-2">
               <label class="form-label">To Date</label>
-              <input type="date" class="form-control form-control-sm" v-model="model.education[index].toDate"
-                     :disabled="model.education[index].isPresent" />
+              <input type="date" class="form-control form-control-sm" v-model="education.toDate"
+                     :disabled="education.isPresent" />
             </div>
           </div>
         </div>
 
         <div class="mb-2 form-check">
-          <input type="checkbox" class="form-check-input" v-model="model.education[index].isPresent"
+          <input type="checkbox" class="form-check-input" v-model="education.isPresent"
                  id="isPresent">
           <label class="form-check-label" for="isPresent">Currently Studying Here</label>
         </div>
 
         <div class="mb-2">
           <label class="form-label">Description</label>
-          <textarea class="form-control form-control-sm" v-model="model.education[index].description"
+          <textarea class="form-control form-control-sm" v-model="education.description"
                     placeholder="Describe your education details, achievements, or notable projects"></textarea>
           <button @click="toggleModal" class="btn btn-primary btn-sm float-end mt-1">
             AI Writer
