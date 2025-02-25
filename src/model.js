@@ -15,7 +15,23 @@ export const model = reactive({
   volunteering: [],
   workExperience: []
 });
-
+export const modelClear = reactive({
+  achievements: [],
+  award: [],
+  certifications: [],
+  education: [],
+  project: [],
+  publications: [],
+  references: [],
+  skills: [],
+  summary: "",
+  userInfo: {
+    firstName: '',
+    lastName: '',
+  },
+  volunteering: [],
+  workExperience: []
+})
 export const modelExample = reactive({
   achievements: [],
   award: [],
