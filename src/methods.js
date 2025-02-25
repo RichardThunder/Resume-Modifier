@@ -127,5 +127,13 @@ export const feedBack = async (data) => {
   }
 };
 
+export const reAssign = (ObjA, ObjB)=>{
+  // 1) 先删除旧属性
+  Object.keys(ObjA).forEach(key => {
+    delete ObjA[key];
+  });
+  // 2) 把 newData 的属性合并进来
+  Object.assign(ObjA, ObjB);
+}
 
 

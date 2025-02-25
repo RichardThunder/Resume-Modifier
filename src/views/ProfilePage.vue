@@ -173,6 +173,7 @@ import axios from 'axios';
 import {model} from '@/model.js';
 import router from '@/router/index.js';
 import {getToken, removeToken} from '@/utils/auth.js';
+import ResumeSaver from "@/utils/ResumeSaver.js";
 const showLogoutConfirmation = ref(false);
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -493,6 +494,7 @@ const handleLogout = async () => {
 
 const logOut = async () => {
   removeToken();
+  ResumeSaver.clearLocalStorage();
   await router.push({name: 'Login'});
   window.location.reload();
 };

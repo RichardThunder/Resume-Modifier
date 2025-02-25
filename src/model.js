@@ -4,6 +4,22 @@ export const model = reactive({
   achievements: [],
   award: [],
   certifications: [],
+  education: [],
+  project: [],
+  publications: [],
+  references: [],
+  skills: [],
+  summary: "",
+  userInfo: {
+  },
+  volunteering: [],
+  workExperience: []
+});
+
+export const modelExample = reactive({
+  achievements: [],
+  award: [],
+  certifications: [],
   education: [
     {
       city: 'Tucson',
@@ -75,7 +91,7 @@ export const model = reactive({
   ],
   publications: [],
   references: [],
-  skills: ["ReactJS","AngularJS 1.x","ExpressJS","NodeJS","jQuery","HTML/CSS",
+  skills: ["ReactJS", "AngularJS 1.x", "ExpressJS", "NodeJS", "jQuery", "HTML/CSS",
 
     "React Native", "ExponentJS",
     " Spring", "Mave",

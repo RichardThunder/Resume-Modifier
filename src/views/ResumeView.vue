@@ -37,7 +37,11 @@
 <script setup>
 import PersonalForm from '@/components/PersonalForm.vue';
 import ResumePreview from '@/components/ResumePreview.vue';
-import { ref, computed } from 'vue';
+import { ref, computed,onMounted,watch } from 'vue';
+import {model,modelExample }from '@/model';
+import {reAssign} from "@/methods.js";
+import ResumeSaver from "@/utils/ResumeSaver.js";
+
 
 const showForm = ref(true);
 const isSmallScreen = ref(window.innerWidth < 768); // Adjust breakpoint as needed (Bootstrap's sm is 768px)
@@ -50,6 +54,26 @@ const toggleForm = () => {
     showForm.value = !showForm.value; // Toggle normally on larger screens
   }
 };
+
+onMounted(() => {
+  ResumeSaver.loadResume();
+  if(ResumeSaver.isStorageEmpty()){
+    reAssign(model,modelExample);
+  }else{
+    reAssign(model,ResumeSaver.getResumeData());
+  }
+});
+
+// Watch for changes in the 'model' and save to localStorage
+watch(
+    model,
+    (newModel) => {
+      ResumeSaver.setResumeData(newModel)// Update ResumeSaver's data
+      ResumeSaver.saveResume(newModel); // Save to localStorage
+      console.log('Model changed. Saved to localStorage.'); // Optional: Log the save
+    },
+    { deep: true } // Watch nested properties within the model
+);
 
 /*// 在组件挂载时绑定事件
 onMounted(() => {
