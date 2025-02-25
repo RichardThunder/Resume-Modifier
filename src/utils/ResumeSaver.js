@@ -12,7 +12,6 @@ const ResumeSaver = {
     saveResume: (data) => {
         ResumeData = data;
         localStorage.setItem("resumeData", JSON.stringify(data));
-        console.log(`Resume saved successfully:`, JSON.stringify(ResumeData));
     },
     getResumeData: () => {
         return ResumeData

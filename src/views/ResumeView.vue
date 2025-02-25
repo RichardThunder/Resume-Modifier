@@ -10,7 +10,6 @@
       >
         <i class="bi" :class="showForm ? 'bi-chevron-left' : 'bi-chevron-right'"></i>
       </button>
-
       <!-- Personal Form Section -->
       <div
           class="col-lg-5 col-md-5 border-end shadow-sm overflow-auto h-100 bg-white form-section"
@@ -31,9 +30,9 @@
         </div>
       </div>
     </div>
+    Use code with caution.
   </div>
 </template>
-
 <script setup>
 import PersonalForm from '@/components/PersonalForm.vue';
 import ResumePreview from '@/components/ResumePreview.vue';
@@ -70,7 +69,6 @@ watch(
     (newModel) => {
       ResumeSaver.setResumeData(newModel)// Update ResumeSaver's data
       ResumeSaver.saveResume(newModel); // Save to localStorage
-      console.log('Model changed. Saved to localStorage.'); // Optional: Log the save
     },
     { deep: true } // Watch nested properties within the model
 );
@@ -108,24 +106,25 @@ const toggleButtonLeft = computed(() => {
 });
 
 </script>
-
 <style scoped>
 /* 切换按钮样式 */
 .toggle-button {
   position: fixed;
-  left: v-bind(toggleButtonLeft);
+  left: 0;
   top: 50%;
   transform: translateY(-50%);
   z-index: 100;
-  width: 24px;
+  width: 20px;
   height: 48px;
   padding: 0;
   border-radius: 0 4px 4px 0;
   border: 1px solid #dee2e6;
   border-left: none;
-  background-color: white;
+  background-color: #4a95ce;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   transition: left 0.3s ease;
+  min-width: 20px;
+  color:white;
 }
 
 .button-collapsed {

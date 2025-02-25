@@ -137,7 +137,6 @@ watch(model, (newModel) => {
   if (!ignoreChange.value) {
     history.value.push(cloneDeep(newModel));
     future.value = []; // 清空 redo 栈
-    console.log('History:', history.value);
   } else {
     ignoreChange.value = false; //重置标志位
   }
