@@ -1055,8 +1055,7 @@
 import Toolbar from './Toolbar.vue';
 import {model} from '../model.js';
 import {ref} from 'vue';
-import ResumeSection from './ResumeSection.vue';
-import {computed} from 'vue';
+
 //定义一个自定义指令
 const vFocus = {
   mounted(el) {
@@ -1309,45 +1308,6 @@ input, textarea {
   margin: 0.5rem 0;
 }
 
-/*.resume-container li {
-  break-inside: avoid;
-  page-break-inside: avoid;
-}*/
-@media print {
-  /*  打印时隐藏不需要的元素，例如页眉、页脚等  */
-  body * {
-    visibility: hidden;
-  }
-
-  .resume-container, .resume-container * {
-    visibility: visible;
-  }
-
-  .resume-container {
-    position: absolute;
-    left: 0;
-    top: 0;
-    box-shadow: none;
-    align-items: center;
-  }
-}
-
-/*
-.resume-container {
-  font-family: Arial, sans-serif;
-  margin: 0 auto;
-  padding: 20px;
-  width: 8.27in;
-
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  overflow: auto;
-}
-*/
-
-
 .resume-header {
   text-align: center;
   margin-bottom: 10mm; /*缩小 header 下方的间距*/
@@ -1356,11 +1316,6 @@ input, textarea {
   padding: 10px 50px 0 10px;
 }
 
-.header-h1 {
-  font-size: 2em;
-  margin: 0;
-  font-weight: bold;
-}
 
 .resume-header p {
   margin: 0;
@@ -1391,7 +1346,7 @@ input, textarea {
 }
 
 .resume-section ul {
-  list-style-type: none;
+  list-style-type: outside;
   padding: 0;
 }
 
@@ -1401,8 +1356,15 @@ input, textarea {
   break-inside: avoid;*/
   line-height: 1.2; /*调整行高*/
 
-
 }
+
+.resume-section ul li{
+  margin-bottom: 15px;
+  /*page-break-inside: avoid;
+  break-inside: avoid;*/
+  line-height: 1.2; /*调整行高*/
+}
+
 
 .resume-section ul li strong {
   font-size: 1.2em;
@@ -1450,10 +1412,6 @@ input, textarea {
   padding-right: 5px;
 }
 
-.flex {
-  display: flex;
-}
-
 .flex-col {
   flex-direction: column;
 }
@@ -1461,13 +1419,6 @@ input, textarea {
 .title {
   font-size: 20px;
   font-weight: bolder;
-}
-
-.skill-list {
-  display: flex;
-  flex-wrap: wrap; /* 自动换行 */
-  justify-content: flex-start; /* 左对齐 */
-  gap: 10px; /* 元素间距 */
 }
 
 </style>

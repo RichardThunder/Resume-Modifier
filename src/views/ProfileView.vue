@@ -311,7 +311,7 @@ const fetchResumeHistory = async () => {
 
   }
 
-  // Simulated data for demonstration purposes
+  /*// Simulated data for demonstration purposes
   const simulatedResponse = {
     status: 200,
     data: [
@@ -340,7 +340,7 @@ const fetchResumeHistory = async () => {
     resumeHistory.value = simulatedResponse.data;
   } else {
     console.error('Failed to fetch resume history.');
-  }
+  }*/
 };
 
 onMounted(() => {
@@ -349,7 +349,7 @@ onMounted(() => {
 });
 
 const viewResume = async (resumeId) => {
-  console.log(resumeId);
+  /*console.log(resumeId);
   const simulatedResponse = {
     status: 200,
     data: {
@@ -456,9 +456,8 @@ const viewResume = async (resumeId) => {
     Object.assign(model, simulatedResponse.data.resume);
     console.log(model);
     await router.push('/resume');
-  }
+  }*/
 
-  /*
   const jwtToken = getToken('token');
   if (!jwtToken) {
     console.error('JWT token not found');
@@ -478,7 +477,7 @@ const viewResume = async (resumeId) => {
     await router.push("/resume");
   }else{
     console.error('Failed to fetch resume.');
-  }*/
+  }
 };
 
 const handleLogout = async () => {

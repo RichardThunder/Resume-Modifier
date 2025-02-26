@@ -37,8 +37,9 @@
         <i v-else class="bi bi-floppy" style="width: 16px; height: 16px;"></i>
       </button>
 
-      <button class="btn btn-sm btn-custom me-4" @click="exportToPDF">
-        <i class="bi bi-download"></i>
+      <button class="btn btn-sm btn-custom me-4" @click="exportToPDF" :disabled="isPrinting">
+        <span v-if="isPrinting" class="spinner-border spinner-border-sm"></span>
+        <i v-else class="bi bi-download"></i>
       </button>
     </div>
   </div>
@@ -122,7 +123,9 @@ import {getToken} from '@/utils/auth.js';
 import router from '@/router/index.js';
 import saveResumeService from '@/services/saveResumeService.js';
 import {reAssign} from "@/methods.js";
+import usePrint from "@/utils/usePrint.js";
 
+const { exportToPDF, isPrinting } = usePrint();
 const fileInput = ref(null);
 const isEditing = ref(false);
 const fileNameInput = ref(null);
@@ -297,13 +300,7 @@ const disableEditing = () => {
   }
 };
 
-const exportToPDF = async () => {
-  // const element = document.querySelector('.resume-container');
-  const tmpTitle = document.title;
-  document.title = fileName.value;
-  window.print();
-  document.title = tmpTitle;
-};
+
 
 const saveResume = async () => {
   isSaveLoading.value = true;
