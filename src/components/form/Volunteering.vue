@@ -60,7 +60,6 @@ function deleteVolunteer(index) {
 const isModalVisible = ref(false);
 const handleFeedBack = async (index) => {
   loading.value = true;
-  console.log(data.feedback);
 
   // Call the feedBack function and get content
   try {

@@ -7,7 +7,6 @@ const isVisible = ref(true);
 const sectionType = ref('userInfo');
 function toggleShow() {
   isVisible.value = !isVisible.value;
-  console.log(model.userInfo);
 }
 </script>
 

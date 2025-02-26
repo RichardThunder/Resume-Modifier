@@ -47,7 +47,6 @@ const handleFeedback =async () => {
     }else {
       isSubmitLoading.value = false;
       isError.value = true;
-      console.log(result);
       errorMessage.value = result.error;
       setTimeout(() => {isError.value = false;}, 3000);
     }

@@ -88,7 +88,6 @@ function deleteProject(index) {
 // feedback with array
 const handleFeedBack = async (index) => {
   loading.value = true;
-  console.log(data.feedback);
 
   // Call the feedBack function and get content
   try {

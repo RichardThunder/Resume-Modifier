@@ -124,7 +124,6 @@ const handleSubmit= async ()=> {
 
 const toggleLoading = () => {
   isLoading.value = !isLoading.value;
-  console.log(isLoading.value);
 };
 
 defineExpose(

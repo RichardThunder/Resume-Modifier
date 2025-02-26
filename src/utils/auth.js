@@ -23,7 +23,6 @@ export const removeToken = () => {
 };
 
 export const isAuthenticated = () => {
-  console.log(!!getToken());
   return !!getToken();
 };
 

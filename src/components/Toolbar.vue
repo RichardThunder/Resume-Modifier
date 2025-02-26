@@ -160,8 +160,6 @@ const undo = () => {
     history.value.pop();
     ignoreChange.value = true;
     Object.assign(model, cloneDeep(history.value[history.value.length - 1]));
-    console.log('Undo History:', history.value);
-    console.log('Future:', future.value);
   } else {
     console.log('Nothing to undo');
   }
@@ -172,10 +170,6 @@ const redo = () => {
     history.value.push(cloneDeep(model)); // 当前状态推入 history 栈
     ignoreChange.value = true; // 避免重复记录
     Object.assign(model, cloneDeep(future.value.pop()));  // 恢复到 future 栈顶状态
-    console.log('Redo. Future:', future.value);
-    console.log('History:', history.value);
-  } else {
-    console.log('Nothing to redo.');
   }
 };
 
@@ -218,7 +212,6 @@ const submitDataRM = async () => {
           }
         });
     if (response.data.status === 200) {
-      console.log('Data received from server:', response.data);
       fileName.value = selectedFile.value.name;
       reAssign(model, response.data.data);
       // convertModel(model,textToHtml);
@@ -267,7 +260,6 @@ const submitDataJD = async () => {
         }
     );
     if (response.data.status === 200) {
-      console.log('Data received from server:', response.data);
       Object.keys(analysis).forEach(key => {
         delete analysis[key];
       });
