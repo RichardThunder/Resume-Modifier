@@ -226,3 +226,33 @@ textarea:focus {
         transform: rotate(360deg);
     }
 }
+
+
+.slide-enter-active,
+.slide-leave-active {
+    transition: max-height 0.5s ease, opacity 0.5s ease;
+    max-height: 1000px;
+    overflow: hidden;
+    opacity: 1;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+}
+
+/* Optional: Add a subtle background color change during transition */
+.card-header:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+/* Optional: Animate the arrow icon rotation */
+.triangle {
+    transition: transform 0.5s ease;
+}
+
+.card-header[aria-expanded="true"] span:last-child {
+    transform: rotate(180deg);
+}

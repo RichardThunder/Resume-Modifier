@@ -25,7 +25,7 @@ function deleteAchieve() {
       <h2 class="section-title">🏆 Achievements</h2>
       <button @click="addAchieve" class="btn btn-sm btn-custom me-4">Add</button>
     </div>
-
+<transition name="slide">
     <div v-if="isVisible" class="card mb-3">
       <div class="card-header toggle-header d-flex justify-content-between align-items-center">
         <span>Your Achievements</span>
@@ -57,6 +57,7 @@ function deleteAchieve() {
       </textarea>
       </div>
     </div>
+</transition>
   </div>
 </template>
 
@@ -75,5 +76,4 @@ function deleteAchieve() {
 .btn-custom:focus {
   box-shadow: 0 0 0 0.2rem rgba(74, 149, 206, 0.5);
 }
-
 </style>

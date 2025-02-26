@@ -33,7 +33,7 @@
           <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
         </div>
       </div>
-
+      <transition name="slide">
       <div v-if="visibleIndexes[index]" class="card-body p-2">
         <div class="mb-0">
           <label class="form-label">Volunteer Organization/Event</label>
@@ -91,6 +91,7 @@
           <div v-if="isModalVisible" class="modal-backdrop fade show"></div>
         </div>
       </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -208,4 +209,32 @@ const toggleModal = () => {
 .btn-custom:focus {
   box-shadow: 0 0 0 0.2rem rgba(74, 149, 206, 0.5);
 }
+  .slide-enter-active,
+  .slide-leave-active {
+    transition: max-height 0.5s ease, opacity 0.5s ease;
+    max-height: 1000px;
+    overflow: hidden;
+    opacity: 1;
+  }
+
+  .slide-enter-from,
+  .slide-leave-to {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+  }
+
+  /* Optional: Add a subtle background color change during transition */
+  .card-header:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+  }
+
+  /* Optional: Animate the arrow icon rotation */
+  .card-header span:last-child {
+    transition: transform 0.5s ease;
+  }
+
+  .card-header[aria-expanded="true"] span:last-child {
+    transform: rotate(180deg);
+  }
 </style>

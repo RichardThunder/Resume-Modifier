@@ -116,7 +116,7 @@ const toggleModal = () => {
           <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
         </div>
       </div>
-
+      <transition name="slide">
       <div v-if="visibleIndexes[index]" class="card-body p-2">
         <div class="row mb-0">
           <div class="col-md-6">
@@ -191,6 +191,7 @@ const toggleModal = () => {
           <div v-if="isModalVisible" class="modal-backdrop fade show"></div>
         </div>
       </div>
+      </transition>
     </div>
   </div>
 </template>

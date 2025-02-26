@@ -33,7 +33,7 @@
           <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
         </div>
       </div>
-
+      <transition name="slide">
       <div v-if="visibleIndexes[index]" class="card-body p-2">
         <div class="mb-0">
           <label class="form-label">Company Name</label>
@@ -66,6 +66,7 @@
                     placeholder="Describe the reference and their relationship with you"></textarea>
         </div>
       </div>
+        </transition>
     </div>
   </div>
 </template>

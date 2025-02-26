@@ -129,127 +129,123 @@ const toggleModal = () => {
               alt="delete"
               @click="deleteExperience(index)"
           />
-          <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
+<!--          <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>-->
+          <span>{{'▼' }}</span>
         </div>
       </div>
+      <transition name="slide">
+        <div
+            v-if="visibleIndexes[index]"
+            class="card-body p-2"
+            :id="'work-experience-details-' + index"
+        >
+          <div class="row mb-0">
+            <div class="col-md-6">
+              <div class="mb-0">
+                <label class="form-label" for="companyName-{{ index }}">Company Name</label>
+                <input
+                    type="text"
+                    class="form-control form-control-sm"
+                    v-model="experience.companyName"
+                    placeholder="Company Name"
+                    :id="'companyName-' + index"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-0">
+                <label class="form-label" for="jobTitle-{{ index }}">Job Title</label>
+                <input
+                    type="text"
+                    class="form-control form-control-sm"
+                    v-model="experience.jobTitle"
+                    placeholder="Job Title"
+                    :id="'jobTitle-' + index"
+                />
+              </div>
+            </div>
+          </div>
 
-      <div
-          v-if="visibleIndexes[index]"
-          class="card-body p-2"
-          :id="'work-experience-details-' + index"
-      >
-        <div class="row mb-0">
-          <div class="col-md-6">
-            <div class="mb-0">
-              <label class="form-label" for="companyName-{{ index }}">Company Name</label>
-              <input
-                  type="text"
-                  class="form-control form-control-sm"
-                  v-model="experience.companyName"
-                  placeholder="Company Name"
-                  :id="'companyName-' + index"
-              />
+          <div class="row mb-0">
+            <div class="col-md-6">
+              <div class="mb-0">
+                <label class="form-label" for="city-{{ index }}">City</label>
+                <input
+                    type="text"
+                    class="form-control form-control-sm"
+                    v-model="experience.city"
+                    placeholder="City"
+                    :id="'city-' + index"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-0">
+                <label class="form-label" for="country-{{ index }}">Country</label>
+                <input
+                    type="text"
+                    class="form-control form-control-sm"
+                    v-model="experience.country"
+                    placeholder="Country"
+                    :id="'country-' + index"
+                />
+              </div>
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="mb-0">
-              <label class="form-label" for="jobTitle-{{ index }}">Job Title</label>
-              <input
-                  type="text"
-                  class="form-control form-control-sm"
-                  v-model="experience.jobTitle"
-                  placeholder="Job Title"
-                  :id="'jobTitle-' + index"
-              />
-            </div>
-          </div>
-        </div>
 
-        <div class="row mb-0">
-          <div class="col-md-6">
-            <div class="mb-0">
-              <label class="form-label" for="city-{{ index }}">City</label>
-              <input
-                  type="text"
-                  class="form-control form-control-sm"
-                  v-model="experience.city"
-                  placeholder="City"
-                  :id="'city-' + index"
-              />
+          <div class="row mb-0">
+            <div class="col-md-6">
+              <div class="mb-0">
+                <label class="form-label" for="fromDate-{{ index }}">From Date</label>
+                <input
+                    type="date"
+                    class="form-control form-control-sm"
+                    v-model="experience.fromDate"
+                    :id="'fromDate-' + index"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-0">
+                <label class="form-label" for="toDate-{{ index }}">To Date</label>
+                <input
+                    type="date"
+                    class="form-control form-control-sm"
+                    v-model="experience.toDate"
+                    :disabled="experience.isPresent"
+                    :id="'toDate-' + index"
+                />
+              </div>
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="mb-0">
-              <label class="form-label" for="country-{{ index }}">Country</label>
-              <input
-                  type="text"
-                  class="form-control form-control-sm"
-                  v-model="experience.country"
-                  placeholder="Country"
-                  :id="'country-' + index"
-              />
-            </div>
-          </div>
-        </div>
 
-        <div class="row mb-0">
-          <div class="col-md-6">
-            <div class="mb-0">
-              <label class="form-label" for="fromDate-{{ index }}">From Date</label>
-              <input
-                  type="date"
-                  class="form-control form-control-sm"
-                  v-model="experience.fromDate"
-                  :id="'fromDate-' + index"
-              />
+          <div class="mb-0 form-check">
+            <input
+                type="checkbox"
+                class="form-check-input"
+                v-model="experience.isPresent"
+                :id="'isPresent-' + index"
+            />
+            <label class="form-check-label" :for="'isPresent-' + index">Currently Working Here</label>
+          </div>
+
+          <div class="mb-0">
+            <label class="form-label" for="description-{{index}}">Job Description</label>
+            <textarea class="form-control form-control-sm" v-model="experience.description"
+                      placeholder="Describe your experience details, achievements, or notable projects"></textarea>
+            <div class="d-flex justify-content-end">
+              <button @click="toggleModal" class="btn btn-sm btn-custom mt-2">
+                AI Writer
+              </button>
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="mb-0">
-              <label class="form-label" for="toDate-{{ index }}">To Date</label>
-              <input
-                  type="date"
-                  class="form-control form-control-sm"
-                  v-model="experience.toDate"
-                  :disabled="experience.isPresent"
-                  :id="'toDate-' + index"
-              />
-            </div>
+          <div v-if="isModalVisible" class="modal fade show" style="display: block;">
+            <FeedbackForm @close="toggleModal" v-model="experience.description" :sectionType=sectionType
+                          :section="experience" :updated_resume="model"/>
+            <div v-if="isModalVisible" class="modal-backdrop fade show"></div>
           </div>
         </div>
-
-        <div class="mb-0 form-check">
-          <input
-              type="checkbox"
-              class="form-check-input"
-              v-model="experience.isPresent"
-              :id="'isPresent-' + index"
-          />
-          <label class="form-check-label" :for="'isPresent-' + index">Currently Working Here</label>
-        </div>
-
-        <div class="mb-0">
-          <label class="form-label" for="description-{{index}}">Job Description</label>
-          <QuillEditor
-              v-model:content="experience.description"
-              content="model.workExperience[index].description"
-              content-type="text"
-              :options="editorOptions"
-              @blur="saveExperience(index)"
-              :id="'description-' + index"
-          />
-          <div class="d-flex justify-content-end">
-            <button @click="toggleModal" class="btn btn-sm btn-custom mt-2">
-              AI Writer
-            </button>
-          </div>
-        </div>
-        <div v-if="isModalVisible" class="modal fade show" style="display: block;">
-          <FeedbackForm @close="toggleModal" v-model="experience.description" :sectionType=sectionType
-                        :section="experience" :updated_resume="model"/>
-          <div v-if="isModalVisible" class="modal-backdrop fade show"></div>
-        </div>
-      </div>
+      </transition>
     </div>
   </div>
 </template>

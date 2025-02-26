@@ -27,9 +27,9 @@ const toggleModal = () => {
     <div class="card-header d-flex justify-content-between align-items-center" @click="toggleShow"
          style="cursor: pointer;">
       <span>ℹ️ Summary</span>
-      <span>{{ isVisible ? '▲' : '▼' }}</span>
+      <span class="triangle">{{ isVisible ? '▲' : '▼' }}</span>
     </div>
-
+    <transition name="slide">
     <div v-if="isVisible" class="card-body">
       <div class="mb-3">
         <label for="summary" class="form-label">Brief Summary</label>
@@ -45,9 +45,9 @@ const toggleModal = () => {
       <div v-if="isModalVisible" class="modal-backdrop fade show"></div>  <!-- Bootstrap modal backdrop -->
 
     </div>
+    </transition>
   </div>
 </template>
 
 <style scoped>
-
 </style>

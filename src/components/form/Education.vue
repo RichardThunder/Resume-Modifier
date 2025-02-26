@@ -1,14 +1,16 @@
 <script setup>
-import {ref, watch} from 'vue';
-import {analysis, model} from '@/model.js';
-import {feedBack, scoreToColors} from '@/methods.js';
+import { ref, watch } from 'vue';
+import { analysis, model } from '@/model.js';
+import { feedBack, scoreToColors } from '@/methods.js';
 import FeedbackForm from "@/components/FeedbackForm.vue";
+import { nextTick } from 'vue';
 
 const visibleIndexes = ref([]);
 const sectionType = ref('education');
 
 function toggleShow(index) {
-  visibleIndexes.value[index] = !visibleIndexes.value[index];
+  this.visibleIndexes[index] = !this.visibleIndexes[index];
+
 }
 
 function initializeVisibility() {
@@ -27,12 +29,12 @@ watch(
     () => {
       initializeVisibility();
     },
-    {deep: true}
+    { deep: true }
 );
 
 initializeVisibility();
 
-function addEducation() {
+async function addEducation() {
   model.education.push({
     institutionName: '',
     fieldOfStudy: '',
@@ -46,6 +48,15 @@ function addEducation() {
     description: ''
   });
   visibleIndexes.value.push(true);
+
+  // Wait for the DOM to update after adding the new education item
+  await nextTick();
+
+  // Scroll to the new item (optional)
+  // const newElement = document.querySelector(`.card:last-child`);
+  // if (newElement) {
+  //   newElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // }
 }
 
 function deleteEducation(index) {
@@ -95,114 +106,116 @@ const toggleModal = () => {
           <v-tooltip v-if="analysis.education[index]?.score" :text="analysis.education[index]?.comment"
                      location="bottom" max-width="500px" close-delay="200">
             <template v-slot:activator="{ props }">
-                            <span v-bind="props">
-                                <v-progress-circular :size="35" :width="4"
-                                                     :model-value="analysis.education[index].score"
-                                                     :color="scoreToColors(analysis.education[index].score)">
-                                    <template v-slot:default>
-                                        <span class="score">{{ analysis.education[index].score }}</span>
-                                    </template>
-                                </v-progress-circular>
-                            </span>
+              <span v-bind="props">
+                <v-progress-circular :size="35" :width="4"
+                                     :model-value="analysis.education[index].score"
+                                     :color="scoreToColors(analysis.education[index].score)">
+                  <template v-slot:default>
+                    <span class="score">{{ analysis.education[index].score }}</span>
+                  </template>
+                </v-progress-circular>
+              </span>
             </template>
           </v-tooltip>
 
           <img class="delete-block ms-1" src="../../assets/block-delete.svg" alt="delete"
                @click="deleteEducation(index)">
-          <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
+
+  <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
         </div>
       </div>
 
-      <div v-if="visibleIndexes[index]" class="card-body p-2">
-        <div class="row mb-0">
-          <div class="col-md-6">
-            <div class="mb-0">
-              <label class="form-label">Institution Name</label>
-              <input type="text" class="form-control form-control-sm" v-model="education.institutionName"
-                     placeholder="Institution Name"/>
+      <transition name="slide">
+        <div v-if="visibleIndexes[index]" class="card-body p-2">
+          <div class="row mb-0">
+            <div class="col-md-6">
+              <div class="mb-0">
+                <label class="form-label">Institution Name</label>
+                <input type="text" class="form-control form-control-sm" v-model="education.institutionName"
+                       placeholder="Institution Name" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-0">
+                <label class="form-label">Field of Study</label>
+                <input type="text" class="form-control form-control-sm" v-model="education.fieldOfStudy"
+                       placeholder="Field of Study" />
+              </div>
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="mb-0">
-              <label class="form-label">Field of Study</label>
-              <input type="text" class="form-control form-control-sm" v-model="education.fieldOfStudy"
-                     placeholder="Field of Study"/>
-            </div>
-          </div>
-        </div>
 
-        <div class="row mb-0">
-          <div class="col-md-6">
-            <div class="mb-0">
-              <label class="form-label">Degree</label>
-              <input type="text" class="form-control form-control-sm" v-model="education.degree"
-                     placeholder="Degree"/>
+          <div class="row mb-0">
+            <div class="col-md-6">
+              <div class="mb-0">
+                <label class="form-label">Degree</label>
+                <input type="text" class="form-control form-control-sm" v-model="education.degree"
+                       placeholder="Degree" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-0">
+                <label class="form-label">Grade</label>
+                <input type="text" class="form-control form-control-sm" v-model="education.grade"
+                       placeholder="Grade or Classification" />
+              </div>
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="mb-0">
-              <label class="form-label">Grade</label>
-              <input type="text" class="form-control form-control-sm" v-model="education.grade"
-                     placeholder="Grade or Classification"/>
-            </div>
-          </div>
-        </div>
 
-        <div class="row mb-0">
-          <div class="col-md-6">
-            <div class="mb-0">
-              <label class="form-label">City</label>
-              <input type="text" class="form-control form-control-sm" v-model="education.city"
-                     placeholder="City"/>
+          <div class="row mb-0">
+            <div class="col-md-6">
+              <div class="mb-0">
+                <label class="form-label">City</label>
+                <input type="text" class="form-control form-control-sm" v-model="education.city"
+                       placeholder="City" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-0">
+                <label class="form-label">Country</label>
+                <input type="text" class="form-control form-control-sm" v-model="education.country"
+                       placeholder="Country" />
+              </div>
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="mb-0">
-              <label class="form-label">Country</label>
-              <input type="text" class="form-control form-control-sm" v-model="education.country"
-                     placeholder="Country"/>
-            </div>
-          </div>
-        </div>
 
-        <div class="row mb-0">
-          <div class="col-md-6">
-            <div class="mb-0">
-              <label class="form-label">From Date</label>
-              <input type="date" class="form-control form-control-sm" v-model="education.fromDate"/>
+          <div class="row mb-0">
+            <div class="col-md-6">
+              <div class="mb-0">
+                <label class="form-label">From Date</label>
+                <input type="date" class="form-control form-control-sm" v-model="education.fromDate" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-0">
+                <label class="form-label">To Date</label>
+                <input type="date" class="form-control form-control-sm" v-model="education.toDate"
+                       :disabled="education.isPresent" />
+              </div>
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="mb-0">
-              <label class="form-label">To Date</label>
-              <input type="date" class="form-control form-control-sm" v-model="education.toDate"
-                     :disabled="education.isPresent"/>
+
+          <div class="mb-0 form-check">
+            <input type="checkbox" class="form-check-input" v-model="education.isPresent" id="isPresent">
+            <label class="form-check-label" for="isPresent">Currently Studying Here</label>
+          </div>
+
+          <div class="mb-0">
+            <label class="form-label">Description</label>
+            <textarea class="form-control form-control-sm" v-model="education.description"
+                      placeholder="Describe your education details, achievements, or notable projects"></textarea>
+            <div class="d-flex justify-content-end">
+              <button @click="toggleModal" class="btn btn-sm btn-custom mt-2">
+                AI Writer
+              </button>
             </div>
           </div>
-        </div>
-
-        <div class="mb-0 form-check">
-          <input type="checkbox" class="form-check-input" v-model="education.isPresent"
-                 id="isPresent">
-          <label class="form-check-label" for="isPresent">Currently Studying Here</label>
-        </div>
-
-        <div class="mb-0">
-          <label class="form-label">Description</label>
-          <textarea class="form-control form-control-sm" v-model="education.description"
-                    placeholder="Describe your education details, achievements, or notable projects"></textarea>
-          <div class="d-flex justify-content-end">
-            <button @click="toggleModal" class="btn btn-sm btn-custom mt-2">
-              AI Writer
-            </button>
+          <div v-if="isModalVisible" class="modal fade show" style="display: block;">
+            <FeedbackForm @close="toggleModal" v-model="education.description" :sectionType=sectionType
+                          :section="education" :updated_resume="model" />
+            <div v-if="isModalVisible" class="modal-backdrop fade show"></div>
           </div>
         </div>
-        <div v-if="isModalVisible" class="modal fade show" style="display: block;">
-          <FeedbackForm @close="toggleModal" v-model="education.description" :sectionType=sectionType
-                        :section="education" :updated_resume="model"/>
-          <div v-if="isModalVisible" class="modal-backdrop fade show"></div>
-        </div>
-      </div>
+      </transition>
     </div>
 
   </div>

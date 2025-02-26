@@ -33,7 +33,7 @@
           <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
         </div>
       </div>
-
+      <transition name="slide">
       <div v-if="visibleIndexes[index]" class="card-body p-2">
         <div class="row mb-0">
           <div class="col-md-6">
@@ -61,6 +61,7 @@
           <input type="date" class="form-control form-control-sm" v-model="publication.date"/>
         </div>
       </div>
+      </transition>
     </div>
   </div>
 </template>

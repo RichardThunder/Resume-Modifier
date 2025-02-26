@@ -112,7 +112,7 @@ const toggleModal = () => {
           <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
         </div>
       </div>
-
+      <transition name="slide">
       <div v-if="visibleIndexes[index]" class="card-body p-2">
         <div class="mb-0">
           <label class="form-label">Award Name</label>
@@ -150,6 +150,7 @@ const toggleModal = () => {
         </div>
 
       </div>
+      </transition>
     </div>
   </div>
 </template>

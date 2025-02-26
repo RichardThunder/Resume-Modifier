@@ -33,6 +33,7 @@ function toggleShow() {
         <span class="ml-1">{{ isVisible ? '▲' : '▼' }}</span>
       </div>
     </div>
+    <transition name="slide">
     <div v-if="isVisible" class="card-body">
       <div class="row mb-0">
         <div class="col-md-6">
@@ -106,6 +107,7 @@ function toggleShow() {
         </div>
       </div>
     </div>
+      </transition>
   </div>
 </template>
 
@@ -116,6 +118,4 @@ function toggleShow() {
   font-size: 14px;
 }
 
-/* If you are using Vuetify in your project alongside Bootstrap,
-    adjust any conflicting styles for Vuetify components as needed. */
 </style>

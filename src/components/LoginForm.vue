@@ -29,6 +29,7 @@
           v-model="loginForm.password"
           :class="{ 'error': errors.password }"
           @focus="clearError('password')"
+          @keydown.enter="handleSubmit"
       />
       <span class="error-message" v-if="errors.password">{{ errors.password }}</span>
     </div>

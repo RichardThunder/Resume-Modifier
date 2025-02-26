@@ -32,7 +32,7 @@
           <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
         </div>
       </div>
-
+      <transition name="slide">
       <div v-if="visibleIndexes[index]" class="card-body p-2">
         <div class="mb-0">
           <label class="form-label">Certification Name</label>
@@ -79,6 +79,7 @@
           <div v-if="isModalVisible" class="modal-backdrop fade show"></div>
         </div>
       </div>
+      </transition>
     </div>
   </div>
 </template>
@@ -174,4 +175,5 @@ const toggleModal = () => {
 .btn-custom:focus {
   box-shadow: 0 0 0 0.2rem rgba(74, 149, 206, 0.5);
 }
+
 </style>
