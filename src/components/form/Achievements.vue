@@ -14,7 +14,7 @@ function addAchieve() {
 }
 
 function deleteAchieve() {
-  model.achievements = null; // 从 model.workExperience 中删除指定索引的项目
+  model.achievements =""; // 从 model.workExperience 中删除指定索引的项目
   isVisible.value = false;// 同步更新 visibleIndexes 的状态
 }
 </script>
