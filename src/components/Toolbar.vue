@@ -8,12 +8,19 @@
 
     <div v-else class="filename-edit d-flex align-items-center">
       <button class="btn btn-sm btn-success me-2" @click="disableEditing">
-        <img src="../assets/toolbar/save.svg" alt="save" class="me-1" style="width: 16px; height: 16px;"/>Save
+        <img src="../assets/toolbar/save.svg" alt="save" class="me-1" style="width: 16px; height: 16px;"/>
       </button>
       <input type="text" class="form-control form-control-sm file-name-input" ref="fileNameInput" v-model="fileName"
              @blur="disableEditing" @keyup.enter="disableEditing"/>
     </div>
-
+    <div>
+      <button class="btn btn-sm btn-custom me-4 " :disabled="history.length <= 1" @click="undo">
+        <img src="../assets/toolbar/material-symbols-light_undo.svg" alt="undo" class="m-auto"/>
+      </button>
+      <button class="btn btn-sm btn-custom me-4 " :disabled="future.length === 0" @click="redo">
+        <img src="../assets/toolbar/material-symbols-light_redo.svg" alt="redo" class="m-auto"/>
+      </button>
+    </div>
     <div>
       <button class="btn btn-sm btn-custom me-4" @click="toggleModalRM">
         <img src="../assets/toolbar/circum_export.svg" alt="upload Resume" class="me-1"
@@ -22,20 +29,16 @@
       <button class="btn btn-sm btn-custom me-4" @click="toggleModalJD">
         <img src="../assets/toolbar/circum_export.svg" alt="upload JD" class="me-1" style="width: 16px; height: 16px;"/>JD
       </button>
-      <button class="btn btn-sm btn-custom me-4 " :disabled="history.length <= 1" @click="undo">
-        <img src="../assets/toolbar/material-symbols-light_undo.svg" alt="undo" class="me-1"
-             style="width: 16px; height: 16px;"/>Undo
+
+      <button type="button" class="btn btn-custom me-4 px-2" style="padding-top: 2px; padding-bottom: 2px;" @click="saveResume" :disabled="isSaveLoading">
+        <span v-if="isSaveLoading" class="spinner-border spinner-border-sm"></span>
+        <i v-else-if="isSavedToServer" class="bi bi-check-lg" style="width: 16px; height: 16px;"></i>
+        <i v-else-if="isSavedToServerFailed" class="bi bi-exclamation-triangle-fill text-danger" style="width: 16px; height: 16px;"></i>
+        <i v-else class="bi bi-floppy" style="width: 16px; height: 16px;"></i>
       </button>
-      <button class="btn btn-sm btn-custom me-4" :disabled="future.length === 0" @click="redo">
-        <img src="../assets/toolbar/material-symbols-light_redo.svg" alt="redo" class="me-1"
-             style="width: 16px; height: 16px;"/>Redo
-      </button>
-      <button class="btn btn-sm btn-primary me-4" @click="saveResume">
-        <img src="../assets/toolbar/save.svg" alt="save" class="me-1" style="width: 16px; height: 16px;"/>Save
-      </button>
-      <button class="btn btn-sm btn-primary" @click="exportToPDF">
-        <img src="../assets/toolbar/material-symbols-light_download.svg" alt="export" class="me-1"
-             style="width: 16px; height: 16px;"/>Export PDF
+
+      <button class="btn btn-sm btn-custom me-4" @click="exportToPDF">
+        <i class="bi bi-download"></i>
       </button>
     </div>
   </div>
@@ -69,7 +72,7 @@
           <button type="button" class="btn btn-secondary" @click="toggleModalRM">Cancel</button>
           <button type="button" class="btn btn-primary" @click="submitDataRM" :disabled="isRMLoading">
             <span v-if="isRMLoading" class="spinner-border spinner-border-sm"></span>
-           Submit
+            Submit
           </button>
         </div>
       </div>
@@ -117,6 +120,7 @@ import {nextTick, ref, watch} from 'vue';
 import {cloneDeep} from 'lodash-es';
 import {getToken} from '@/utils/auth.js';
 import router from '@/router/index.js';
+import saveResumeService from '@/services/saveResumeService.js';
 
 const fileInput = ref(null);
 const isEditing = ref(false);
@@ -131,6 +135,10 @@ const future = ref([]); // 未来状态栈 (用于 redo)
 let ignoreChange = ref(false);
 const isRMLoading = ref(false);
 const isJDLoading = ref(false);
+const isSaveLoading = ref(false);
+const isSavedToServer = ref(false);
+const isSavedToServerFailed = ref(false);
+
 
 //监听model变化, 记录历史
 watch(model, (newModel) => {
@@ -304,31 +312,23 @@ const exportToPDF = async () => {
 };
 
 const saveResume = async () => {
-  const jwtToken = getToken('token');
-  if (!jwtToken) {
-    console.error('JWT token not found');
-    alert('You need to Login to continue');
-    await router.push({name: 'Login'});
+  isSaveLoading.value = true;
+  const result = await saveResumeService.save(fileName, model);
+  if (result.success) {
+    isSaveLoading.value = false;
+    isSavedToServer.value = true;
+    // 3秒后恢复为保存按钮
+    setTimeout(() => {
+      isSavedToServer.value = false;
+    }, 3000);
   } else {
-    try {
-      const response = await axios.put(
-          `${API_URL}/save_resume`,
-          model,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${jwtToken}`
-            }
-          }
-      );
-      if (response.data.status === 200) {
-        console.log('Data saved successfully:', response.data);
-      } else {
-        console.error('Error saving data:', response.data);
-      }
-    } catch (error) {
-      console.error('Error saving data:', error);
-    }
+    // 处理失败的情况
+    isSaveLoading.value = false;
+    isSavedToServerFailed.value = true;
+    // 3秒后恢复为保存按钮
+    setTimeout(() => {
+      isSavedToServerFailed.value = false;
+    }, 3000);
   }
 };
 
@@ -349,7 +349,6 @@ const saveResume = async () => {
   width: auto;
   flex-shrink: 0; /* Prevent input from shrinking */
 }
-
 
 
 /* Custom button style */
