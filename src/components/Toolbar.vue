@@ -121,6 +121,7 @@ import {cloneDeep} from 'lodash-es';
 import {getToken} from '@/utils/auth.js';
 import router from '@/router/index.js';
 import saveResumeService from '@/services/saveResumeService.js';
+import {reAssign} from "@/methods.js";
 
 const fileInput = ref(null);
 const isEditing = ref(false);
@@ -210,20 +211,13 @@ const submitDataRM = async () => {
         {
           headers: {
             'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${getToken('token')}`
+            'Authorization': `Bearer ${jwtToken}`
           }
-
         });
     if (response.data.status === 200) {
       console.log('Data received from server:', response.data);
       fileName.value = selectedFile.value.name;
-      // 1) 先删除旧属性
-      Object.keys(model).forEach(key => {
-        delete model[key];
-      });
-      // 2) 把 newData 的属性合并进来
-      Object.assign(model, response.data.data);
-      console.log(model);
+      reAssign(model, response.data.data);
       // convertModel(model,textToHtml);
     } else {
       alert('Failed to upload data. Please try again.');

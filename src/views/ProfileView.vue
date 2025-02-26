@@ -213,7 +213,6 @@ const saveProfile = () => {
 };
 
 const getProfile = async () => {
-  /*
   const jwtToken = getToken('token');
   if (!jwtToken) {
     console.error('JWT token not found');
@@ -236,23 +235,19 @@ const getProfile = async () => {
     }
   } catch (error) {
     console.error('Error fetching profile:', error);
-  }*/
-  const simulatedResponse = {
-    status: 200,
-    data: {
-      first_name: 'John',
-      last_name: 'Doe',
-      title: 'Software Developer',
-      email: 'john.doe@example.com',
-      city: 'New York',
-      country: 'USA',
-      bio: 'Passionate software developer with experience in Vue.js and web development.'
-    }
-  };
-  if (simulatedResponse.status === 200) {
+    const simulatedResponse = {
+      status: 200,
+      data: {
+        first_name: 'John',
+        last_name: 'Example',
+        title: 'Example Software Developer',
+        email: 'Example john.doe@example.com',
+        city: 'New York',
+        country: 'USA',
+        bio: 'Example Bio'
+      }
+    };
     Object.assign(profile, simulatedResponse.data);
-  } else {
-    console.error('Failed to fetch profile');
   }
 };
 
@@ -292,8 +287,7 @@ const setProfile = async () => {
 };
 
 const fetchResumeHistory = async () => {
-  /*const jwtToken = getToken();
-  const jwtToken = getToken('token');
+  const jwtToken = getToken();
   if (!jwtToken) {
     console.error('JWT token not found');
     alert('You need to Login to continue');
@@ -314,7 +308,8 @@ const fetchResumeHistory = async () => {
     }
   } catch (error) {
     console.error('Failed to fetch resume history:',error);
-  }*/
+
+  }
 
   // Simulated data for demonstration purposes
   const simulatedResponse = {
@@ -351,7 +346,6 @@ const fetchResumeHistory = async () => {
 onMounted(() => {
   getProfile();
   fetchResumeHistory();
-
 });
 
 const viewResume = async (resumeId) => {

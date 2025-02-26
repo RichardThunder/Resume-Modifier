@@ -98,7 +98,7 @@ const validateForm = () => {
 const clearError = (field) => {
   errors[field] = '';
 };
-const emit = defineEmits();
+const emit = defineEmits(['register']);
 
 const handleSubmit = async () => {
   if (!validateForm()) {

@@ -4,7 +4,7 @@ import { analysis, model } from '@/model.js';
 import { scoreToColors } from '@/methods.js';
 
 const isVisible = ref(true);
-
+const sectionType = ref('userInfo');
 function toggleShow() {
   isVisible.value = !isVisible.value;
   console.log(model.userInfo);
@@ -34,71 +34,71 @@ function toggleShow() {
       </div>
     </div>
     <div v-if="isVisible" class="card-body">
-      <div class="row mb-3">
+      <div class="row mb-0">
         <div class="col-md-6">
-          <div class="mb-3">
+          <div class="mb-0">
             <label class="form-label">First Name</label>
             <input type="text" class="form-control" v-model="model.userInfo.firstName"
                    placeholder="First Name" />
           </div>
         </div>
         <div class="col-md-6">
-          <div class="mb-3">
+          <div class="mb-0">
             <label class="form-label">Last Name</label>
             <input type="text" class="form-control" v-model="model.userInfo.lastName"
                    placeholder="Last Name" />
           </div>
         </div>
       </div>
-      <div class="row mb-3">
+      <div class="row mb-0">
         <div class="col-md-12">
-          <div class="mb-3">
+          <div class="mb-0">
             <label class="form-label">HeadLine</label>
             <input type="text" class="form-control" v-model="model.userInfo.headLine"
                    placeholder="job title or role" />
           </div>
         </div>
       </div>
-      <div class="row mb-3">
+      <div class="row mb-0">
         <div class="col-md-6">
-          <div class="mb-3">
+          <div class="mb-0">
             <label class="form-label">Phone Number</label>
             <input type="text" class="form-control" v-model="model.userInfo.phoneNumber"
                    placeholder="Phone Number" />
           </div>
         </div>
         <div class="col-md-6">
-          <div class="mb-3">
+          <div class="mb-0">
             <label class="form-label">Email</label>
             <input type="text" class="form-control" v-model="model.userInfo.email" placeholder="Email" />
           </div>
         </div>
       </div>
-      <div class="row mb-3">
+      <div class="row mb-0">
         <div class="col-md-6">
-          <div class="mb-3">
+          <div class="mb-0">
             <label class="form-label">City</label>
             <input type="text" class="form-control" v-model="model.userInfo.city" placeholder="City" />
           </div>
         </div>
         <div class="col-md-6">
-          <div class="mb-3">
+          <div class="mb-0">
             <label class="form-label">Country</label>
             <input type="text" class="form-control" v-model="model.userInfo.country"
                    placeholder="Country" />
           </div>
         </div>
       </div>
-      <div class="row mb-3">
+      <div class="row mb-0">
         <div class="col-md-6">
-          <div class="mb-3">
+          <div class="mb-0">
             <label class="form-label">LinkedIn URL</label>
             <input type="text" class="form-control" v-model="model.userInfo.linkedInURL"
                    placeholder="LinkedIn URL" />
           </div>
         </div>
         <div class="col-md-6">
-          <div class="mb-3">
+          <div class="mb-0">
             <label class="form-label">Other Profile URL</label>
             <input type="text" class="form-control"
                    v-model="model.userInfo.websiteOrOtherProfileURL" placeholder="Other Profile URL" />

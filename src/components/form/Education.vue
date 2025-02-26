@@ -1,9 +1,11 @@
 <script setup>
-import { ref, watch } from 'vue';
-import { analysis, model } from '@/model.js';
-import { feedBack, scoreToColors } from '@/methods.js';
+import {ref, watch} from 'vue';
+import {analysis, model} from '@/model.js';
+import {feedBack, scoreToColors} from '@/methods.js';
+import FeedbackForm from "@/components/FeedbackForm.vue";
 
 const visibleIndexes = ref([]);
+const sectionType = ref('education');
 
 function toggleShow(index) {
   visibleIndexes.value[index] = !visibleIndexes.value[index];
@@ -25,7 +27,7 @@ watch(
     () => {
       initializeVisibility();
     },
-    { deep: true }
+    {deep: true}
 );
 
 initializeVisibility();
@@ -80,12 +82,12 @@ const toggleModal = () => {
 
 <template>
   <div class="mb-3 mx-auto w-90">
-    <div class="d-flex justify-content-between align-items-center mb-2">
+    <div class="d-flex justify-content-between align-items-center mb-1">
       <h2 class="section-title">🎓 Education</h2>
       <button @click="addEducation" class="btn btn-sm btn-custom me-4">Add</button>
     </div>
 
-    <div v-for="(education, index) in model.education" :key="index" class="card mb-2">
+    <div v-for="(education, index) in model.education" :key="index" class="card mb-1">
       <div class="card-header d-flex justify-content-between align-items-center p-2" @click="toggleShow(index)"
            style="cursor: pointer;">
         <span>Education #{{ index + 1 }}</span>
@@ -112,111 +114,97 @@ const toggleModal = () => {
       </div>
 
       <div v-if="visibleIndexes[index]" class="card-body p-2">
-        <div class="row mb-2">
+        <div class="row mb-0">
           <div class="col-md-6">
-            <div class="mb-2">
+            <div class="mb-0">
               <label class="form-label">Institution Name</label>
               <input type="text" class="form-control form-control-sm" v-model="education.institutionName"
-                     placeholder="Institution Name" />
+                     placeholder="Institution Name"/>
             </div>
           </div>
           <div class="col-md-6">
-            <div class="mb-2">
+            <div class="mb-0">
               <label class="form-label">Field of Study</label>
               <input type="text" class="form-control form-control-sm" v-model="education.fieldOfStudy"
-                     placeholder="Field of Study" />
+                     placeholder="Field of Study"/>
             </div>
           </div>
         </div>
 
-        <div class="row mb-2">
+        <div class="row mb-0">
           <div class="col-md-6">
-            <div class="mb-2">
+            <div class="mb-0">
               <label class="form-label">Degree</label>
               <input type="text" class="form-control form-control-sm" v-model="education.degree"
-                     placeholder="Degree" />
+                     placeholder="Degree"/>
             </div>
           </div>
           <div class="col-md-6">
-            <div class="mb-2">
+            <div class="mb-0">
               <label class="form-label">Grade</label>
               <input type="text" class="form-control form-control-sm" v-model="education.grade"
-                     placeholder="Grade or Classification" />
+                     placeholder="Grade or Classification"/>
             </div>
           </div>
         </div>
 
-        <div class="row mb-2">
+        <div class="row mb-0">
           <div class="col-md-6">
-            <div class="mb-2">
+            <div class="mb-0">
               <label class="form-label">City</label>
               <input type="text" class="form-control form-control-sm" v-model="education.city"
-                     placeholder="City" />
+                     placeholder="City"/>
             </div>
           </div>
           <div class="col-md-6">
-            <div class="mb-2">
+            <div class="mb-0">
               <label class="form-label">Country</label>
               <input type="text" class="form-control form-control-sm" v-model="education.country"
-                     placeholder="Country" />
+                     placeholder="Country"/>
             </div>
           </div>
         </div>
 
-        <div class="row mb-2">
+        <div class="row mb-0">
           <div class="col-md-6">
-            <div class="mb-2">
+            <div class="mb-0">
               <label class="form-label">From Date</label>
-              <input type="date" class="form-control form-control-sm" v-model="education.fromDate" />
+              <input type="date" class="form-control form-control-sm" v-model="education.fromDate"/>
             </div>
           </div>
           <div class="col-md-6">
-            <div class="mb-2">
+            <div class="mb-0">
               <label class="form-label">To Date</label>
               <input type="date" class="form-control form-control-sm" v-model="education.toDate"
-                     :disabled="education.isPresent" />
+                     :disabled="education.isPresent"/>
             </div>
           </div>
         </div>
 
-        <div class="mb-2 form-check">
+        <div class="mb-0 form-check">
           <input type="checkbox" class="form-check-input" v-model="education.isPresent"
                  id="isPresent">
           <label class="form-check-label" for="isPresent">Currently Studying Here</label>
         </div>
 
-        <div class="mb-2">
+        <div class="mb-0">
           <label class="form-label">Description</label>
           <textarea class="form-control form-control-sm" v-model="education.description"
                     placeholder="Describe your education details, achievements, or notable projects"></textarea>
-          <button @click="toggleModal" class="btn btn-primary btn-sm float-end mt-1">
-            AI Writer
-          </button>
+          <div class="d-flex justify-content-end">
+            <button @click="toggleModal" class="btn btn-sm btn-custom mt-2">
+              AI Writer
+            </button>
+          </div>
+        </div>
+        <div v-if="isModalVisible" class="modal fade show" style="display: block;">
+          <FeedbackForm @close="toggleModal" v-model="education.description" :sectionType=sectionType
+                        :section="education" :updated_resume="model"/>
+          <div v-if="isModalVisible" class="modal-backdrop fade show"></div>
         </div>
       </div>
     </div>
 
-    <div v-if="isModalVisible" class="modal fade show" style="display: block;">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div v-if="loading" class="modal-body text-center py-3">
-            <div class="spinner-border" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>
-          </div>
-          <div v-else class="modal-body py-3">
-            <h5 class="modal-title">Enter Feedback</h5>
-            <textarea class="form-control form-control-sm mb-2" v-model="data.feedback"
-                      placeholder="Enter your feedback..." rows="3"></textarea>
-            <div class="d-flex justify-content-between">
-              <button class="btn btn-secondary btn-sm" @click="toggleModal">Cancel</button>
-              <button class="btn btn-primary btn-sm" @click="handleFeedBack(index)">Submit</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div v-if="isModalVisible" class="modal-backdrop fade show"></div>
   </div>
 </template>
 
@@ -235,14 +223,17 @@ const toggleModal = () => {
   transform: scale(1.1);
   transition: transform 0.2s ease;
 }
+
 .btn-custom {
   background-color: #4a95ce;
   color: white;
   border: none;
 }
+
 .btn-custom:hover {
   background-color: #357ab5;
 }
+
 .btn-custom:focus {
   box-shadow: 0 0 0 0.2rem rgba(74, 149, 206, 0.5);
 }

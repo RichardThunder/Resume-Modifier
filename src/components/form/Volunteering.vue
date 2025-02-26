@@ -1,10 +1,109 @@
+<template>
+  <div class="mb-3 mx-auto w-90">
+    <div class="d-flex justify-content-between align-items-center mb-1">
+      <h2 class="section-title">🌟 Volunteering</h2>
+      <button @click="addVolunteer" class="btn btn-sm btn-custom me-4">Add</button>
+    </div>
+
+    <div v-for="(volunteering, index) in model.volunteering" :key="index" class="card mb-1">
+      <div class="card-header d-flex justify-content-between align-items-center p-2"
+           @click="toggleShow(index)" style="cursor: pointer;">
+        <span>Volunteering #{{ index + 1 }}</span>
+        <div class="d-flex align-items-center">
+          <v-tooltip v-if="analysis.volunteering[index]?.score"
+                     :text="analysis.volunteering[index]?.comment"
+                     location="bottom"
+                     max-width="500px"
+                     close-delay="200"
+          >
+            <template v-slot:activator="{ props }">
+              <span v-bind="props">
+                <v-progress-circular :size="35" :width="4"
+                                     :model-value="analysis.volunteering[index]?.score"
+                                     :color="scoreToColors(analysis.volunteering[index]?.score)">
+                  <template v-slot:default>
+                    <span class="score">{{ analysis.volunteering[index]?.score }}</span>
+                  </template>
+                </v-progress-circular>
+              </span>
+            </template>
+          </v-tooltip>
+          <img class="delete-block ms-1" src="../../assets/block-delete.svg" alt="delete"
+               @click="deleteVolunteer(index)">
+          <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
+        </div>
+      </div>
+
+      <div v-if="visibleIndexes[index]" class="card-body p-2">
+        <div class="mb-0">
+          <label class="form-label">Volunteer Organization/Event</label>
+          <input type="text" class="form-control form-control-sm" v-model="volunteering.name"
+                 placeholder="Name of the Organization/Event"/>
+        </div>
+        <div class="mb-0">
+          <label class="form-label">Your Role</label>
+          <input type="text" class="form-control form-control-sm" v-model="volunteering.role"
+                 placeholder="Your Role in Volunteering"/>
+        </div>
+        <div class="row mb-0">
+          <div class="col-md-6">
+            <div class="mb-0">
+              <label class="form-label">City</label>
+              <input type="text" class="form-control form-control-sm" v-model="volunteering.city"
+                     placeholder="City"/>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-0">
+              <label class="form-label">Country</label>
+              <input type="text" class="form-control form-control-sm" v-model="volunteering.country"
+                     placeholder="Country"/>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-0">
+          <div class="col-md-6">
+            <div class="mb-0">
+              <label class="form-label">From Date</label>
+              <input type="date" class="form-control form-control-sm" v-model="volunteering.fromDate"/>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-0">
+              <label class="form-label">To Date</label>
+              <input type="date" class="form-control form-control-sm" v-model="volunteering.toDate">
+            </div>
+          </div>
+        </div>
+        <div class="mb-0">
+          <label class="form-label">Description</label>
+          <textarea class="form-control form-control-sm" v-model="volunteering.description"
+                    placeholder="Describe the volunteering work, responsibilities, and achievements"></textarea>
+          <div class="d-flex justify-content-end">
+            <button @click="toggleModal" class="btn btn-sm btn-custom mt-2">
+              AI Writer
+            </button>
+          </div>
+        </div>
+        <div v-if="isModalVisible" class="modal fade show" style="display: block;">
+          <FeedbackForm @close="toggleModal" v-model="volunteering.description" :sectionType="sectionType"
+                        :section="volunteering" :updated_resume="model"/>
+          <div v-if="isModalVisible" class="modal-backdrop fade show"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
 <script setup>
-import {ref, watch} from 'vue';
-import {analysis, model} from '../../model.js';
-import {feedBack, scoreToColors} from '../../methods.js';
+import { ref, watch } from 'vue';
+import { analysis, model } from '@/model.js';
+import { feedBack, scoreToColors } from '@/methods.js';
+import FeedbackForm from "@/components/FeedbackForm.vue";
 
 // 控制每个组件的显示/隐藏状态
 const visibleIndexes = ref([]);
+const sectionType = ref('volunteering');
 
 // 切换指定组件的显示/隐藏状态
 function toggleShow(index) {
@@ -22,6 +121,7 @@ function initializeVisibility() {
     }
   }
 }
+
 watch(
     () => model.volunteering,
     () => {
@@ -44,6 +144,7 @@ function addVolunteer() {
   });
   visibleIndexes.value.push(true);
 }
+
 function deleteVolunteer(index) {
   model.volunteering.splice(index, 1); // 从 model.workExperience 中删除指定索引的项目
   visibleIndexes.value.splice(index, 1); // 同步更新 visibleIndexes 的状态
@@ -51,7 +152,7 @@ function deleteVolunteer(index) {
 
 // feedback with array
 const isModalVisible = ref(false);
-const handleFeedBack = async (index) =>{
+const handleFeedBack = async (index) => {
   loading.value = true;
   console.log(data.feedback);
 
@@ -59,115 +160,52 @@ const handleFeedBack = async (index) =>{
   try {
     data.section = model.volunteering[index].description;
     const content = await feedBack(data);
-    if(!content){
+    if (!content) {
       loading.value = false;
       return;
     }
     model.volunteering[index].description = content;
-  }catch (e){
+  } catch (e) {
     console.error("Error load feedback");
-  }
-  finally{
-    loading.value=false;
+  } finally {
+    loading.value = false;
     // toggleModal();
   }
   loading.value = true;
 }
 const loading = ref(false);
-const toggleModal = ()=> {
+const toggleModal = () => {
   isModalVisible.value = !isModalVisible.value;
 }
 </script>
 
-<template>
-    <div class="block-header">
-      <h2 class="section-title">🌟 Volunteering</h2>
-      <button @click="addVolunteer" class="add-button">Add</button>
-    </div>
-
-
-    <div v-for="(volunteering, index) in model.volunteering" :key="index" class="blockComponent">
-      <h3 @click="toggleShow(index)" class="toggle-header">
-        <span>Volunteering #{{ index + 1 }}</span>
-        <div class="block-utils">
-          <v-tooltip v-if="analysis.volunteering[index]?.score"
-                     :text="analysis.volunteering[index]?.comment"
-                     location="bottom"
-                     max-width="500px"
-                     close-delay="200"
-          >
-            <template v-slot:activator="{ props }">
-              <span v-bind="props">
-                <v-progress-circular :size="45" :width="5" :model-value="analysis.volunteering[index]?.score" :color="scoreToColors(analysis.volunteering[index]?.score)">
-                  <template v-slot:default> <span class="score">{{analysis.volunteering[index]?.score}}</span></template>
-                </v-progress-circular>
-              </span>
-            </template>
-          </v-tooltip>
-          <img class="delete-block" src="../../assets/block-delete.svg" @click="deleteVolunteer(index)">
-          <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
-        </div>
-      </h3>
-      <!-- 表单内容 -->
-      <div v-if="visibleIndexes[index]" class="form-container">
-        <div class="form-group">
-          <label>Volunteer Organization/Event</label>
-          <input type="text" v-model="volunteering.name" placeholder="Name of the Organization/Event"/>
-        </div>
-        <div class="form-group">
-          <label>Your Role</label>
-          <input type="text" v-model="volunteering.role" placeholder="Your Role in Volunteering"/>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>City</label>
-            <input type="text" v-model="volunteering.city" placeholder="City"/>
-          </div>
-          <div class="form-group">
-            <label>Country</label>
-            <input type="text" v-model="volunteering.country" placeholder="Country"/>
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>From Date</label>
-            <input type="date" v-model="volunteering.fromDate"/>
-          </div>
-          <div class="form-group">
-            <label>To Date</label>
-            <input type="date" v-model="volunteering.toDate">
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Description</label>
-          <textarea
-              v-model="volunteering.description"
-              placeholder="Describe the volunteering work, responsibilities, and achievements"
-          ></textarea>
-          <button
-              @click="toggleModal"
-              class="AI-writer align-right">
-            <span>AI Writer</span>
-          </button>
-        </div>
-        <div v-if="isModalVisible" class="modal-overlay">
-          <div v-if="loading" class="spinner-overlay">
-            <div class="spinner"></div>
-          </div>
-          <div v-else class="modal">
-            <h3>Enter Feedback</h3>
-            <textarea v-model="data.feedback" placeholder="Enter your feedback..."></textarea>
-            <div style="display: flex;justify-content: space-between">
-              <button  class="AI-writer" @click="toggleModal">Cancel</button>
-              <button  class="AI-writer" @click="handleFeedBack(index)">Submit</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-</template>
-
 <style scoped>
+.section-title {
+  margin-bottom: 0;
+}
 
+.delete-block {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+
+.delete-block:hover {
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
+}
+
+.btn-custom {
+  background-color: #4a95ce;
+  color: white;
+  border: none;
+}
+
+.btn-custom:hover {
+  background-color: #357ab5;
+}
+
+.btn-custom:focus {
+  box-shadow: 0 0 0 0.2rem rgba(74, 149, 206, 0.5);
+}
 </style>

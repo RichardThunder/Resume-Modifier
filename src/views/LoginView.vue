@@ -3,7 +3,7 @@
  * @Date: 2025-01-31 22:46:48
  * @LastEditors: Richard yuetingpei888@gmail.com
  * @LastEditTime: 2025-01-31 23:25:52
- * @FilePath: /Resume-Modifier/src/views/LoginPage.vue
+ * @FilePath: /Resume-Modifier/src/views/LoginView.vue
  * @Description: 
  * 
 -->

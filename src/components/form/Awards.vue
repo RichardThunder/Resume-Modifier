@@ -1,8 +1,10 @@
 <script setup>
 import {ref, watch} from 'vue';
-import {analysis, data, model} from '../../model.js';
-import {feedBack, scoreToColors} from '../../methods.js';
+import {analysis, data, model} from '@/model.js';
+import {feedBack, scoreToColors} from '@/methods.js';
+import FeedbackForm from "@/components/FeedbackForm.vue";
 
+const sectionType = ref('award');
 // 控制每个组件的显示/隐藏状态
 const visibleIndexes = ref([]);
 
@@ -14,12 +16,13 @@ function toggleShow(index) {
 // 初始化 visibleIndexes 的状态
 function initializeVisibility() {
   if (model.award?.length > 0) {
-  while (visibleIndexes.value.length < model.award.length) {
-    visibleIndexes.value.push(false); // 新增的默认值为 false
+    while (visibleIndexes.value.length < model.award.length) {
+      visibleIndexes.value.push(false); // 新增的默认值为 false
+    }
+    if (visibleIndexes.value.length > model.award.length) {
+      visibleIndexes.value.splice(model.award.length);
+    }
   }
-  if (visibleIndexes.value.length > model.award.length) {
-    visibleIndexes.value.splice(model.award.length);
-  }}
 }
 
 watch(
@@ -27,7 +30,7 @@ watch(
     () => {
       initializeVisibility();
     },
-    { deep: true } // 深度监听以捕获数组内容的变化
+    {deep: true} // 深度监听以捕获数组内容的变化
 );
 // 初始化显示状态
 initializeVisibility();
@@ -42,6 +45,7 @@ function addAwards() {
   });
   visibleIndexes.value.push(true);
 }
+
 function deleteAward(index) {
   model.award.splice(index, 1);
   visibleIndexes.value.splice(index, 1); // 同步更新 visibleIndexes 的状态
@@ -49,7 +53,7 @@ function deleteAward(index) {
 
 // feedback with array
 const isModalVisible = ref(false);
-const handleFeedBack = async (index) =>{
+const handleFeedBack = async (index) => {
   loading.value = true;
   console.log(data.feedback);
 
@@ -57,100 +61,112 @@ const handleFeedBack = async (index) =>{
   try {
     data.section = model.award[index].description;
     const content = await feedBack(data);
-    if(!content){
+    if (!content) {
       loading.value = false;
       return;
     }
     model.award[index].description = content;
-  }catch (e){
+  } catch (e) {
     console.error("Error load feedback");
-  }
-  finally{
-    loading.value=false;
+  } finally {
+    loading.value = false;
     // toggleModal();
   }
   loading.value = true;
 }
 const loading = ref(false);
-const toggleModal = ()=> {
+const toggleModal = () => {
   isModalVisible.value = !isModalVisible.value;
 }
 </script>
 
 <template>
-  <div class="block-header">
-    <h2 class="section-title">🏅 Awards</h2>
-    <button @click="addAwards" class="add-button">Add</button>
-  </div>
-  <div v-for="(award, index) in model.award" :key="index" class="blockComponent">
-    <h3 @click="toggleShow(index)" class="toggle-header">
-      <span>Award #{{ index + 1 }}</span>
-      <div class="block-utils">
-        <v-tooltip v-if="analysis.award[index]?.score"
-                   :text="analysis.award[index]?.comment"
-                   location="bottom"
-                   max-width="500px"
-                   close-delay="200"
-        >
-          <template v-slot:activator="{ props }">
+  <div class="mb-3 mx-auto w-90">
+    <div class="d-flex justify-content-between align-items-center mb-1">
+      <h2 class="section-title">🏅 Awards</h2>
+      <button @click="addAwards" class="btn btn-sm btn-custom me-4">Add</button>
+    </div>
+
+    <div v-for="(award, index) in model.award" :key="index" class="card mb-1">
+      <div class="card-header d-flex justify-content-between align-items-center p-2"
+           @click="toggleShow(index)" style="cursor: pointer;">
+        <span>Award #{{ index + 1 }}</span>
+        <div class="d-flex align-items-center">
+          <v-tooltip v-if="analysis.award[index]?.score"
+                     :text="analysis.award[index]?.comment"
+                     location="bottom"
+                     max-width="500px"
+                     close-delay="200"
+          >
+            <template v-slot:activator="{ props }">
               <span v-bind="props">
-                <v-progress-circular :size="45" :width="5" :model-value="analysis.award[index]?.score" :color="scoreToColors(analysis.award[index]?.score)">
-                  <template v-slot:default> <span class="score">{{analysis.award[index]?.score}}</span></template>
+                <v-progress-circular :size="35" :width="4" :model-value="analysis.award[index]?.score"
+                                     :color="scoreToColors(analysis.award[index]?.score)">
+                  <template v-slot:default> <span class="score">{{ analysis.award[index]?.score }}</span></template>
                 </v-progress-circular>
               </span>
-          </template>
-        </v-tooltip>
-        <img class="delete-block" src="../../assets/block-delete.svg" @click="deleteAward(index)">
-        <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
-      </div>
-    </h3>
-  <!-- 表单内容 -->
-  <div v-if="visibleIndexes[index]" class="form-container">
-    <div class="form-group">
-      <label>Award Name</label>
-      <input type="text" v-model="award.name" placeholder="Name of the Award"/>
-    </div>
-    <div class="form-group">
-      <label>Issuer</label>
-      <input type="text" v-model="award.issuer" placeholder="Organization Issuing the Award"/>
-    </div>
-    <div class="form-group">
-      <label>URL to Award</label>
-      <input type="url" v-model="award.urlToAward" placeholder="Award URL"/>
-    </div>
-    <div class="form-group">
-      <label>Date of Award</label>
-      <input type="date" v-model="award.dateOfAward"/>
-    </div>
-    <div class="form-group">
-      <label>Description</label>
-      <textarea
-          v-model="award.description"
-          placeholder="Describe the award and why it was given"
-      ></textarea>
-      <button
-          @click="toggleModal"
-          class="AI-writer align-right">
-        <span>AI Writer</span>
-      </button>
-    </div>
-    <div v-if="isModalVisible" class="modal-overlay">
-      <div v-if="loading" class="spinner-overlay">
-        <div class="spinner"></div>
-      </div>
-      <div v-else class="modal">
-        <h3>Enter Feedback</h3>
-        <textarea v-model="data.feedback" placeholder="Enter your feedback..."></textarea>
-        <div style="display: flex;justify-content: space-between">
-          <button  class="AI-writer" @click="toggleModal">Cancel</button>
-          <button  class="AI-writer" @click="handleFeedBack(index)">Submit</button>
+            </template>
+          </v-tooltip>
+          <img class="delete-block ms-1" src="../../assets/block-delete.svg" alt="delete"
+               @click="deleteAward(index)">
+          <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
         </div>
       </div>
+
+      <div v-if="visibleIndexes[index]" class="card-body p-2">
+        <div class="mb-0">
+          <label class="form-label">Award Name</label>
+          <input type="text" class="form-control form-control-sm" v-model="award.name"
+                 placeholder="Name of the Award"/>
+        </div>
+        <div class="mb-0">
+          <label class="form-label">Issuer</label>
+          <input type="text" class="form-control form-control-sm" v-model="award.issuer"
+                 placeholder="Organization Issuing the Award"/>
+        </div>
+        <div class="mb-0">
+          <label class="form-label">URL to Award</label>
+          <input type="url" class="form-control form-control-sm" v-model="award.urlToAward"
+                 placeholder="Award URL"/>
+        </div>
+        <div class="mb-0">
+          <label class="form-label">Date of Award</label>
+          <input type="date" class="form-control form-control-sm" v-model="award.dateOfAward"/>
+        </div>
+        <div class="mb-0">
+          <label class="form-label">Description</label>
+          <textarea class="form-control form-control-sm" v-model="award.description"
+                    placeholder="Describe the award and why it was given"></textarea>
+          <div class="d-flex justify-content-end">
+            <button @click="toggleModal" class="btn btn-sm btn-custom mt-2">
+              AI Writer
+            </button>
+          </div>
+        </div>
+        <div v-if="isModalVisible" class="modal fade show" style="display: block;">
+          <FeedbackForm @close="toggleModal" v-model="award.description" :sectionType="sectionType"
+                        :section="award" :updated_resume="model"/>
+          <div v-if="isModalVisible" class="modal-backdrop fade show"></div>
+        </div>
+
+      </div>
     </div>
-  </div>
   </div>
 </template>
 
 <style scoped>
 
+.btn-custom {
+  background-color: #4a95ce;
+  color: white;
+  border: none;
+}
+
+.btn-custom:hover {
+  background-color: #357ab5;
+}
+
+.btn-custom:focus {
+  box-shadow: 0 0 0 0.2rem rgba(74, 149, 206, 0.5);
+}
 </style>

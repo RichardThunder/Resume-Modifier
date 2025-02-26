@@ -9,9 +9,9 @@
  */
 import { createRouter, createWebHistory } from "vue-router";
 import { isAuthenticated } from "../utils/auth";
-import LoginPage from '@/views/LoginPage.vue';
+import LoginView from '@/views/LoginView.vue';
 import ResumeView from '@/views/ResumeView.vue';
-import ProfilePage from '@/views/ProfilePage.vue';
+import ProfileView from '@/views/ProfileView.vue';
 import TemplateView from '@/views/TemplateView.vue';
 import RegisterView from '@/views/RegisterView.vue';
 import HomeView from '@/views/HomeView.vue';
@@ -20,7 +20,7 @@ const routes=[
   {
     path: '/login',
     name: 'Login',
-    component: LoginPage
+    component: LoginView
   },
   {
     path: '/',
@@ -65,7 +65,7 @@ const routes=[
   {
     path: '/profile',
     name: 'Profile',
-    component: ProfilePage,
+    component: ProfileView,
     beforeEnter:(to,from,next)=>{
       if(!isAuthenticated()){
         console.log('Please login first');
