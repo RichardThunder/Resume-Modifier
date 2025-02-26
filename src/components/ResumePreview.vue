@@ -1084,18 +1084,18 @@ function formattedDescription(description) {
     }
   }
 // 1. 按换行符拆分文本
-  const lines = description.split('\n').map(line => line.trim()).filter(line => line !== '');
+  let lines = description.split('\n').map(line => line.trim()).filter(line => line !== '');
 
-  // 2. 对每一行添加 '•'，并确保不重复添加
-  const formattedLines = lines.map(line => {
-    if (!line.startsWith('•')) {
-      return `• ${line}`;
+  // 2. 去除每行开头的 "•" 符号
+  lines = lines.map(line => {
+    if (line.startsWith('•')) {
+      return line.substring(1).trim(); // 去除 "•" 及其后的空格
     }
-    return line;  // 如果已经有了 '•' 符号，就不再添加
+    return line;
   });
 
   // 3. 将每行包装成 <li> 标签并返回
-  return formattedLines.map(line => `<li style="line-height: 1.2; margin-bottom: 5px;">${line}</li>`).join('');
+  return lines.map(line => `<li style="line-height: 1.2; margin-bottom: 5px;">${line}</li>`).join('');
 
 }
 
@@ -1346,7 +1346,7 @@ input, textarea {
 }
 
 .resume-section ul {
-  list-style-type: outside;
+
   padding: 0;
 }
 

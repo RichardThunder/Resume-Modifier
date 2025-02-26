@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, reactive, onMounted } from 'vue';
+import { ref, watch,onMounted } from 'vue';
 import { analysis, model } from '@/model.js';
 import { scoreToColors } from '@/methods.js';
 import FeedbackForm from "@/components/FeedbackForm.vue";
