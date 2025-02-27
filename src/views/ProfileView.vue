@@ -297,8 +297,10 @@ const fetchResumeHistory = async () => {
   try {
     const response = await axios.get(`${API_URL}/get_resume_list`,
         {
-          headers: {'Content-Type': 'multipart/form-data'},
-          withCredentials: true
+          headers: {
+            'Authorization': `Bearer ${jwtToken}`,
+          }
+
         });
     if (response.status === 200) {
       response.data.forEach(resume => {
