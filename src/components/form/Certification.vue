@@ -10,6 +10,7 @@ const visibleIndexes = ref([]);
 const draggingIndex = ref(null);
 const skillsListRef = ref(null);
 const isDragOver = ref(null);
+const showDragHint = ref(false);
 
 // 切换指定组件的显示/隐藏状态
 function toggleShow(index) {
@@ -49,6 +50,10 @@ function addCertification() {
     description: ''
   });
   visibleIndexes.value.push(true);
+  showDragHint.value = true;
+  setTimeout(() => {
+    showDragHint.value = false;
+  }, 3000);
 }
 
 function deleteCertification(index) {
@@ -127,36 +132,22 @@ onMounted(() => {
       <h2 class="section-title">📜 Certifications</h2>
       <button @click="addCertification" class="btn btn-sm btn-custom me-4">Add</button>
     </div>
-
+    <div v-if="showDragHint" class="alert alert-success pt-2">
+      <strong>Drag</strong> and <strong>drop</strong> to reorder certifications entries.
+    </div>
     <div class="education-list" ref="skillsListRef">
-      <div
-          v-for="(certification, index) in model.certifications"
-          :key="index"
-          class="card mb-1"
-      >
-        <div
-            class="card-header d-flex justify-content-between align-items-center p-2"
-            @click="toggleShow(index)"
-            style="cursor: pointer;"
-            draggable="true"
-            @dragstart="dragStart(index)"
-            @dragenter.prevent="dragEnter(index)"
-            @dragleave="dragLeave(index)"
-            @dragover.prevent="dragOver($event)"
-            @drop="drop(index)"
-        >
+      <div v-for="(certification, index) in model.certifications" :key="index" class="card mb-1">
+        <div class="card-header d-flex justify-content-between align-items-center p-2" @click="toggleShow(index)"
+          style="cursor: pointer;" draggable="true" @dragstart="dragStart(index)" @dragenter.prevent="dragEnter(index)"
+          @dragleave="dragLeave(index)" @dragover.prevent="dragOver($event)" @drop="drop(index)">
           <span>Certification #{{ index + 1 }}</span>
           <div class="d-flex align-items-center">
-            <v-tooltip v-if="analysis.certifications[index]?.score"
-                       :text="analysis.certifications[index]?.comment"
-                       location="bottom"
-                       max-width="500px"
-                       close-delay="200"
-            >
+            <v-tooltip v-if="analysis.certifications[index]?.score" :text="analysis.certifications[index]?.comment"
+              location="bottom" max-width="500px" close-delay="200">
               <template v-slot:activator="{ props }">
                 <span v-bind="props">
                   <v-progress-circular :size="35" :width="4" :model-value="analysis.certifications[index]?.score"
-                                       :color="scoreToColors(analysis.certifications[index]?.score)">
+                    :color="scoreToColors(analysis.certifications[index]?.score)">
                     <template v-slot:default>
                       <span class="score">{{ analysis.certifications[index]?.score }}</span>
                     </template>
@@ -165,7 +156,7 @@ onMounted(() => {
               </template>
             </v-tooltip>
             <img class="delete-block ms-1" src="../../assets/block-delete.svg" alt="delete"
-                 @click="deleteCertification(index)">
+              @click="deleteCertification(index)">
             <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
           </div>
         </div>
@@ -174,43 +165,39 @@ onMounted(() => {
             <div class="mb-0">
               <label class="form-label">Certification Name</label>
               <input type="text" class="form-control form-control-sm" v-model="certification.name"
-                     placeholder="Name of the Certification"
-                     ondragstart="return false;"/>
+                placeholder="Name of the Certification" ondragstart="return false;" />
             </div>
             <div class="mb-0">
               <label class="form-label">Issuer</label>
               <input type="text" class="form-control form-control-sm" v-model="certification.issuer"
-                     placeholder="Organization Issuing the Certification"
-                     ondragstart="return false;"/>
+                placeholder="Organization Issuing the Certification" ondragstart="return false;" />
             </div>
             <div class="row mb-0">
               <div class="col-md-6">
                 <div class="mb-0">
                   <label class="form-label">Certification Date</label>
                   <input type="date" class="form-control form-control-sm" v-model="certification.date"
-                         ondragstart="return false;"/>
+                    ondragstart="return false;" />
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="mb-0">
                   <label class="form-label">Expiry Date</label>
                   <input type="date" class="form-control form-control-sm" v-model="certification.expiryDate"
-                         ondragstart="return false;"/>
+                    ondragstart="return false;" />
                 </div>
               </div>
             </div>
             <div class="mb-0">
               <label class="form-label">URL</label>
               <input type="url" class="form-control form-control-sm" v-model="certification.url"
-                     placeholder="Certification URL"
-                     ondragstart="return false;"/>
+                placeholder="Certification URL" ondragstart="return false;" />
             </div>
             <div class="mb-0">
               <label class="form-label">Description</label>
               <textarea class="form-control form-control-sm" v-model="certification.description"
-                        placeholder="Describe the certification, its importance, or related details"
-                        ondragstart="return false;"
-              ></textarea>
+                placeholder="Describe the certification, its importance, or related details"
+                ondragstart="return false;"></textarea>
               <div class="d-flex justify-content-end">
                 <button @click="toggleModal" class="btn btn-sm btn-custom mt-2">
                   AI Writer
@@ -219,7 +206,7 @@ onMounted(() => {
             </div>
             <div v-if="isModalVisible" class="modal fade show" style="display: block;">
               <FeedbackForm @close="toggleModal" v-model="certification.description" :sectionType="sectionType"
-                            :section="certification" :updated_resume="model"/>
+                :section="certification" :updated_resume="model" />
               <div v-if="isModalVisible" class="modal-backdrop fade show"></div>
             </div>
           </div>

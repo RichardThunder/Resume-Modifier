@@ -182,50 +182,33 @@ const data = reactive({
       <button @click="addProject" class="btn btn-sm btn-custom me-4">Add</button>
     </div>
 
-    <div v-if="showDragHint" class="drag-hint">
-      Drag and drop to reorder project entries.
+    <div v-if="showDragHint" class="alert alert-success pt-2">
+      <strong>Drag</strong> and <strong>drop</strong> to reorder project entries.
     </div>
 
     <div class="education-list" ref="skillsListRef">
-      <div
-          v-for="(project, index) in model.project"
-          :key="index"
-          class="card mb-1"
-      >
-        <div
-            class="card-header d-flex justify-content-between align-items-center p-2"
-            @click="toggleShow(index)"
-            style="cursor: pointer;"
-            draggable="true"
-            @dragstart="dragStart(index)"
-            @dragenter.prevent="dragEnter(index)"
-            @dragleave="dragLeave(index)"
-            @dragover.prevent="dragOver($event)"
-            @drop="drop(index)"
-        >
+      <div v-for="(project, index) in model.project" :key="index" class="card mb-1">
+        <div class="card-header d-flex justify-content-between align-items-center p-2" @click="toggleShow(index)"
+          style="cursor: pointer;" draggable="true" @dragstart="dragStart(index)" @dragenter.prevent="dragEnter(index)"
+          @dragleave="dragLeave(index)" @dragover.prevent="dragOver($event)" @drop="drop(index)">
           <span>Project #{{ index + 1 }}</span>
           <div class="d-flex align-items-center">
-            <v-tooltip v-if="analysis.project[index]?.score" :text="analysis.project[index]?.comment"
-                       location="bottom" max-width="500px" close-delay="200">
+            <v-tooltip v-if="analysis.project[index]?.score" :text="analysis.project[index]?.comment" location="bottom"
+              max-width="500px" close-delay="200">
               <template v-slot:activator="{ props }">
-                            <span v-bind="props">
-                                <v-progress-circular :size="35" :width="4"
-                                                     :model-value="analysis.project[index].score"
-                                                     :color="scoreToColors(analysis.project[index].score)">
-                                    <template v-slot:default>
-                                        <span class="score">{{ analysis.project[index].score }}</span>
-                                    </template>
-                                </v-progress-circular>
-                            </span>
+                <span v-bind="props">
+                  <v-progress-circular :size="35" :width="4" :model-value="analysis.project[index].score"
+                    :color="scoreToColors(analysis.project[index].score)">
+                    <template v-slot:default>
+                      <span class="score">{{ analysis.project[index].score }}</span>
+                    </template>
+                  </v-progress-circular>
+                </span>
               </template>
             </v-tooltip>
 
-            <img
-                class="delete-block ms-1"
-                src="../../assets/block-delete.svg"
-                alt="delete"
-                @click="deleteProject(index)"
-            >
+            <img class="delete-block ms-1" src="../../assets/block-delete.svg" alt="delete"
+              @click="deleteProject(index)">
             <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
           </div>
         </div>
@@ -235,15 +218,10 @@ const data = reactive({
               <div class="col-md-6">
                 <div class="mb-0">
                   <label class="form-label">Project Title</label>
-                  <input
-                      type="text"
-                      class="form-control form-control-sm"
-                      v-model="project.title"
-                      placeholder="Project Title"
-                      :rules="titleRules"
-                      ondragstart="return false;"
-                  />
-                  <div class="error-message" v-if="project.title && !titleRules.every(rule => rule(project.title) === true)">
+                  <input type="text" class="form-control form-control-sm" v-model="project.title"
+                    placeholder="Project Title" :rules="titleRules" ondragstart="return false;" />
+                  <div class="error-message"
+                    v-if="project.title && !titleRules.every(rule => rule(project.title) === true)">
                     {{ titleRules.find(rule => rule(project.title) !== true)(project.title) }}
                   </div>
                 </div>
@@ -251,15 +229,10 @@ const data = reactive({
               <div class="col-md-6">
                 <div class="mb-0">
                   <label class="form-label">Role in Project</label>
-                  <input
-                      type="text"
-                      class="form-control form-control-sm"
-                      v-model="project.projectRole"
-                      placeholder="Role in Project"
-                      :rules="projectRoleRules"
-                      ondragstart="return false;"
-                  />
-                  <div class="error-message" v-if="project.projectRole && !projectRoleRules.every(rule => rule(project.projectRole) === true)">
+                  <input type="text" class="form-control form-control-sm" v-model="project.projectRole"
+                    placeholder="Role in Project" :rules="projectRoleRules" ondragstart="return false;" />
+                  <div class="error-message"
+                    v-if="project.projectRole && !projectRoleRules.every(rule => rule(project.projectRole) === true)">
                     {{ projectRoleRules.find(rule => rule(project.projectRole) !== true)(project.projectRole) }}
                   </div>
                 </div>
@@ -270,15 +243,10 @@ const data = reactive({
               <div class="col-md-6">
                 <div class="mb-0">
                   <label class="form-label">City</label>
-                  <input
-                      type="text"
-                      class="form-control form-control-sm"
-                      v-model="project.city"
-                      placeholder="City"
-                      :rules="cityRules"
-                      ondragstart="return false;"
-                  />
-                  <div class="error-message" v-if="project.city && !cityRules.every(rule => rule(project.city) === true)">
+                  <input type="text" class="form-control form-control-sm" v-model="project.city" placeholder="City"
+                    :rules="cityRules" ondragstart="return false;" />
+                  <div class="error-message"
+                    v-if="project.city && !cityRules.every(rule => rule(project.city) === true)">
                     {{ cityRules.find(rule => rule(project.city) !== true)(project.city) }}
                   </div>
                 </div>
@@ -286,15 +254,10 @@ const data = reactive({
               <div class="col-md-6">
                 <div class="mb-0">
                   <label class="form-label">Country</label>
-                  <input
-                      type="text"
-                      class="form-control form-control-sm"
-                      v-model="project.country"
-                      placeholder="Country"
-                      :rules="countryRules"
-                      ondragstart="return false;"
-                  />
-                  <div class="error-message" v-if="project.country && !countryRules.every(rule => rule(project.country) === true)">
+                  <input type="text" class="form-control form-control-sm" v-model="project.country"
+                    placeholder="Country" :rules="countryRules" ondragstart="return false;" />
+                  <div class="error-message"
+                    v-if="project.country && !countryRules.every(rule => rule(project.country) === true)">
                     {{ countryRules.find(rule => rule(project.country) !== true)(project.country) }}
                   </div>
                 </div>
@@ -305,49 +268,32 @@ const data = reactive({
               <div class="col-md-6">
                 <div class="mb-0">
                   <label class="form-label">From Date</label>
-                  <input
-                      type="date"
-                      class="form-control form-control-sm"
-                      v-model="project.fromDate"
-                      ondragstart="return false;"
-                  />
+                  <input type="date" class="form-control form-control-sm" v-model="project.fromDate"
+                    ondragstart="return false;" />
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="mb-0">
                   <label class="form-label">To Date</label>
-                  <input
-                      type="date"
-                      class="form-control form-control-sm"
-                      v-model="project.toDate"
-                      :disabled="project.isPresent"
-                      ondragstart="return false;"
-                  />
+                  <input type="date" class="form-control form-control-sm" v-model="project.toDate"
+                    :disabled="project.isPresent" ondragstart="return false;" />
                 </div>
               </div>
             </div>
 
             <div class="mb-0 form-check">
-              <input
-                  type="checkbox"
-                  class="form-check-input"
-                  v-model="project.isPresent"
-                  id="isPresent"
-                  ondragstart="return false;"
-              >
+              <input type="checkbox" class="form-check-input" v-model="project.isPresent" id="isPresent"
+                ondragstart="return false;">
               <label class="form-check-label" for="isPresent">Currently Working on this Project</label>
             </div>
 
             <div class="mb-0">
               <label class="form-label">Description</label>
-              <textarea
-                  class="form-control form-control-sm"
-                  v-model="project.description"
-                  placeholder="Describe the project, responsibilities, and achievements"
-                  :rules="descriptionRules"
-                  ondragstart="return false;"
-              ></textarea>
-              <div class="error-message" v-if="project.description && !descriptionRules.every(rule => rule(project.description) === true)">
+              <textarea class="form-control form-control-sm" v-model="project.description"
+                placeholder="Describe the project, responsibilities, and achievements" :rules="descriptionRules"
+                ondragstart="return false;"></textarea>
+              <div class="error-message"
+                v-if="project.description && !descriptionRules.every(rule => rule(project.description) === true)">
                 {{ descriptionRules.find(rule => rule(project.description) !== true)(project.description) }}
               </div>
               <div class="d-flex justify-content-end">
@@ -359,7 +305,7 @@ const data = reactive({
 
             <div v-if="isModalVisible" class="modal fade show" style="display: block;">
               <FeedbackForm @close="toggleModal" v-model="project.description" :sectionType=sectionType
-                            :section="project" :updated_resume="model"/>
+                :section="project" :updated_resume="model" />
               <div v-if="isModalVisible" class="modal-backdrop fade show"></div>
             </div>
           </div>

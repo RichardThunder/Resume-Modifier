@@ -11,7 +11,7 @@
         <img src="../assets/toolbar/save.svg" alt="save" class="me-1" style="width: 16px; height: 16px;"/>
       </button>
       <input type="text" class="form-control form-control-sm file-name-input" ref="fileNameInput" v-model="fileName"
-             @blur="disableEditing" @keyup.enter="disableEditing"/>
+             @keyup.enter="disableEditing"/>
     </div>
     <div>
       <button class="btn btn-sm btn-custom me-4 " :disabled="history.length <= 1" @click="undo">

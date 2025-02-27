@@ -475,14 +475,10 @@ const viewResume = async (resumeId) => {
       }
     });
   if(response.status === 200){
-    // 1) 先删除旧属性
-    Object.keys(model).forEach(key => {
-      delete model[key]
-    })
-    // 2) 把 newData 的属性合并进来
-    Object.assign(model, response.data.data.resume);
-    console.log(response.data.resume);
-    console.log(model);
+    console.log("legacy:",model);
+    console.log("new", response.data.data.resume);
+    ResumeSaver.saveResume(response.data.data.resume);
+  
     await router.push("/resume");
   }else{
     console.error('Failed to fetch resume.');
