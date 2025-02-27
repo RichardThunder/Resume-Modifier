@@ -160,44 +160,23 @@ const data = reactive({
       <button @click="addEducation" class="btn btn-sm btn-custom me-4">Add</button>
     </div>
 
-    <div v-if="showDragHint" class="drag-hint">
-      Drag and drop to reorder education entries.
+    <div v-if="showDragHint" class="alert alert-success pt-2">
+      <strong>Drag</strong> and <strong>drop</strong> to reorder education entries.
     </div>
 
     <div class="education-list" ref="skillsListRef">
-      <div
-          v-for="(education, index) in model.education"
-          :key="index"
-          class="card mb-1"
-      >
-        <div
-            class="card-header d-flex justify-content-between align-items-center p-2"
-            @click="toggleShow(index)"
-            style="cursor: pointer;"
-            draggable="true"
-            @dragstart="dragStart(index)"
-            @dragenter.prevent="dragEnter(index)"
-            @dragleave="dragLeave(index)"
-            @dragover.prevent="dragOver($event)"
-            @drop="drop(index)"
-        >
+      <div v-for="(education, index) in model.education" :key="index" class="card mb-1">
+        <div class="card-header d-flex justify-content-between align-items-center p-2" @click="toggleShow(index)"
+          style="cursor: pointer;" draggable="true" @dragstart="dragStart(index)" @dragenter.prevent="dragEnter(index)"
+          @dragleave="dragLeave(index)" @dragover.prevent="dragOver($event)" @drop="drop(index)">
           <span>Education #{{ index + 1 }}</span>
           <div class="d-flex align-items-center">
-            <v-tooltip
-                v-if="analysis.education[index]?.score"
-                :text="analysis.education[index]?.comment"
-                location="bottom"
-                max-width="500px"
-                close-delay="200"
-            >
+            <v-tooltip v-if="analysis.education[index]?.score" :text="analysis.education[index]?.comment"
+              location="bottom" max-width="500px" close-delay="200">
               <template v-slot:activator="{ props }">
                 <span v-bind="props">
-                  <v-progress-circular
-                      :size="35"
-                      :width="4"
-                      :model-value="analysis.education[index].score"
-                      :color="scoreToColors(analysis.education[index].score)"
-                  >
+                  <v-progress-circular :size="35" :width="4" :model-value="analysis.education[index].score"
+                    :color="scoreToColors(analysis.education[index].score)">
                     <template v-slot:default>
                       <span class="score">{{ analysis.education[index].score }}</span>
                     </template>
@@ -206,12 +185,8 @@ const data = reactive({
               </template>
             </v-tooltip>
 
-            <img
-                class="delete-block ms-1"
-                src="../../assets/block-delete.svg"
-                alt="delete"
-                @click="deleteEducation(index)"
-            >
+            <img class="delete-block ms-1" src="../../assets/block-delete.svg" alt="delete"
+              @click="deleteEducation(index)">
 
             <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
           </div>
@@ -223,25 +198,15 @@ const data = reactive({
               <div class="col-md-6">
                 <div class="mb-0">
                   <label class="form-label">Institution Name</label>
-                  <input
-                      type="text"
-                      class="form-control form-control-sm"
-                      v-model="education.institutionName"
-                      placeholder="Institution Name"
-                      ondragstart="return false;"
-                  />
+                  <input type="text" class="form-control form-control-sm" v-model="education.institutionName"
+                    placeholder="Institution Name" ondragstart="return false;" />
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="mb-0">
                   <label class="form-label">Field of Study</label>
-                  <input
-                      type="text"
-                      class="form-control form-control-sm"
-                      v-model="education.fieldOfStudy"
-                      placeholder="Field of Study"
-                      ondragstart="return false;"
-                  />
+                  <input type="text" class="form-control form-control-sm" v-model="education.fieldOfStudy"
+                    placeholder="Field of Study" ondragstart="return false;" />
                 </div>
               </div>
             </div>
@@ -250,25 +215,15 @@ const data = reactive({
               <div class="col-md-6">
                 <div class="mb-0">
                   <label class="form-label">Degree</label>
-                  <input
-                      type="text"
-                      class="form-control form-control-sm"
-                      v-model="education.degree"
-                      placeholder="Degree"
-                      ondragstart="return false;"
-                  />
+                  <input type="text" class="form-control form-control-sm" v-model="education.degree"
+                    placeholder="Degree" ondragstart="return false;" />
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="mb-0">
                   <label class="form-label">Grade</label>
-                  <input
-                      type="text"
-                      class="form-control form-control-sm"
-                      v-model="education.grade"
-                      placeholder="Grade or Classification"
-                      ondragstart="return false;"
-                  />
+                  <input type="text" class="form-control form-control-sm" v-model="education.grade"
+                    placeholder="Grade or Classification" ondragstart="return false;" />
                 </div>
               </div>
             </div>
@@ -277,25 +232,15 @@ const data = reactive({
               <div class="col-md-6">
                 <div class="mb-0">
                   <label class="form-label">City</label>
-                  <input
-                      type="text"
-                      class="form-control form-control-sm"
-                      v-model="education.city"
-                      placeholder="City"
-                      ondragstart="return false;"
-                  />
+                  <input type="text" class="form-control form-control-sm" v-model="education.city" placeholder="City"
+                    ondragstart="return false;" />
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="mb-0">
                   <label class="form-label">Country</label>
-                  <input
-                      type="text"
-                      class="form-control form-control-sm"
-                      v-model="education.country"
-                      placeholder="Country"
-                      ondragstart="return false;"
-                  />
+                  <input type="text" class="form-control form-control-sm" v-model="education.country"
+                    placeholder="Country" ondragstart="return false;" />
                 </div>
               </div>
             </div>
@@ -304,47 +249,30 @@ const data = reactive({
               <div class="col-md-6">
                 <div class="mb-0">
                   <label class="form-label">From Date</label>
-                  <input
-                      type="date"
-                      class="form-control form-control-sm"
-                      v-model="education.fromDate"
-                      ondragstart="return false;"
-                  />
+                  <input type="date" class="form-control form-control-sm" v-model="education.fromDate"
+                    ondragstart="return false;" />
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="mb-0">
                   <label class="form-label">To Date</label>
-                  <input
-                      type="date"
-                      class="form-control form-control-sm"
-                      v-model="education.toDate"
-                      :disabled="education.isPresent"
-                      ondragstart="return false;"
-                  />
+                  <input type="date" class="form-control form-control-sm" v-model="education.toDate"
+                    :disabled="education.isPresent" ondragstart="return false;" />
                 </div>
               </div>
             </div>
 
             <div class="mb-0 form-check">
-              <input
-                  type="checkbox"
-                  class="form-check-input"
-                  v-model="education.isPresent"
-                  id="isPresent"
-                  ondragstart="return false;"
-              >
+              <input type="checkbox" class="form-check-input" v-model="education.isPresent" id="isPresent"
+                ondragstart="return false;">
               <label class="form-check-label" for="isPresent">Currently Studying Here</label>
             </div>
 
             <div class="mb-0">
               <label class="form-label">Description</label>
-              <textarea
-                  class="form-control form-control-sm"
-                  v-model="education.description"
-                  placeholder="Describe your education details, achievements, or notable projects"
-                  ondragstart="return false;"
-              ></textarea>
+              <textarea class="form-control form-control-sm" v-model="education.description"
+                placeholder="Describe your education details, achievements, or notable projects"
+                ondragstart="return false;"></textarea>
               <div class="d-flex justify-content-end">
                 <button @click="toggleModal" class="btn btn-sm btn-custom mt-2">
                   AI Writer
@@ -353,7 +281,7 @@ const data = reactive({
             </div>
             <div v-if="isModalVisible" class="modal fade show" style="display: block;">
               <FeedbackForm @close="toggleModal" v-model="education.description" :sectionType=sectionType
-                            :section="education" :updated_resume="model" />
+                :section="education" :updated_resume="model" />
               <div v-if="isModalVisible" class="modal-backdrop fade show"></div>
             </div>
           </div>

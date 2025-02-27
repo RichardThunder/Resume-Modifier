@@ -2,22 +2,22 @@
 
 import feedbackService from "@/services/feedbackService.js";
 import { defineProps, defineEmits, ref, watch } from 'vue';
-const emit = defineEmits(['close','update:modelValue']);
+const emit = defineEmits(['close', 'update:modelValue']);
 const props = defineProps({
-  modelValue:{
-    type:String,
-    default:""
+  modelValue: {
+    type: String,
+    default: ""
   },
-  section:{
-    type:Object,
+  section: {
+    type: Object,
     default: null
   },
-  sectionType:{
-    type:String,
-    default:''
+  sectionType: {
+    type: String,
+    default: ''
   },
-  updated_resume:{
-    type:Object,
+  updated_resume: {
+    type: Object,
     default: null
   }
 })
@@ -29,38 +29,42 @@ const isError = ref(false);
 const isSuccess = ref(false);
 const errorMessage = ref('');
 
+const cleanedText = (text) =>
+  text.split('\n')
+    .map(line => line.replace(/^-\s*/, ''))
+    .join('\n');
 const close = () => {
-  emit('close','update');
+  emit('close', 'update');
 }
-const handleFeedback =async () => {
-    isSubmitLoading.value = true;
-    let result;
-    if(props.sectionType === 'summary'){
-      result = await  feedbackService.sendFeedback(props.modelValue,props.sectionType,feedbackData.value, props.updated_resume);
-    }else
-      result = await feedbackService.sendFeedback(props.section,props.sectionType,feedbackData.value,props.updated_resume);
-    if(result.success){
-      isSubmitLoading.value = false;
-      descriptionData.value = result.content;
-      isSuccess.value = true;
-      setTimeout(() => {isSubmitLoading.value = false;}, 3000);
-    }else {
-      isSubmitLoading.value = false;
-      isError.value = true;
-      errorMessage.value = result.error;
-      setTimeout(() => {isError.value = false;}, 3000);
-    }
+const handleFeedback = async () => {
+  isSubmitLoading.value = true;
+  let result;
+  if (props.sectionType === 'summary') {
+    result = await feedbackService.sendFeedback(props.modelValue, props.sectionType, feedbackData.value, props.updated_resume);
+  } else
+    result = await feedbackService.sendFeedback(props.section, props.sectionType, feedbackData.value, props.updated_resume);
+  if (result.success) {
+    isSubmitLoading.value = false;
+    descriptionData.value = cleanedText(result.content);
+    isSuccess.value = true;
+    setTimeout(() => { isSubmitLoading.value = false; }, 3000);
+  } else {
+    isSubmitLoading.value = false;
+    isError.value = true;
+    errorMessage.value = result.error;
+    setTimeout(() => { isError.value = false; }, 3000);
+  }
 }
 
-watch(descriptionData,(newValue) => {
-  emit('update:modelValue',newValue);
+watch(descriptionData, (newValue) => {
+  emit('update:modelValue', newValue);
 })
 </script>
 
 <template>
   <!-- Modal -->
   <div class="modal fade show" tabindex="-1" role="dialog"
-       style="display: block; background-color: rgba(0, 0, 0, 0.5);">
+    style="display: block; background-color: rgba(0, 0, 0, 0.5);">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -70,12 +74,8 @@ watch(descriptionData,(newValue) => {
         <div class="modal-body">
           <div class="mb-3">
             <label for="modalText" class="form-label"></label>
-            <textarea
-                id="modalText"
-                v-model="feedbackData"
-                placeholder="Enter your feedback to Rewrite..."
-                class="form-control"
-            />
+            <textarea id="modalText" v-model="feedbackData" placeholder="Enter your feedback to Rewrite..."
+              class="form-control" />
           </div>
         </div>
         <div class="modal-footer">
@@ -97,6 +97,4 @@ watch(descriptionData,(newValue) => {
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

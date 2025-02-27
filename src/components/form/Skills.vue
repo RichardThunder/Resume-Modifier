@@ -3,23 +3,17 @@
     <div class="d-flex justify-content-between align-items-center mb-2">
       <h2 class="section-title">🛠️ Skills</h2>
     </div>
+    <div v-if="showDragHint" class="alert alert-success pt-2">
+      <strong>Drag</strong> and <strong>drop</strong> to reorder skills
+    </div>
     <!-- 表单内容 -->
     <div class="card border-none">
       <div>
         <div class="skills-list" ref="skillsListRef">
           <transition-group name="skill" tag="div" class="d-flex flex-wrap">
-            <div
-                v-for="(skill, index) in model.skills"
-                :key="skill"
-                class="skill-item"
-                draggable="true"
-                @dragstart="dragStart(index)"
-                @dragover.prevent="dragOver(index)"
-                @dragenter.prevent="dragEnter(index)"
-                @dragleave="dragLeave(index)"
-                @drop="drop(index)"
-                :class="{ 'drag-over': isDragOver === index }"
-            >
+            <div v-for="(skill, index) in model.skills" :key="skill" class="skill-item" draggable="true"
+              @dragstart="dragStart(index)" @dragover.prevent="dragOver(index)" @dragenter.prevent="dragEnter(index)"
+              @dragleave="dragLeave(index)" @drop="drop(index)" :class="{ 'drag-over': isDragOver === index }">
               <span class="badge skill-badge me-1">
                 {{ skill }}
                 <span class="remove-badge" @click="removeSkill(index)"><i class="bi bi-trash"></i></span>
@@ -29,7 +23,7 @@
         </div>
 
         <div class="add-skill-row d-flex justify-content-between align-items-center mb-2">
-          <input v-model="newSkill" placeholder="Enter a skill" class="form-control me-2"  @keydown.enter="addSkill"/>
+          <input v-model="newSkill" placeholder="Enter a skill" class="form-control me-2" @keydown.enter="addSkill" />
           <button @click="addSkill" class="btn btn-sm btn-custom ">Add</button>
         </div>
       </div>
@@ -42,6 +36,7 @@ import { model } from '@/model.js';
 import { ref } from 'vue';
 import { onMounted } from 'vue';
 
+const showDragHint = ref(false);
 const newSkill = ref('');
 const draggingIndex = ref(null);
 const skillsListRef = ref(null);
@@ -51,6 +46,10 @@ function addSkill() {
   if (newSkill.value.trim() === '') return;
   model.skills.push(newSkill.value.trim());
   newSkill.value = '';
+  showDragHint.value = true;
+  setTimeout(() => {
+    showDragHint.value = false;
+  }, 3000);
 }
 
 function removeSkill(index) {
@@ -176,15 +175,18 @@ onMounted(() => {
 .skill-enter-from,
 .skill-leave-to {
   opacity: 0;
-  transform: translateX(20px); /* Slide in/out from right */
+  transform: translateX(20px);
+  /* Slide in/out from right */
 }
 
 .skill-move {
-  transition: transform 0.3s ease; /* For reordering */
+  transition: transform 0.3s ease;
+  /* For reordering */
 }
 
 /* Highlight style for drop target */
 .drag-over {
-  background-color: rgba(0, 0, 0, 0.1); /* Subtle highlight */
+  background-color: rgba(0, 0, 0, 0.1);
+  /* Subtle highlight */
 }
 </style>

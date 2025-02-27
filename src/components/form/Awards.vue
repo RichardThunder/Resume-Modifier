@@ -174,43 +174,29 @@ const data = reactive({
       <h2 class="section-title">🏅 Awards</h2>
       <button @click="addAwards" class="btn btn-sm btn-custom me-4">Add</button>
     </div>
+    <div v-if="showDragHint" class="alert alert-success pt-2">
+      <strong>Drag</strong> and <strong>drop</strong> to reorder awards entries.
+    </div>
 
     <div class="education-list" ref="skillsListRef">
-      <div
-          v-for="(award, index) in model.award"
-          :key="index"
-          class="card mb-1"
-      >
-        <div
-            class="card-header d-flex justify-content-between align-items-center p-2"
-            @click="toggleShow(index)"
-            style="cursor: pointer;"
-            draggable="true"
-            @dragstart="dragStart(index)"
-            @dragenter.prevent="dragEnter(index)"
-            @dragleave="dragLeave(index)"
-            @dragover.prevent="dragOver($event)"
-            @drop="drop(index)"
-        >
+      <div v-for="(award, index) in model.award" :key="index" class="card mb-1">
+        <div class="card-header d-flex justify-content-between align-items-center p-2" @click="toggleShow(index)"
+          style="cursor: pointer;" draggable="true" @dragstart="dragStart(index)" @dragenter.prevent="dragEnter(index)"
+          @dragleave="dragLeave(index)" @dragover.prevent="dragOver($event)" @drop="drop(index)">
           <span>Award #{{ index + 1 }}</span>
           <div class="d-flex align-items-center">
-            <v-tooltip v-if="analysis.award[index]?.score"
-                       :text="analysis.award[index]?.comment"
-                       location="bottom"
-                       max-width="500px"
-                       close-delay="200"
-            >
+            <v-tooltip v-if="analysis.award[index]?.score" :text="analysis.award[index]?.comment" location="bottom"
+              max-width="500px" close-delay="200">
               <template v-slot:activator="{ props }">
                 <span v-bind="props">
                   <v-progress-circular :size="35" :width="4" :model-value="analysis.award[index]?.score"
-                                       :color="scoreToColors(analysis.award[index]?.score)">
+                    :color="scoreToColors(analysis.award[index]?.score)">
                     <template v-slot:default> <span class="score">{{ analysis.award[index]?.score }}</span></template>
                   </v-progress-circular>
                 </span>
               </template>
             </v-tooltip>
-            <img class="delete-block ms-1" src="../../assets/block-delete.svg" alt="delete"
-                 @click="deleteAward(index)">
+            <img class="delete-block ms-1" src="../../assets/block-delete.svg" alt="delete" @click="deleteAward(index)">
             <span>{{ visibleIndexes[index] ? '▲' : '▼' }}</span>
           </div>
         </div>
@@ -219,8 +205,7 @@ const data = reactive({
             <div class="mb-0">
               <label class="form-label">Award Name</label>
               <input type="text" class="form-control form-control-sm" v-model="award.name"
-                     placeholder="Name of the Award" :rules="nameRules"
-                     ondragstart="return false;"/>
+                placeholder="Name of the Award" :rules="nameRules" ondragstart="return false;" />
               <div class="error-message" v-if="award.name && !nameRules.every(rule => rule(award.name) === true)">
                 {{ nameRules.find(rule => rule(award.name) !== true)(award.name) }}
               </div>
@@ -228,33 +213,32 @@ const data = reactive({
             <div class="mb-0">
               <label class="form-label">Issuer</label>
               <input type="text" class="form-control form-control-sm" v-model="award.issuer"
-                     placeholder="Organization Issuing the Award" :rules="issuerRules"
-                     ondragstart="return false;"/>
+                placeholder="Organization Issuing the Award" :rules="issuerRules" ondragstart="return false;" />
               <div class="error-message" v-if="award.issuer && !issuerRules.every(rule => rule(award.issuer) === true)">
                 {{ issuerRules.find(rule => rule(award.issuer) !== true)(award.issuer) }}
               </div>
             </div>
             <div class="mb-0">
               <label class="form-label">URL to Award</label>
-              <input type="url" class="form-control form-control-sm" v-model="award.urlToAward"
-                     placeholder="Award URL" :rules="urlToAwardRules"
-                     ondragstart="return false;"/>
-              <div class="error-message" v-if="award.urlToAward && !urlToAwardRules.every(rule => rule(award.urlToAward) === true)">
+              <input type="url" class="form-control form-control-sm" v-model="award.urlToAward" placeholder="Award URL"
+                :rules="urlToAwardRules" ondragstart="return false;" />
+              <div class="error-message"
+                v-if="award.urlToAward && !urlToAwardRules.every(rule => rule(award.urlToAward) === true)">
                 {{ urlToAwardRules.find(rule => rule(award.urlToAward) !== true)(award.urlToAward) }}
               </div>
             </div>
             <div class="mb-0">
               <label class="form-label">Date of Award</label>
               <input type="date" class="form-control form-control-sm" v-model="award.dateOfAward"
-                     ondragstart="return false;"/>
+                ondragstart="return false;" />
             </div>
             <div class="mb-0">
               <label class="form-label">Description</label>
               <textarea class="form-control form-control-sm" v-model="award.description"
-                        placeholder="Describe the award and why it was given" :rules="descriptionRules"
-                        ondragstart="return false;"
-              ></textarea>
-              <div class="error-message" v-if="award.description && !descriptionRules.every(rule => rule(award.description) === true)">
+                placeholder="Describe the award and why it was given" :rules="descriptionRules"
+                ondragstart="return false;"></textarea>
+              <div class="error-message"
+                v-if="award.description && !descriptionRules.every(rule => rule(award.description) === true)">
                 {{ descriptionRules.find(rule => rule(award.description) !== true)(award.description) }}
               </div>
               <div class="d-flex justify-content-end">
@@ -264,8 +248,8 @@ const data = reactive({
               </div>
             </div>
             <div v-if="isModalVisible" class="modal fade show" style="display: block;">
-              <FeedbackForm @close="toggleModal" v-model="award.description" :sectionType="sectionType"
-                            :section="award" :updated_resume="model"/>
+              <FeedbackForm @close="toggleModal" v-model="award.description" :sectionType="sectionType" :section="award"
+                :updated_resume="model" />
               <div v-if="isModalVisible" class="modal-backdrop fade show"></div>
             </div>
 

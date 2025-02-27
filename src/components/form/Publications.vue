@@ -9,6 +9,7 @@ const sectionType = ref('publications');
 const draggingIndex = ref(null);
 const skillsListRef = ref(null);
 const isDragOver = ref(null);
+const showDragHint = ref(false);
 
 // 切换指定组件的显示/隐藏状态
 function toggleShow(index) {
@@ -45,6 +46,10 @@ function addPublication() {
     date: ''
   });
   visibleIndexes.value.push(true);
+  showDragHint.value = true;
+  setTimeout(() => {
+    showDragHint.value = false;
+  }, 3000);
 }
 
 function deletePublication(index) {
@@ -123,7 +128,9 @@ const data = reactive({
       <h2 class="section-title">📚 Publications</h2>
       <button @click="addPublication" class="btn btn-sm btn-custom me-4">Add</button>
     </div>
-
+    <div v-if="showDragHint" class="alert alert-success pt-2">
+      <strong>Drag</strong> and <strong>drop</strong> to reorder education entries.
+    </div>
     <div class="education-list" ref="skillsListRef">
       <div
           v-for="(publication, index) in model.publications"

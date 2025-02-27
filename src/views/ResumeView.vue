@@ -57,6 +57,7 @@ onMounted(() => {
   ResumeSaver.loadResume();
   if(ResumeSaver.isStorageEmpty()){
     reAssign(model,modelExample);
+    console.log("reset to example");
   }else{
     reAssign(model,ResumeSaver.getResumeData());
   }
