@@ -90,7 +90,7 @@ export const convertModel = (item, callback) => {
 
 
 export const feedBack = async (data) => {
-  const jwtToken = getToken('token');
+  const jwtToken = getToken();
   if (!jwtToken) {
     console.error('JWT token not found');
     alert('You need to Login to continue');

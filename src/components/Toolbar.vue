@@ -187,7 +187,7 @@ const handleFileChange = (event) => {
 
 const submitDataRM = async () => {
 
-  const jwtToken = getToken('token');
+  const jwtToken = getToken();
   if (!jwtToken) {
     alert('You need to Login to continue');
     await router.push({name: 'Login'});
@@ -232,7 +232,7 @@ const submitDataRM = async () => {
 
 const submitDataJD = async () => {
 
-  const jwtToken = getToken('token');
+  const jwtToken = getToken();
   if (!jwtToken) {
     console.error('JWT token not found');
     alert('You need to Login to continue');

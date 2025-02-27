@@ -4,7 +4,7 @@ const saveResumeService = {
   async save(fileName,resumeData) {
 
     const API_URL = import.meta.env.VITE_API_URL;
-    const jwtToken = getToken('token');
+    const jwtToken = getToken();
     if (!jwtToken) {
       console.error('JWT token not found');
       alert('You need to Login to continue');
@@ -12,7 +12,7 @@ const saveResumeService = {
     }
     try {
       const response = await axios.put(`${API_URL}/save_resume`, {
-        resume_title: fileName,
+        resume_title: fileName.value,  
         updated_resume: resumeData
       }, {
         headers: {
@@ -20,7 +20,6 @@ const saveResumeService = {
           'Authorization': `Bearer ${jwtToken}`
         }
       });
-
       if (response.status === 200) {
         return {success: true}; // 返回成功的响应
       }
