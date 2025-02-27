@@ -30,7 +30,6 @@
         </div>
       </div>
     </div>
-    Use code with caution.
   </div>
 </template>
 <script setup>

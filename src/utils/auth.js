@@ -2,7 +2,7 @@
  * @Author: Richard yuetingpei888@gmail.com
  * @Date: 2025-01-31 22:43:23
  * @LastEditors: Richard yuetingpei888@gmail.com
- * @LastEditTime: 2025-01-31 23:28:32
+ * @LastEditTime: 2025-02-27 05:23:32
  * @FilePath: /Resume-Modifier/src/utils/auth.js
  * @Description:
  *
@@ -17,7 +17,7 @@ export const setToken = (token) => {
 };
 
 export const removeToken = () => {
-  if(getToken("jwt_token")) {
+  if(getToken()) {
     localStorage.removeItem("jwt_token");
   }
 };

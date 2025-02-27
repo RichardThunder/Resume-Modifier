@@ -138,7 +138,7 @@
                   </div>
                 </div>
               </li>
-              <li v-if="!resumeHistory.length" class="list-group-item text-center">
+              <li v-if="!resumeHistory?.length" class="list-group-item text-center">
                 No resume history available.
               </li>
             </ul>
@@ -181,18 +181,18 @@ const modalRef = ref(null);
 let bootstrapModal = null;
 
 const profile = reactive({
-  first_name: 'John Doe',
-  last_name: 'Doe',
-  title: 'Software Developer',
-  email: 'john.doe@example.com',
-  city: 'New York',
-  country: 'USA',
-  bio: 'Passionate software developer with experience in Vue.js and web development.'
+  first_name: '',
+  last_name: '',
+  title: '',
+  email: '',
+  city: '',
+  country: '',
+  bio: ''
 });
 
 const editedProfile = reactive({...profile});
 
-const resumeHistory = ref([]);
+const resumeHistory = reactive([]);
 
 const editProfile = () => {
   Object.assign(editedProfile, profile);
@@ -213,7 +213,7 @@ const saveProfile = () => {
 };
 
 const getProfile = async () => {
-  const jwtToken = getToken('token');
+  const jwtToken = getToken();
   if (!jwtToken) {
     console.error('JWT token not found');
     alert('You need to Login to continue');
@@ -229,7 +229,7 @@ const getProfile = async () => {
         });
     // 成功请求后将返回的数据赋值给 profile 对象
     if (response.status === 200) {
-      profile.value = response.data;
+      Object.assign(profile, response.data.data.profile);
     } else {
       console.error('Failed to fetch profile');
     }
@@ -252,7 +252,7 @@ const getProfile = async () => {
 };
 
 const setProfile = async () => {
-  const jwtToken = getToken('token');
+  const jwtToken = getToken();
   if (!jwtToken) {
     console.error('JWT token not found');
     alert('You need to Login to continue');
@@ -260,16 +260,15 @@ const setProfile = async () => {
     return;
   }
   try {
-    const response = await axios.put(`${API_URL}/set_profile`,
-        {
-          first_name: profile.value.first_name,
-          last_name: profile.value.last_name,
-          email: profile.value.email,
-          city: profile.value.city,
-          country: profile.value.country,
-          title: profile.value.title,
-          bio: profile.value.bio
-        },
+    const response = await axios.put(`${API_URL}/put_profile`,
+      {
+        first_name: profile.first_name,
+        last_name: profile.last_name,
+        email: profile.email,
+        city: profile.city,
+        country: profile.country,
+        bio: profile.bio
+      },
         {
           headers: {
             'Authorization': `Bearer ${jwtToken}`,
@@ -297,20 +296,23 @@ const fetchResumeHistory = async () => {
   try {
     const response = await axios.get(`${API_URL}/get_resume_list`,
         {
-          headers: {'Content-Type': 'multipart/form-data'},
-          withCredentials: true
+          headers: {
+            'Authorization': `Bearer ${jwtToken}`,
+          }
         });
     if (response.status === 200) {
-      response.data.forEach(resume => {
+      if(response.data.data.length>0){
+      response.data.data.forEach(resume => {
         resume.created_at = resume.created_at.replace('T', ' ').replace('Z', '');
       });
-      resumeHistory.value = response.data;
+        Object.assign(resumeHistory, response.data.data);
+    }else{
+      Object.assign(resumeHistory, null);
+    }
     }
   } catch (error) {
     console.error('Failed to fetch resume history:',error);
-
   }
-
   /*// Simulated data for demonstration purposes
   const simulatedResponse = {
     status: 200,
@@ -458,21 +460,28 @@ const viewResume = async (resumeId) => {
     await router.push('/resume');
   }*/
 
-  const jwtToken = getToken('token');
+  const jwtToken = getToken();
   if (!jwtToken) {
     console.error('JWT token not found');
     alert('You need to Login to continue');
     await router.push({name: 'Login'});
     return;
   }
-  const response = await axios.get(`${API_URL}/get_resume/${resumeId}`)
+  console.log(resumeId);
+  const response = await axios.get(`${API_URL}/get_resume/${resumeId}`,
+    {
+      headers: {
+        'Authorization': `Bearer ${jwtToken}`  // 添加 Authorization 头
+      }
+    });
   if(response.status === 200){
     // 1) 先删除旧属性
     Object.keys(model).forEach(key => {
       delete model[key]
     })
     // 2) 把 newData 的属性合并进来
-    Object.assign(model, response.data.resume);
+    Object.assign(model, response.data.data.resume);
+    console.log(response.data.resume);
     console.log(model);
     await router.push("/resume");
   }else{
