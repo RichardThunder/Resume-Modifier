@@ -283,7 +283,6 @@ const data = reactive({
             <div v-if="isModalVisible" class="modal fade show" style="display: block;">
               <FeedbackForm @close="toggleModal" v-model="experience.description" :sectionType=sectionType
                 :section="experience" :updated_resume="model" />
-              <div v-if="isModalVisible" class="modal-backdrop fade show"></div>
             </div>
           </div>
         </transition>
