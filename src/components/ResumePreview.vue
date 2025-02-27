@@ -696,17 +696,15 @@ const autoResize = (textareaRef) => {
 function formattedDescription(description) {
 
   if (typeof description !== 'string') {
-
     if (description === null || description === undefined) {
-
       return '';
     } else {
-
       description = String(description);
     }
   }
-// 1. 按换行符拆分文本
-  let lines = description.split('. ').map(line => line.trim()).filter(line => line !== '');
+
+  // 1. 按句号和换行符拆分文本
+  let lines = description.split(/[\n.]+/).map(line => line.trim()).filter(line => line !== '');
 
   // 2. 去除每行开头的 "•" 符号
   lines = lines.map(line => {
@@ -718,8 +716,8 @@ function formattedDescription(description) {
 
   // 3. 将每行包装成 <li> 标签并返回
   return lines.map(line => `<li style="line-height: 1.2; margin-bottom: 5px;">${line}</li>`).join('');
-
 }
+
 
 // 控制编辑状态
 const isEditingName = ref(false);
