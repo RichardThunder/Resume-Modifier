@@ -112,7 +112,7 @@ onMounted(() => {
 }
 
 .skill-badge {
-  background-color: #0072cd;
+  background-color: #0071cd9d;
   color: white;
   position: relative;
   display: inline-flex;

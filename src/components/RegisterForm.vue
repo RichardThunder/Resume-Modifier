@@ -125,11 +125,20 @@ defineExpose(
 
 <style scoped>
 .register-form {
-  width: 400px;
+  max-width: 90%;
+    /* Take up 90% of the screen width */
+    width: 400px;
+    /* Or whatever you want the max width to be */
+    margin: 0 auto;
+    /* Center the form */
 }
 
 .form-group {
-  margin-bottom: 1rem;
+  max-width: 100%;
+    /* Full width within the form */
+    margin: auto;
+    margin-bottom: 1rem;
+    /* Add some spacing between form groups */
 }
 
 label {
@@ -192,5 +201,17 @@ button:disabled {
 
 .login-link a:hover {
   color: #40a9ff;
+}
+
+/* Media query for smaller screens (e.g., mobile) */
+@media (max-width: 768px) {
+  .register-form {
+    max-width: 95%;
+    /* Even wider on smaller screens */
+  }
+
+  .login-link {
+    text-align: center;
+  }
 }
 </style>

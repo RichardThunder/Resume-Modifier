@@ -2,8 +2,8 @@
  * @Author: Richard yuetingpei888@gmail.com
  * @Date: 2025-01-31 19:27:12
  * @LastEditors: Richard yuetingpei888@gmail.com
- * @LastEditTime: 2025-01-31 21:01:24
- * @FilePath: /Resume-Modifier/src/components/login.vue
+ * @LastEditTime: 2025-02-28 09:04:37
+ * @FilePath: /Resume-Modifier/src/components/LoginForm.vue
  * @Description: 
  * 
 -->
@@ -132,15 +132,22 @@ defineExpose(
     }
 )
 </script>
-
 <style scoped>
 .login-form {
+  max-width: 90%;
+  /* Take up 90% of the screen width */
   width: 400px;
+  /* Or whatever you want the max width to be */
+  margin: 0 auto;
+  /* Center the form */
 }
 
 .form-group {
-  width: 400px;
+  max-width: 100%;
+  /* Full width within the form */
   margin: auto;
+  margin-bottom: 1rem;
+  /* Add some spacing between form groups */
 }
 
 label {
@@ -152,10 +159,13 @@ label {
 input[type="text"],
 input[type="password"] {
   width: 100%;
+  /* Input fields should take the full width of their container */
   padding: 0.75rem;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 1rem;
+  box-sizing: border-box;
+  /* Important: Include padding and border in the width */
 }
 
 input.error {
@@ -168,26 +178,32 @@ input.error {
   margin-top: 0.25rem;
 }
 
+.form-options {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .remember-me {
   display: flex;
   align-items: center;
-  width:400px;
-  gap:5px;
-  margin: 1.5rem auto 1.5rem auto;
+  justify-content: space-between;
+  /* Push Forgot Password to the right */
+  width: 100%;
+  margin-bottom: 1rem;
 }
 
 .remember-me input[type="checkbox"] {
-  width: 13px;
-  margin-bottom: 0.5rem;
+  width: auto;
+  margin-right: 0.5rem;
 }
 
-.remember-radio{
+.remember-radio {
   border: none;
-
 }
+
 button {
-  width: 400px;
-  margin: 0 auto 0 auto;
+  width: 100%;
   padding: 0.75rem;
   background-color: #1890ff;
   color: white;
@@ -206,6 +222,7 @@ button:disabled {
   background-color: #bfbfbf;
   cursor: not-allowed;
 }
+
 .forgot-password {
   color: #1890ff;
   text-decoration: none;
@@ -215,6 +232,7 @@ button:disabled {
 .forgot-password:hover {
   color: #40a9ff;
 }
+
 .register-link {
   margin-top: 1rem;
   text-align: center;
@@ -230,5 +248,17 @@ button:disabled {
 
 .register-link a:hover {
   color: #40a9ff;
+}
+
+/* Media query for smaller screens (e.g., mobile) */
+@media (max-width: 768px) {
+  .login-form {
+    max-width: 95%;
+    /* Even wider on smaller screens */
+  }
+
+  .register-link {
+    text-align: center;
+  }
 }
 </style>
