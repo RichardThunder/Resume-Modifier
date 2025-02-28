@@ -2,7 +2,7 @@
  * @Author: Richard yuetingpei888@gmail.com
  * @Date: 2025-01-31 22:42:52
  * @LastEditors: Richard yuetingpei888@gmail.com
- * @LastEditTime: 2025-02-28 04:52:55
+ * @LastEditTime: 2025-02-01 00:01:44
  * @FilePath: /Resume-Modifier/src/router/index.js
  * @Description:
  *
@@ -25,7 +25,7 @@ const routes=[
   {
     path: '/',
     name: 'Home',
-    component: ResumeView,
+    component: HomeView,
     beforeEnter:(to,from,next)=>{
       if(!isAuthenticated()){
         console.log('Please login first');
