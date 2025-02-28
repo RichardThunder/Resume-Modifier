@@ -49,12 +49,12 @@
           <li v-for="(edu, index) in model.education" :key="index" class="list-block">
             <div class="flex-col width25">
               <template v-if="!editingEduFields[index]?.institutionName">
-                <div class="title" @dblclick="enableEduEdit(index, 'institutionName')">
+                <div class="subTitle" @dblclick="enableEduEdit(index, 'institutionName')">
                   {{ edu.institutionName }}
                 </div>
               </template>
               <template v-else>
-                <input type="text" class="title" v-model="edu.institutionName" v-focus
+                <input type="text" class="subTitle" v-model="edu.institutionName" v-focus
                   @blur="disableEduEdit(index, 'institutionName')" />
               </template>
 
@@ -97,7 +97,7 @@
 
             <div class="width75 flex-col">
               <template v-if="!editingEduFields[index]?.degree">
-                <span class="title" @dblclick="enableEduEdit(index, 'degree')">
+                <span class="title " @dblclick="enableEduEdit(index, 'degree')">
                   {{ edu.degree }}
                 </span>
 
@@ -141,12 +141,12 @@
             <div class="flex-col width25">
               <!-- companyName -->
               <template v-if="!editingWorkFields[index]?.companyName">
-                <div class="title" @dblclick="enableWorkEdit(index, 'companyName')">
+                <div class="subTitle" @dblclick="enableWorkEdit(index, 'companyName')">
                   {{ job.companyName }}
                 </div>
               </template>
               <template v-else>
-                <input type="text" class="title" v-model="job.companyName" v-focus
+                <input type="text" class="subTitle" v-model="job.companyName" v-focus
                   @blur="disableWorkEdit(index, 'companyName')" />
               </template>
 
@@ -249,12 +249,12 @@
             <div class="flex-col width25">
               <!-- title -->
               <template v-if="!editingProjectFields[index]?.title">
-                <div class="title" @dblclick="enableProjectEdit(index, 'title')">
+                <div class="subTitle" @dblclick="enableProjectEdit(index, 'title')">
                   {{ project.title }}
                 </div>
               </template>
               <template v-else>
-                <input type="text" class="title" v-model="project.title" v-focus
+                <input type="text" class="subTitle" v-model="project.title" v-focus
                   @blur="disableProjectEdit(index, 'title')" />
               </template>
 
@@ -609,12 +609,12 @@
             <div class="flex-col width25">
               <!-- company -->
               <template v-if="!editingReferencesFields[index]?.company">
-                <div class="title" @dblclick="enableReferencesEdit(index, 'company')">
+                <div class="subTitle" @dblclick="enableReferencesEdit(index, 'company')">
                   {{ reference.company }}
                 </div>
               </template>
               <template v-else>
-                <input type="text" class="title" v-model="reference.company" v-focus
+                <input type="text" class="subTitle" v-model="reference.company" v-focus
                   @blur="disableReferencesEdit(index, 'company')" />
               </template>
 
@@ -692,7 +692,6 @@ const autoResize = (textareaRef) => {
     textarea.style.height = `${textarea.scrollHeight}px`;  // 设置为内容的高度
   }
 };
-
 function formattedDescription(description) {
 
   if (typeof description !== 'string') {
@@ -703,21 +702,20 @@ function formattedDescription(description) {
     }
   }
 
-  // 1. 按句号和换行符拆分文本
-  let lines = description.split(/[\n.]+/).map(line => line.trim()).filter(line => line !== '');
+  // 1. 按换行符和 "•"拆分文本
+  let lines = description.split(/\r?\n/); //  Handle both \r\n (Windows) and \n (Linux/macOS) line endings
 
   // 2. 去除每行开头的 "•" 符号
   lines = lines.map(line => {
     if (line.startsWith('•')) {
       return line.substring(1).trim(); // 去除 "•" 及其后的空格
     }
-    return line;
+    return line.trim(); //Also trim the line if it doesn't start with '•'
   });
 
   // 3. 将每行包装成 <li> 标签并返回
-  return lines.map(line => `<li style="line-height: 1.2; margin-bottom: 5px;">${line}</li>`).join('');
+  return lines.filter(line => line).map(line => `<li style="line-height: 1.2; margin-bottom: 5px;">${line}</li>`).join('');
 }
-
 
 // 控制编辑状态
 const isEditingName = ref(false);
@@ -1040,5 +1038,10 @@ input, textarea {
   font-size: 20px;
   font-weight: bolder;
 }
+.subTitle{
+  font-size: 16px;
+  font-weight: bold;
+}
+
 
 </style>
