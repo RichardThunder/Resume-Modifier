@@ -3,6 +3,10 @@ FROM node:lts-alpine AS build-stage
 # copy everything
 COPY . /app
 WORKDIR /app
+
+ARG API_URL
+ENV VITE_API_URL=$API_URL
+
 RUN npm install
 RUN npm run build
 
