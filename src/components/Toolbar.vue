@@ -37,7 +37,7 @@
         <i v-else class="bi bi-floppy" style="width: 16px; height: 16px;"></i>
       </button>
 
-      <button class="btn btn-sm btn-custom me-4" @click="exportToPDF" :disabled="isPrinting">
+      <button class="btn btn-sm btn-custom me-4" @click="handlePDFExport" :disabled="isPrinting">
         <span v-if="isPrinting" class="spinner-border spinner-border-sm"></span>
         <i v-else class="bi bi-download"></i>
       </button>
@@ -144,6 +144,7 @@ const isSavedToServer = ref(false);
 const isSavedToServerFailed = ref(false);
 
 
+
 //监听model变化, 记录历史
 watch(model, (newModel) => {
   if (!ignoreChange.value) {
@@ -153,6 +154,8 @@ watch(model, (newModel) => {
     ignoreChange.value = false; //重置标志位
   }
 }, {deep: true});
+
+
 
 const undo = () => {
   if (history.value.length > 1) {
@@ -315,6 +318,10 @@ const saveResume = async () => {
   }
 };
 
+const handlePDFExport = ()=>{
+  saveResume();
+  exportToPDF();
+}
 
 </script>
 
