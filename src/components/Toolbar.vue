@@ -37,7 +37,7 @@
         <i v-else class="bi bi-floppy" style="width: 16px; height: 16px;"></i>
       </button>
 
-      <button class="btn btn-sm btn-custom me-4" @click="exportToPDF" :disabled="isPrinting">
+      <button class="btn btn-sm btn-custom me-4" @click="handlePDFExport" :disabled="isPrinting">
         <span v-if="isPrinting" class="spinner-border spinner-border-sm"></span>
         <i v-else class="bi bi-download"></i>
       </button>
@@ -292,7 +292,10 @@ const disableEditing = () => {
   }
 };
 
-
+const handlePDFExport = async ()=>{
+  await saveResume();
+  exportToPDF();
+}
 
 const saveResume = async () => {
   isSaveLoading.value = true;

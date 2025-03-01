@@ -1004,8 +1004,8 @@ input, textarea {
 }
 
 .link {
-  color: blue;
-  text-decoration: underline;
+  color: black;
+  text-decoration: none;
 }
 
 .list-block {

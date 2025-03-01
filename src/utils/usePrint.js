@@ -5,6 +5,9 @@ export default function usePrint() {
     const isPrinting = ref(false); // 添加一个 ref 来跟踪打印状态
 
     const exportToPDF = () => {
+
+        // upload
+
         const tmpTitle = document.title;
         document.title = fileName.value;
         isPrinting.value = true; // 设置打印状态为 true
