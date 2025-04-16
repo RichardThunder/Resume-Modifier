@@ -11,15 +11,22 @@ export default function MainLayout({
     children: React.ReactNode;
 }) {
     const router = useRouter();
-
+    const isDevelopment = process.env.NODE_ENV === 'development'; // Check environment client-side
     useEffect(() => {
+        // --- DEVELOPMENT MODE BYPASS ---
+        if (isDevelopment) {
+            console.warn('🚧 DEV MODE: Client-side auth check in layout bypassed.');
+            return; // Do nothing in development
+        }
+        // --- END DEVELOPMENT MODE BYPASS ---
+
         // Client-side check for authentication
         if (!isAuthenticated()) {
             console.log('User not authenticated, redirecting to login.');
             router.push('/login'); // Redirect to login page
         }
         // No else needed, just let rendering continue if authenticated
-    }, [router]); // Re-run check if router object changes (shouldn't happen often)
+    }, [router, isDevelopment]); // Re-run check if router object changes (shouldn't happen often)
 
     // Optionally, show a loading state while checking auth
     // if (!isAuthenticated()) { // Initial check might prevent flicker
