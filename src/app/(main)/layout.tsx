@@ -15,8 +15,8 @@ export default function MainLayout({
     useEffect(() => {
         // Client-side check for authentication
         if (!isAuthenticated()) {
-            console.log('User not authenticated, redirecting to login.');
-            router.push('/login'); // Redirect to login page
+            // console.log('User not authenticated, redirecting to login.');
+            // router.push('/login'); // Redirect to login page
         }
         // No else needed, just let rendering continue if authenticated
     }, [router]); // Re-run check if router object changes (shouldn't happen often)

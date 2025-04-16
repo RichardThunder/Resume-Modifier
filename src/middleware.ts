@@ -4,7 +4,7 @@ import { getToken } from './lib/auth'; // Adjust path as needed
 
 // Define public paths that don't require authentication
 const PUBLIC_PATHS = ['/login', '/register']; // Add other public paths like '/forgot-password' if needed
-const PROTECTED_PATHS = ['/', '/resume', '/profile'];
+const PROTECTED_PATHS = ['/', '/profile'];
 
 export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
