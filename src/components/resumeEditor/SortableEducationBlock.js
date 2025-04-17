@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical } from 'lucide-react';
-import { EducationSection } from '../EducationSection';
+import { EducationSection } from './sectionsUsedByBlock/EducationSection';
 
 export const SortableEducationBlock = ({ id }) => {
   const [isHovered, setIsHovered] = useState(false);
