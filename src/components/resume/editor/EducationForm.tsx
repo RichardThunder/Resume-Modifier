@@ -5,7 +5,7 @@ import { useResumeStore } from '@/store/resumeStore';
 import { Education } from '@/types/resume';
 import { scoreToColors } from '@/lib/methods';
 import FeedbackModal from '@/components/common/FeedbackModal';
-//import DraggableItem from './DraggableItem'; // Assuming a reusable DraggableItem component
+import DraggableItem from './DraggableItem'; // Assuming a reusable DraggableItem component
 
 // --- Helper Components (ProgressCircle, Tooltip - copied from PersonInfoForm.tsx or import if made common) ---
 interface ProgressCircleProps { score: number | undefined; size?: number; width?: number; }
@@ -126,7 +126,7 @@ const EducationForm: React.FC = () => {
 
             <div className="space-y-2">
                 {education.map((edu, index) => (
-                    <DraggableItem key={edu.institutionName + index} id={index.toString()} index={index} onDragEnd={onDragEnd}>
+                    <DraggableItem key={index} id={index.toString()} index={index} onDragEnd={onDragEnd}>
                         {(isDragging) => (
                             <div className={`card mb-1 border ${isDragging ? 'opacity-50 shadow-lg' : 'shadow-sm'}`}>
                                 <div
