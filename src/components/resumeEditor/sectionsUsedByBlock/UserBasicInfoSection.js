@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { useResume } from '../context/ResumeContext';
-import EditableField from './common/EditableField';
+import { useResume } from '@/context/ResumeContext';
+import EditableField from './filedUsedBySection/EditableField';
 
 export const UserBasicInfoSection = ({ hideDefaultControls = false, onMenuAction }) => {
   const { resumeData, updateResumeField } = useResume();

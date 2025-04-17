@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical, Pencil, Check } from 'lucide-react';
-import { UserBasicInfoSection } from '../UserBasicInfoSection';
+import { UserBasicInfoSection } from './sectionsUsedByBlock/UserBasicInfoSection';
 import * as Popover from '@radix-ui/react-popover';
 
 export const SortableUserInfoBlock = ({ id }) => {

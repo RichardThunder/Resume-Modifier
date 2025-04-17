@@ -1,36 +1,36 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useResume } from '../context/ResumeContext';
+import { useResume } from '@/context/ResumeContext';
 import { Plus, X } from 'lucide-react';
-import EditableField from './common/EditableField';
+import EditableField from './filedUsedBySection/EditableField';
 
-export const WorkExperienceSection = ({ hideDefaultControls = false, onMenuAction }) => {
+export const ProjectsSection = ({ hideDefaultControls = false, onMenuAction }) => {
   const { resumeData, updateResumeField } = useResume();
-  const { workExperience } = resumeData;
+  const { projects } = resumeData;
   
-  // State for work experience items
-  const [workItems, setWorkItems] = useState([...workExperience]);
+  // State for project items
+  const [projectItems, setProjectItems] = useState([...projects]);
   
   // Provide context menu options for the parent component
   useEffect(() => {
     if (onMenuAction) {
       onMenuAction({ 
-        addWorkExperience 
+        addProject 
       });
     }
   }, []);
   
   // Handle changes to fields
   const handleFieldChange = (index, field, value) => {
-    const newItems = [...workItems];
+    const newItems = [...projectItems];
     
     // 特殊处理 isPresent 字段
     if (field === 'isPresent') {
       newItems[index] = {
         ...newItems[index],
         isPresent: value === 'true' || value === true,
-        // 如果是当前工作，清空结束日期
+        // 如果是进行中的项目，清空结束日期
         toDate: value === 'true' || value === true ? '' : newItems[index].toDate
       };
     } else {
@@ -40,82 +40,72 @@ export const WorkExperienceSection = ({ hideDefaultControls = false, onMenuActio
       };
     }
     
-    setWorkItems(newItems);
+    setProjectItems(newItems);
     
     // Update in context
-    updateResumeField('workExperience', newItems);
+    updateResumeField('projects', newItems);
   };
   
-  // Add a new work experience entry
-  const addWorkExperience = () => {
+  // Add a new project entry
+  const addProject = () => {
     const newItems = [
-      ...workItems,
+      ...projectItems,
       {
-        companyName: "",
-        jobTitle: "",
-        city: "",
-        country: "",
+        title: "",
+        description: "",
         fromDate: "",
         toDate: "",
-        isPresent: false,
-        description: ""
+        isPresent: false
       }
     ];
-    setWorkItems(newItems);
-    updateResumeField('workExperience', newItems);
+    setProjectItems(newItems);
+    updateResumeField('projects', newItems);
   };
   
-  // Remove a work experience entry
-  const removeWorkExperience = (index) => {
-    const newItems = [...workItems];
+  // Remove a project entry
+  const removeProject = (index) => {
+    const newItems = [...projectItems];
     newItems.splice(index, 1);
-    setWorkItems(newItems);
-    updateResumeField('workExperience', newItems);
+    setProjectItems(newItems);
+    updateResumeField('projects', newItems);
   };
   
   return (
     <div className="w-full max-w-4xl mx-auto my-1 relative">
       {/* Section Title */}
-      <h2 className="text-2xl font-bold mb-0.5">Work Experience</h2>
+      <h2 className="text-2xl font-bold mb-0.5">Projects</h2>
       
       {/* Divider Line */}
       <hr className="border-gray-300 mb-1" />
       
-      {/* Work Experience Items */}
+      {/* Project Items */}
       <div className="space-y-1">
-        {workItems.map((work, index) => (
+        {projectItems.map((project, index) => (
           <div key={index} className="relative bg-white hover:bg-gray-50 p-1 rounded-md group">
             <button 
-              onClick={() => removeWorkExperience(index)} 
+              onClick={() => removeProject(index)} 
               className="absolute right-2 top-2 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
             >
               <X className="w-4 h-4" />
             </button>
             
-            {/* Company and Date Row - 三列均分布局 */}
+            {/* Project Title and Date Row - 三列均分布局 */}
             <div className="grid grid-cols-3 gap-1 items-center mb-0.5">
-              {/* 公司名称 - 左侧 */}
+              {/* 项目名称 - 左侧 */}
               <div className="text-left">
                 <EditableField 
                   index={index} 
-                  field="companyName" 
-                  placeholder="公司名称" 
+                  field="title" 
+                  placeholder="项目名称" 
                   className="inline-block font-medium"
-                  value={workItems}
+                  value={projectItems}
                   onChange={handleFieldChange}
                 />
               </div>
               
-              {/* 职位名称 - 居中 */}
+              {/* 空白中间列，保持布局 */}
               <div className="text-center">
-                <EditableField 
-                  index={index} 
-                  field="jobTitle" 
-                  placeholder="职位" 
-                  className="inline-block text-center"
-                  value={workItems}
-                  onChange={handleFieldChange}
-                />
+                {/* 可以根据需要添加其他字段，例如技术栈等 */}
               </div>
               
               {/* 日期 - 右侧 */}
@@ -125,11 +115,11 @@ export const WorkExperienceSection = ({ hideDefaultControls = false, onMenuActio
                   field="fromDate" 
                   placeholder="起始日期" 
                   className="inline-block w-20 text-center"
-                  value={workItems}
+                  value={projectItems}
                   onChange={handleFieldChange}
                 />
                 <span>–</span>
-                {work.isPresent ? (
+                {project.isPresent ? (
                   <span className="inline-block w-20 text-center">至今</span>
                 ) : (
                   <EditableField 
@@ -137,45 +127,25 @@ export const WorkExperienceSection = ({ hideDefaultControls = false, onMenuActio
                     field="toDate" 
                     placeholder="结束日期" 
                     className="inline-block w-20 text-center"
-                    value={workItems}
+                    value={projectItems}
                     onChange={handleFieldChange}
                   />
                 )}
               </div>
             </div>
             
-            {/* Location Row */}
-            <div className="text-sm text-gray-600 mb-0.5">
-              <span className="mr-1">位置:</span>
-              <EditableField 
-                index={index} 
-                field="city" 
-                placeholder="城市" 
-                className="inline-block mr-1"
-                value={workItems}
-                onChange={handleFieldChange}
-              />
-              <span>,</span>
-              <EditableField 
-                index={index} 
-                field="country" 
-                placeholder="国家" 
-                className="inline-block ml-1"
-                value={workItems}
-                onChange={handleFieldChange}
-              />
-            </div>
-            
-            {/* 当前工作复选框 */}
+            {/* 进行中项目复选框 */}
             <div className="flex justify-end mb-0.5">
-              <input 
-                type="checkbox" 
-                id={`isPresent-${index}`} 
-                checked={work.isPresent}
-                onChange={(e) => handleFieldChange(index, 'isPresent', e.target.checked)}
-                className="mr-1"
-              />
-              <label htmlFor={`isPresent-${index}`} className="text-sm">当前工作</label>
+              <div className="flex items-center">
+                <input 
+                  type="checkbox" 
+                  id={`isPresent-${index}`} 
+                  checked={project.isPresent}
+                  onChange={(e) => handleFieldChange(index, 'isPresent', e.target.checked)}
+                  className="mr-1"
+                />
+                <label htmlFor={`isPresent-${index}`} className="text-sm">进行中项目</label>
+              </div>
             </div>
             
             {/* Description */}
@@ -183,16 +153,16 @@ export const WorkExperienceSection = ({ hideDefaultControls = false, onMenuActio
               <EditableField 
                 index={index} 
                 field="description" 
-                placeholder="工作描述（成就、职责等）" 
+                placeholder="项目描述（职责、技术、成果等）" 
                 className="w-full"
-                value={workItems}
+                value={projectItems}
                 onChange={handleFieldChange}
               />
             </div>
             
-            {/* Add Experience Button */}
+            {/* Add Project Button */}
             <button 
-              onClick={addWorkExperience} 
+              onClick={addProject} 
               className="absolute right-2 bottom-2 text-gray-400 hover:text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity"
             >
               <Plus className="w-4 h-4" />
@@ -201,13 +171,13 @@ export const WorkExperienceSection = ({ hideDefaultControls = false, onMenuActio
         ))}
       </div>
       
-      {/* Add Work Experience Button */}
-      {!hideDefaultControls && workItems.length === 0 && (
+      {/* Add Project Button */}
+      {!hideDefaultControls && projectItems.length === 0 && (
         <button 
-          onClick={addWorkExperience}
+          onClick={addProject}
           className="flex items-center mt-1 px-3 py-1 bg-blue-50 text-blue-600 rounded-md hover:bg-blue-100"
         >
-          <Plus className="w-4 h-4 mr-2" /> 添加工作经历
+          <Plus className="w-4 h-4 mr-2" /> 添加项目经历
         </button>
       )}
     </div>
@@ -215,18 +185,18 @@ export const WorkExperienceSection = ({ hideDefaultControls = false, onMenuActio
 };
 
 // 附加菜单选项到组件，使其可以从组件外部访问
-WorkExperienceSection.getMenuOptions = (component) => {
+ProjectsSection.getMenuOptions = (component) => {
   if (!component) return [];
   
-  const { addWorkExperience } = component;
+  const { addProject } = component;
   
   return [
     {
       icon: <Plus className="w-4 h-4" />,
-      label: '添加工作经历',
-      action: addWorkExperience
+      label: '添加项目经历',
+      action: addProject
     }
   ];
 };
 
-export default WorkExperienceSection;
+export default ProjectsSection;

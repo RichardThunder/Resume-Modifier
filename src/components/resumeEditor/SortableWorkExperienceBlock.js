@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical } from 'lucide-react';
-import { WorkExperienceSection } from '../WorkExperienceSection';
+import { WorkExperienceSection } from './sectionsUsedByBlock/WorkExperienceSection';
 
 export const SortableWorkExperienceBlock = ({ id }) => {
   const [isHovered, setIsHovered] = useState(false);
