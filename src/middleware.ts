@@ -8,6 +8,7 @@ const PUBLIC_PATHS = ['/login', '/register'];
 // Define paths that require authentication (adjust as needed)
 const PROTECTED_PATHS = ['/', '/resume', '/profile', '/template'];
 
+
 export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
     const isDevelopment = process.env.NODE_ENV === 'development';
