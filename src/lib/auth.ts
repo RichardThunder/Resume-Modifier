@@ -47,7 +47,7 @@ export const isAuthenticated = (): boolean => {
     if (!isBrowser) {
         return false;
     }
-    return true;
+    return !!getToken();
 };
 
 /**
