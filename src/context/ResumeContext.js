@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState } from 'react';
+import resumeService from '@/lib/services/resumeService';
 
 // Initial resume data
 const initialResumeData = {
@@ -74,6 +75,44 @@ const ResumeContext = createContext();
 // Provider component
 export function ResumeProvider({ children }) {
   const [resumeData, setResumeData] = useState(initialResumeData);
+  const [resumeId, setResumeId] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // 加载单个简历
+  const loadResume = async (id) => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await resumeService.get(id);
+      setResumeData(response.data);
+      setResumeId(id);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 保存简历
+  const saveResume = async (title) => {
+    try {
+      setLoading(true);
+      setError(null);
+      if (resumeId) {
+        // 更新已有简历
+        await resumeService.update(resumeId, resumeData);
+      } else {
+        // 创建新简历
+        const response = await resumeService.create(title, resumeData);
+        setResumeId(response.id);
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Function to update a specific field in resumeData
   const updateResumeField = (path, value) => {
@@ -150,7 +189,16 @@ export function ResumeProvider({ children }) {
   };
 
   return (
-    <ResumeContext.Provider value={{ resumeData, updateResumeField, updateTextContent }}>
+    <ResumeContext.Provider value={{ 
+      resumeData, 
+      updateResumeField, 
+      updateTextContent,
+      loadResume,
+      saveResume,
+      loading,
+      error,
+      resumeId
+    }}>
       {children}
     </ResumeContext.Provider>
   );
