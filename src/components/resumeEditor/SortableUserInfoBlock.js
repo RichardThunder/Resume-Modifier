@@ -4,10 +4,10 @@ import React, { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical, Pencil, Check } from 'lucide-react';
-import { UserBasicInfoSection } from './sectionsUsedByBlock/UserBasicInfoSection';
+import { getThemeComponent } from './themes/ThemeManager';
 import * as Popover from '@radix-ui/react-popover';
 
-export const SortableUserInfoBlock = ({ id }) => {
+export const SortableUserInfoBlock = ({ id, theme = 'theme2' }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [sectionState, setSectionState] = useState({
@@ -15,7 +15,8 @@ export const SortableUserInfoBlock = ({ id }) => {
     toggleEditing: null
   });
 
-  // Setup sortable functionality with dnd-kit
+  const UserInfoComponent = getThemeComponent('UserBasicInfoSection', theme);
+
   const {
     attributes,
     listeners,
@@ -25,14 +26,12 @@ export const SortableUserInfoBlock = ({ id }) => {
     isDragging
   } = useSortable({ id });
 
-  // Apply drag styles
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
     opacity: isDragging ? 0.5 : 1,
   };
 
-  // 根据UserBasicInfoSection的状态获取菜单选项
   const getMenuOptions = () => {
     const { isEditing, toggleEditing } = sectionState;
     
@@ -47,7 +46,6 @@ export const SortableUserInfoBlock = ({ id }) => {
     ];
   };
 
-  // 处理来自UserBasicInfoSection的状态更新
   const handleMenuAction = (state) => {
     setSectionState(state);
   };
@@ -100,7 +98,7 @@ export const SortableUserInfoBlock = ({ id }) => {
       
       {/* Block Content */}
       <div className="p-4">
-        <UserBasicInfoSection 
+        <UserInfoComponent 
           hideDefaultControls={true} 
           onMenuAction={handleMenuAction}
         />
