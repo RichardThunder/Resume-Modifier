@@ -73,7 +73,34 @@ const ResumeContext = createContext();
 
 // Provider component
 export function ResumeProvider({ children }) {
-  const [resumeData, setResumeData] = useState(initialResumeData);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  // 在初始化状态时就检查本地存储
+  const getInitialData = () => {
+    if (typeof window !== 'undefined') {  // 确保在浏览器环境中
+      try {
+        const storedData = localStorage.getItem('resumeData');
+        if (storedData) {
+          return JSON.parse(storedData);
+        }
+      } catch (error) {
+        console.error('加载初始简历数据时出错:', error);
+      }
+    }
+    return initialResumeData;  // 如果没有存储数据或出错，返回默认数据
+  };
+
+  const [resumeData, setResumeData] = useState(getInitialData);
+
+  // 在组件挂载后设置加载完成
+  React.useEffect(() => {
+    setIsLoading(false);
+    
+    // 只在本地存储中没有数据时，保存默认模板
+    if (typeof window !== 'undefined' && !localStorage.getItem('resumeData')) {
+      saveToLocalStorage(initialResumeData);
+    }
+  }, []);
 
   // Function to update a specific field in resumeData
   const updateResumeField = (path, value) => {
@@ -108,9 +135,62 @@ export function ResumeProvider({ children }) {
         current[lastKey] = value;
       }
       
+      // 自动保存到 localStorage
+      setTimeout(() => saveToLocalStorage(newData), 0);
+      
       return newData;
     });
   };
+
+  // 添加保存到 localStorage 的函数
+  const saveToLocalStorage = (data) => {
+    try {
+      localStorage.setItem('resumeData', JSON.stringify(data));
+      console.log('简历数据已保存到本地存储');
+    } catch (error) {
+      console.error('保存简历数据时出错:', error);
+    }
+  };
+
+  // 添加从 localStorage 加载数据的函数
+  const loadFromLocalStorage = () => {
+    try {
+      const storedData = localStorage.getItem('resumeData');
+      if (storedData) {
+        setResumeData(JSON.parse(storedData));
+        console.log('从本地存储加载了简历数据');
+        return true;
+      }
+      console.log('本地存储中没有简历数据，使用默认模板');
+      return false;
+    } catch (error) {
+      console.error('加载简历数据时出错:', error);
+      return false;
+    }
+  };
+  
+  // 添加清空本地存储的函数
+  const clearLocalStorage = () => {
+    try {
+      localStorage.removeItem('resumeData');
+      // 重置为初始模板数据
+      setResumeData(initialResumeData);
+      console.log('已清空本地存储的简历数据并重置为默认模板');
+    } catch (error) {
+      console.error('清空本地存储时出错:', error);
+    }
+  };
+
+  // 在组件初始化时尝试加载数据
+  React.useEffect(() => {
+    // 只在本地存储中没有数据时，保存默认模板
+    if (typeof window !== 'undefined' && !localStorage.getItem('resumeData')) {
+      saveToLocalStorage(initialResumeData);
+      console.log('已将默认模板保存到本地存储');
+    }
+    // 移除这行，避免重复设置状态
+    // console.log(resumeData);
+  }, []);
 
   // Simplified update function for common cases
   const updateTextContent = (blockId, plainText) => {
@@ -150,8 +230,17 @@ export function ResumeProvider({ children }) {
   };
 
   return (
-    <ResumeContext.Provider value={{ resumeData, updateResumeField, updateTextContent }}>
-      {children}
+    <ResumeContext.Provider value={{ 
+      resumeData, 
+      updateResumeField, 
+      updateTextContent, 
+      setResumeData,
+      saveToLocalStorage: () => saveToLocalStorage(resumeData),
+      loadFromLocalStorage,
+      clearLocalStorage,  
+      isLoading
+    }}>
+      {!isLoading && children}
     </ResumeContext.Provider>
   );
 }
