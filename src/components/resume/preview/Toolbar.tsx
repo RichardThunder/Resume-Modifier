@@ -204,7 +204,7 @@ const Toolbar: React.FC = () => {
                                 onClick={handleSaveFileName}
                                 title="Save filename"
                             >
-                                <Image src="/assets/toolbar/save.svg" alt="Save Name" width={16} height={16} />
+                                <Image src="/toolbar/save.svg" alt="Save Name" width={16} height={16} />
                             </button>
                             <input
                                 ref={fileNameInputRef}
@@ -222,7 +222,7 @@ const Toolbar: React.FC = () => {
                             title={`Current filename: ${fileName}. Click to rename.`}
                             onClick={handleEditFileName}
                         >
-                            <Image src="/assets/toolbar/ep_edit.svg" alt="Edit Name" width={16} height={16} />
+                            <Image src="/toolbar/ep_edit.svg" alt="Edit Name" width={16} height={16} />
                             <span className="truncate max-w-[150px] hidden sm:inline">{fileName}</span>
                             <span className="truncate max-w-[100px] sm:hidden">Rename</span>
                         </button>
@@ -237,7 +237,7 @@ const Toolbar: React.FC = () => {
                         onClick={undo}
                         title="Undo"
                     >
-                        <Image src="/assets/toolbar/material-symbols-light_undo.svg" alt="Undo" width={18} height={18} />
+                        <Image src="/toolbar/material-symbols-light_undo.svg" alt="Undo" width={18} height={18} />
                     </button>
                     <button
                         className="btn-custom btn-sm p-1.5 disabled:opacity-50"
@@ -245,7 +245,7 @@ const Toolbar: React.FC = () => {
                         onClick={redo}
                         title="Redo"
                     >
-                        <Image src="/assets/toolbar/material-symbols-light_redo.svg" alt="Redo" width={18} height={18} />
+                        <Image src="/toolbar/material-symbols-light_redo.svg" alt="Redo" width={18} height={18} />
                     </button>
                 </div>
 
@@ -257,7 +257,7 @@ const Toolbar: React.FC = () => {
                         onClick={toggleResumeModal}
                         title="Upload Resume PDF"
                     >
-                        <Image src="/assets/toolbar/circum_export.svg" alt="Upload" width={16} height={16} />
+                        <Image src="/toolbar/circum_export.svg" alt="Upload" width={16} height={16} />
                         <span className="hidden sm:inline">Resume</span>
                     </button>
                     {/* Upload JD */}
@@ -266,7 +266,7 @@ const Toolbar: React.FC = () => {
                         onClick={toggleJdModal}
                         title="Analyze with Job Description"
                     >
-                        <Image src="/assets/toolbar/circum_export.svg" alt="Upload" width={16} height={16} />
+                        <Image src="/toolbar/circum_export.svg" alt="Upload" width={16} height={16} />
                         <span className="hidden sm:inline">JD</span>
                     </button>
                     {/* Save Button */}

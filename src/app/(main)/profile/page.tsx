@@ -214,7 +214,7 @@ export default function ProfilePage() {
                     <div className="card text-center">
                         <div className="card-body">
                             <Image
-                                src="/assets/Avatar.png" // Path relative to public folder
+                                src="/Avatar.png" // Path relative to public folder
                                 alt="Profile Picture"
                                 width={150}
                                 height={150}

@@ -34,7 +34,7 @@ const Header: React.FC = () => {
     }
 
     // Example Avatar - replace with actual user data if available
-    const userAvatar = "/assets/Avatar.png"; // Path relative to /public
+    const userAvatar = "/Avatar.png"; // Path relative to /public
 
     const navLinkClasses = (path: string) =>
         `block py-2 px-3 md:p-0 rounded md:bg-transparent font-semibold text-lg transition duration-150 ease-in-out ${
@@ -55,7 +55,7 @@ const Header: React.FC = () => {
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-4 py-2">
                 {/* Logo and Brand */}
                 <Link href={isAuth ? "/" : "/login"} className="flex items-center space-x-2 rtl:space-x-reverse">
-                    <Image src="/assets/bot.svg" alt="ResumeBot Logo" width={40} height={40} />
+                    <Image src="/bot.svg" alt="ResumeBot Logo" width={40} height={40} />
                     <span className="self-center text-2xl font-bold whitespace-nowrap text-gray-800">ResumeBot</span>
                 </Link>
 
