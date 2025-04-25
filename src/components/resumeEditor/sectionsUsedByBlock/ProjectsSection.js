@@ -10,7 +10,7 @@ export const ProjectsSection = ({ hideDefaultControls = false, onMenuAction }) =
   const { projects } = resumeData;
   
   // State for project items
-  const [projectItems, setProjectItems] = useState([...projects]);
+  const [projectItems, setProjectItems] = useState(Array.isArray(projects) ? [...projects] : []);
   
   // Provide context menu options for the parent component
   useEffect(() => {

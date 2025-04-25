@@ -7,6 +7,7 @@ import { getToken } from '@/lib/auth';
 import { useResume } from '@/context/ResumeContext';
 import usePrint from '@/hooks/usePrint';
 import Image from 'next/image';
+import saveResumeService from '@/lib/services/saveResumeService';
 
 const ResumeToolbar: React.FC = () => {
     const {
@@ -19,7 +20,7 @@ const ResumeToolbar: React.FC = () => {
     const { exportToPDF, isPrinting } = usePrint();
 
     const [isEditingName, setIsEditingName] = useState(false);
-    const [fileName, setLocalFileName] = useState('简历.pdf');
+    const [fileName, setLocalFileName] = useState('简历');
     const fileNameInputRef = useRef<HTMLInputElement>(null);
 
     const [showResumeModal, setShowResumeModal] = useState(false);
@@ -93,7 +94,7 @@ const ResumeToolbar: React.FC = () => {
 
     const handleSaveFileName = () => {
         const trimmedName = fileName.trim();
-        const finalName = trimmedName || '简历.pdf'; // Default if empty
+        const finalName = trimmedName || '简历'; // Default if empty
         setLocalFileName(finalName);
         setIsEditingName(false);
     };
@@ -129,30 +130,105 @@ const ResumeToolbar: React.FC = () => {
         const formData = new FormData();
         formData.append('file', selectedFile);
 
+        // 打印请求信息
+        console.log('准备上传简历:', {
+            fileName: selectedFile.name,
+            fileSize: `${(selectedFile.size / 1024).toFixed(2)} KB`,
+            fileType: selectedFile.type,
+            endpoint: `${API_URL}/pdfupload`
+        });
+
+
         setIsResumeLoading(true);
         setApiError(null);
         try {
+            console.log('开始上传简历...');
+            console.time('简历上传耗时');
+            
             const response = await axios.post(`${API_URL}/pdfupload`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${jwtToken}`
+                },
+                timeout: 30000, // 30秒超时
+                onUploadProgress: (progressEvent) => {
+                    const percentCompleted = Math.round((progressEvent.loaded * 100) / (progressEvent.total || 1));
+                    console.log(`上传进度: ${percentCompleted}%`);
                 }
+            });
+            
+            console.timeEnd('简历上传耗时');
+            console.log('简历上传响应:', {
+                status: response.status,
+                statusText: response.statusText,
+                dataStatus: response.data?.status,
+                hasData: !!response.data?.data
             });
 
             if (response.data.status === 200 && response.data.data) {
+                console.log('简历上传成功，开始处理数据');
                 setLocalFileName(selectedFile.name);
                 setResumeData(response.data.data);
                 toggleResumeModal();
+                console.log('简历数据已更新，模态框已关闭');
             } else {
+                console.warn('服务器返回成功但数据异常:', response.data);
                 throw new Error(response.data.message || '上传简历失败');
             }
         } catch (error: any) {
             console.error('简历上传错误:', error);
-            const message = error.response?.data?.message || error.message || '上传简历时出错';
-            setApiError(message);
-            if (error.response?.status === 401) router.push('/login');
+            
+            // 详细错误日志
+            if (axios.isAxiosError(error)) {
+                if (error.code === 'ECONNABORTED') {
+                    console.error('请求超时');
+                    setApiError('请求超时，请检查网络连接或稍后重试');
+                } else if (error.code === 'ERR_NETWORK') {
+                    console.error('网络错误:', error.message);
+                    setApiError('网络连接错误，请检查您的网络连接或服务器状态');
+                } else if (error.response) {
+                    console.error('服务器响应错误:', {
+                        status: error.response.status,
+                        statusText: error.response.statusText,
+                        data: error.response.data
+                    });
+                    
+                    // 根据状态码处理不同错误
+                    switch (error.response.status) {
+                        case 400:
+                            setApiError('请求参数错误: ' + (error.response.data?.message || '无效的请求'));
+                            break;
+                        case 401:
+                            setApiError('认证失败: 请重新登录');
+                            setTimeout(() => router.push('/login'), 2000);
+                            break;
+                        case 413:
+                            setApiError('文件太大: 服务器拒绝处理');
+                            break;
+                        case 415:
+                            setApiError('不支持的文件类型');
+                            break;
+                        case 500:
+                            setApiError('服务器内部错误: ' + (error.response.data?.message || '请稍后重试'));
+                            break;
+                        default:
+                            setApiError(`服务器错误 (${error.response.status}): ` + (error.response.data?.message || error.message || '上传简历时出错'));
+                    }
+                } else if (error.request) {
+                    console.error('请求已发送但未收到响应:', error.request);
+                    setApiError('服务器未响应，请检查服务器状态或稍后重试');
+                } else {
+                    console.error('请求配置错误:', error.message);
+                    setApiError('请求配置错误: ' + error.message);
+                }
+            } else {
+                console.error('非Axios错误:', error);
+                const message = error.message || '上传简历时出错';
+                setApiError(message);
+            }
         } finally {
             setIsResumeLoading(false);
+            console.log('简历上传流程结束');
         }
     };
 
@@ -201,17 +277,19 @@ const ResumeToolbar: React.FC = () => {
         setIsSaveSuccess(false);
         setIsSaveFailed(false);
         setApiError(null);
-
-        try {
-            saveToLocalStorage();
+        const result = await saveResumeService.save(getTimestampedFilename(fileName,'pdf'),resumeData)
+        setIsSaveLoading(false);
+        if (result.success) {
             setIsSaveSuccess(true);
-            setTimeout(() => setIsSaveSuccess(false), 3000);
-        } catch (error: any) {
+            setTimeout(() => setIsSaveSuccess(false), 3000); // Show success briefly
+        } else {
             setIsSaveFailed(true);
-            setApiError(error.message || '保存简历失败');
-            setTimeout(() => {setIsSaveFailed(false); setApiError(null)}, 5000);
-        } finally {
-            setIsSaveLoading(false);
+            setApiError(result.error || 'Failed to save resume.'); // Show specific error
+            setTimeout(() => {setIsSaveFailed(false); setApiError(null)}, 5000); // Clear fail state/error
+            if (result.shouldRedirect) {
+                alert("Authentication expired. Please log in again.");
+                router.push('/login');
+            }
         }
     };
 
@@ -232,7 +310,19 @@ const ResumeToolbar: React.FC = () => {
 
     const canUndo = history.length > 0;
     const canRedo = future.length > 0;
+ const getTimestampedFilename = function(prefix = 'file', ext = 'pdf') {
+  const now = new Date();
+  const pad = (n: number) => n.toString().padStart(2, '0');
 
+  const year = now.getFullYear();
+  const month = pad(now.getMonth() + 1);
+  const day = pad(now.getDate());
+  const hour = pad(now.getHours());
+  const minute = pad(now.getMinutes());
+  const second = pad(now.getSeconds());
+
+  return `${prefix}_${year}${month}${day}_${hour}${minute}${second}.${ext}`;
+}
     return (
         <>
             {/* 修改为垂直工具栏 */}
@@ -368,7 +458,7 @@ const ResumeToolbar: React.FC = () => {
                                     type="file"
                                     accept=".pdf"
                                     onChange={handleFileChange}
-                                    className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer"
+                                    className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer"
                                 />
                             </div>
                             {selectedFile && <p className="text-sm font-medium text-gray-700">已选择: {selectedFile.name}</p>}

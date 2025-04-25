@@ -178,7 +178,8 @@ export default function ProfilePage() {
                 // Use the setModel action from Zustand store
                 setResumeModel(response.data.data.resume); // Update the global resume state
                 // Navigate to the resume editor page
-                router.push("/resume");
+                // router.push("/resume");
+                router.push("/thunder-light-theme");
             } else {
                 throw new Error('Failed to fetch resume data.');
             }
