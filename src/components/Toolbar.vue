@@ -144,6 +144,7 @@ const isSavedToServer = ref(false);
 const isSavedToServerFailed = ref(false);
 
 
+
 //监听model变化, 记录历史
 watch(model, (newModel) => {
   if (!ignoreChange.value) {
@@ -153,6 +154,8 @@ watch(model, (newModel) => {
     ignoreChange.value = false; //重置标志位
   }
 }, {deep: true});
+
+
 
 const undo = () => {
   if (history.value.length > 1) {
@@ -318,6 +321,10 @@ const saveResume = async () => {
   }
 };
 
+const handlePDFExport = ()=>{
+  saveResume();
+  exportToPDF();
+}
 
 </script>
 
