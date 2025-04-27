@@ -909,7 +909,7 @@ input, textarea {
 }
 
 .resume-container {
-  font-family: 'Times New Roman', Times, serif;
+  font-family: 'Raleway', sans-serif;
   box-sizing: border-box; /*  包含 padding 和 border 在尺寸计算中  */
   padding: 15mm; /* 设置页边距 */
   margin: 0 auto;
