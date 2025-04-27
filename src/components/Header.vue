@@ -14,13 +14,13 @@
        <div :class="['collapse', 'navbar-collapse', 'justify-content-end', { show: isNavbarOpen }]" id="navbarNavContent">
         <ul class="navbar-nav  mb-2 mb-lg-0">
           <li class="nav-item">
-            <router-link class="nav-link fw-bold" to="/">Home</router-link>
+            <a class="nav-link fw-bold" href="https://aws.mintmelon.ca/home">Home</a>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link fw-bold" to="/Chart">Chart</router-link>
+            <a class="nav-link fw-bold" href="https://aws.mintmelon.ca/Chart">Chart</a>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link fw-bold" to="/job_market">Job Market</router-link>
+            <a class="nav-link fw-bold" href="https://aws.mintmelon.ca/job_market">Job Market</a>
           </li>
           <li class="nav-item">
             <router-link class="nav-link fw-bold" to="/resume">Resume Editor</router-link>

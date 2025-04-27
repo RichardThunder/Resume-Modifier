@@ -295,7 +295,10 @@ const disableEditing = () => {
   }
 };
 
-
+const handlePDFExport = async ()=>{
+  await saveResume();
+  exportToPDF();
+}
 
 const saveResume = async () => {
   isSaveLoading.value = true;
