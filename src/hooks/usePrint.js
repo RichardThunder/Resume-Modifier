@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useResume } from '@/context/ResumeContext';
+import { CloudCog } from 'lucide-react';
 
 const usePrint = () => {
   const [isPrinting, setIsPrinting] = useState(false);
@@ -14,29 +15,37 @@ const usePrint = () => {
         body * {
           visibility: hidden;
         }
-        .resume-container, .resume-container * {
+
+        .resume-block-container, .resume-block-container * {
           visibility: visible;
+          padding-top: none !important;
+          margin-top: none !important;
         }
-        .resume-container {
+        .resume-block-container {
           position: absolute;
           left: 0;
           top: 0;
           width: 100%;
-          height: 100%;
+          height: auto;
+          margin: none !important;
+          padding: none !important;
+          transform: translateY(0) !important;
         }
         /* 让所有字体都小一号 */
-        .resume-container * {
+        .resume-block-container * {
           font-size: 0.9em !important;
+          margin-top: none !important;
+          padding-top: none !important;
         }
         /* 隐藏textarea的拖拽标识 */
-        .resume-container textarea {
+        .resume-block-container textarea {
           resize: none !important;
           overflow: hidden !important;
         }
 
         @page {
           size: A4;
-          margin: 0;
+          margin: none !important;
         }
       }
     `;
@@ -128,8 +137,12 @@ const usePrint = () => {
     addExportOverlay();
     
     setTimeout(() => {
+      let newstr = document.getElementsByClassName('resume-container')[0].innerHTML;
+      let oldstr = document.body.innerHTML;
+      document.body.innerHTML = newstr;
       window.print();
-      
+      document.body.innerHTML = oldstr;
+
       // 打印对话框关闭后移除样式并重置状态
       setTimeout(() => {
         removePrintStyles();
