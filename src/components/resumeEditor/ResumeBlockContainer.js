@@ -120,7 +120,7 @@ export const ResumeBlockContainer = () => {
   };
   
   return (
-    <div className="resume-block-container max-w-4xl mx-auto pl-8">
+    <div className="resume-block-container max-w-4xl mx-auto">
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}

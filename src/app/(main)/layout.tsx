@@ -37,7 +37,7 @@ export default function MainLayout({
         <div className="flex flex-col min-h-screen">
             <Header />
             {/* Add top padding to main content to offset fixed header */}
-            <main className="flex-grow pt-16"> {/* Adjust pt-16 based on Header height */}
+            <main className="flex-grow pt-16"> {/* Reduced from pt-16 to pt-10 */}
                 {children}
             </main>
             {/* Optional Footer */}

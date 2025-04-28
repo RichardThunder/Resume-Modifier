@@ -8,7 +8,7 @@ import ResumeToolbar from '../../../components/resume/preview/ResumeToolbar';
 
 export default function ResumeEditorDemo() {
   return (
-    <div className="min-h-screen bg-gray-50 py-10 relative">
+    <div className="min-h-screen bg-gray-50 py-4 relative">
       <ResumeProvider>
         {/* 主要内容区域 */}
         <div className="container mx-auto px-4">
@@ -22,16 +22,14 @@ export default function ResumeEditorDemo() {
             {/* 使用flex布局将ResumeBlockContainer和ResumeToolbar并排显示 */}
             <div className="flex">
               {/* 左侧简历内容区域 - 添加resume-container类用于打印 */}
-              <div className="flex-grow pr-16 resume-container">
+              <div className="flex-grow resume-container">
                 <ResumeBlockContainer />
               </div>
               
               {/* 右侧工具栏 */}
-              <div className="w-16 flex-shrink-0 relative">
-                <div className="sticky top-20">
+             
                   <ResumeToolbar />
-                </div>
-              </div>
+             
             </div>
           </div>
           

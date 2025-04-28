@@ -44,11 +44,9 @@ export const SortableWorkExperienceBlock = ({ id }) => {
       </div>
       
       {/* Block Content */}
-      <div className="p-4">
-        <WorkExperienceSection 
-          hideDefaultControls={false}
-        />
-      </div>
+      <WorkExperienceSection 
+        hideDefaultControls={false}
+      />
     </div>
   );
 };

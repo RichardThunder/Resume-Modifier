@@ -25,20 +25,10 @@ export const WorkExperienceSection = ({ hideDefaultControls = false, onMenuActio
   const handleFieldChange = (index, field, value) => {
     const newItems = [...workItems];
     
-    // 特殊处理 isPresent 字段
-    if (field === 'isPresent') {
-      newItems[index] = {
-        ...newItems[index],
-        isPresent: value === 'true' || value === true,
-        // 如果是当前工作，清空结束日期
-        toDate: value === 'true' || value === true ? '' : newItems[index].toDate
-      };
-    } else {
-      newItems[index] = {
-        ...newItems[index],
-        [field]: value
-      };
-    }
+    newItems[index] = {
+      ...newItems[index],
+      [field]: value
+    };
     
     setWorkItems(newItems);
     
@@ -129,53 +119,15 @@ export const WorkExperienceSection = ({ hideDefaultControls = false, onMenuActio
                   onChange={handleFieldChange}
                 />
                 <span>–</span>
-                {work.isPresent ? (
-                  <span className="inline-block w-20 text-center">至今</span>
-                ) : (
-                  <EditableField 
-                    index={index} 
-                    field="toDate" 
-                    placeholder="结束日期" 
-                    className="inline-block w-20 text-center"
-                    value={workItems}
-                    onChange={handleFieldChange}
-                  />
-                )}
+                <EditableField 
+                  index={index} 
+                  field="toDate" 
+                  placeholder="结束日期" 
+                  className="inline-block w-20 text-center"
+                  value={workItems}
+                  onChange={handleFieldChange}
+                />
               </div>
-            </div>
-            
-            {/* Location Row */}
-            <div className="text-sm text-gray-600 mb-0.5">
-              <span className="mr-1">位置:</span>
-              <EditableField 
-                index={index} 
-                field="city" 
-                placeholder="城市" 
-                className="inline-block mr-1"
-                value={workItems}
-                onChange={handleFieldChange}
-              />
-              <span>,</span>
-              <EditableField 
-                index={index} 
-                field="country" 
-                placeholder="国家" 
-                className="inline-block ml-1"
-                value={workItems}
-                onChange={handleFieldChange}
-              />
-            </div>
-            
-            {/* 当前工作复选框 */}
-            <div className="flex justify-end mb-0.5">
-              <input 
-                type="checkbox" 
-                id={`isPresent-${index}`} 
-                checked={work.isPresent}
-                onChange={(e) => handleFieldChange(index, 'isPresent', e.target.checked)}
-                className="mr-1"
-              />
-              <label htmlFor={`isPresent-${index}`} className="text-sm">当前工作</label>
             </div>
             
             {/* Description */}

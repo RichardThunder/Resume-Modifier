@@ -44,11 +44,9 @@ export const SortableAchievementsBlock = ({ id }) => {
       </div>
       
       {/* Block Content */}
-      <div className="p-4">
-        <AchievementsSection 
-          hideDefaultControls={false}
-        />
-      </div>
+      <AchievementsSection 
+        hideDefaultControls={false}
+      />
     </div>
   );
 };

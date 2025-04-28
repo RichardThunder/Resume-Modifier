@@ -25,20 +25,11 @@ export const ProjectsSection = ({ hideDefaultControls = false, onMenuAction }) =
   const handleFieldChange = (index, field, value) => {
     const newItems = [...projectItems];
     
-    // 特殊处理 isPresent 字段
-    if (field === 'isPresent') {
-      newItems[index] = {
-        ...newItems[index],
-        isPresent: value === 'true' || value === true,
-        // 如果是进行中的项目，清空结束日期
-        toDate: value === 'true' || value === true ? '' : newItems[index].toDate
-      };
-    } else {
-      newItems[index] = {
-        ...newItems[index],
-        [field]: value
-      };
-    }
+    
+    newItems[index] = {
+      ...newItems[index],
+      [field]: value
+    };
     
     setProjectItems(newItems);
     
@@ -119,32 +110,14 @@ export const ProjectsSection = ({ hideDefaultControls = false, onMenuAction }) =
                   onChange={handleFieldChange}
                 />
                 <span>–</span>
-                {project.isPresent ? (
-                  <span className="inline-block w-20 text-center">至今</span>
-                ) : (
-                  <EditableField 
-                    index={index} 
-                    field="toDate" 
-                    placeholder="结束日期" 
-                    className="inline-block w-20 text-center"
-                    value={projectItems}
-                    onChange={handleFieldChange}
-                  />
-                )}
-              </div>
-            </div>
-            
-            {/* 进行中项目复选框 */}
-            <div className="flex justify-end mb-0.5">
-              <div className="flex items-center">
-                <input 
-                  type="checkbox" 
-                  id={`isPresent-${index}`} 
-                  checked={project.isPresent}
-                  onChange={(e) => handleFieldChange(index, 'isPresent', e.target.checked)}
-                  className="mr-1"
+                <EditableField 
+                  index={index} 
+                  field="toDate" 
+                  placeholder="结束日期" 
+                  className="inline-block w-20 text-center"
+                  value={projectItems}
+                  onChange={handleFieldChange}
                 />
-                <label htmlFor={`isPresent-${index}`} className="text-sm">进行中项目</label>
               </div>
             </div>
             

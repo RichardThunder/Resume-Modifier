@@ -71,7 +71,7 @@ const EditableField = ({
       onChange={handleChange}
       onBlur={onBlur ? handleBlur : undefined}
       placeholder={placeholder}
-      className={`bg-transparent border-b border-transparent hover:border-gray-300 focus:border-blue-500 outline-none ${className}`}
+      className={`bg-transparent border-b-[0.5px] border-transparent hover:border-gray-300 focus:border-blue-500 outline-none py-0 ${className}`}
     />
   );
 };
