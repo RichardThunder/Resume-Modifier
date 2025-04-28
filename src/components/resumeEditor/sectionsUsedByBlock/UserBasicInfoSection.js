@@ -56,11 +56,11 @@ export const UserBasicInfoSection = ({ hideDefaultControls = false, onMenuAction
     <div className="w-full flex justify-center my-2 relative">
       <div className="text-center max-w-3xl w-full">
         {/* User's name - large and bold */}
-        <div className="flex gap-1 justify-center mb-1">
+        <div className="flex gap-0 justify-center mb-1">
           <EditableField 
             field="firstName" 
             placeholder="名" 
-            className="text-3xl font-bold text-center w-auto"
+            className="text-3xl font-bold text-right w-auto"
             value={userInfoState}
             onChange={handleFieldChange}
             onBlur={handleFieldBlur}
@@ -68,7 +68,7 @@ export const UserBasicInfoSection = ({ hideDefaultControls = false, onMenuAction
           <EditableField 
             field="lastName" 
             placeholder="姓" 
-            className="text-3xl font-bold text-center w-auto"
+            className="text-3xl font-bold text-left w-auto"
             value={userInfoState}
             onChange={handleFieldChange}
             onBlur={handleFieldBlur}
