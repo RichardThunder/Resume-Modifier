@@ -44,9 +44,7 @@ export const SortableSkillsBlock = ({ id }) => {
       </div>
       
       {/* Block Content */}
-      <div className="p-4">
-        <SkillsSection />
-      </div>
+      <SkillsSection />
     </div>
   );
 };

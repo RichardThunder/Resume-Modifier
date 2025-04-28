@@ -44,11 +44,9 @@ export const SortableEducationBlock = ({ id }) => {
       </div>
       
       {/* Block Content */}
-      <div className="p-4">
-        <EducationSection 
-          hideDefaultControls={false}
-        />
-      </div>
+      <EducationSection 
+        hideDefaultControls={false}
+      />
     </div>
   );
 };

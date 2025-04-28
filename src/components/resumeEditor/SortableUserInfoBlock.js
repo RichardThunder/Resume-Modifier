@@ -99,12 +99,10 @@ export const SortableUserInfoBlock = ({ id }) => {
       </Popover.Root>
       
       {/* Block Content */}
-      <div className="p-4">
-        <UserBasicInfoSection 
-          hideDefaultControls={true} 
-          onMenuAction={handleMenuAction}
-        />
-      </div>
+      <UserBasicInfoSection 
+        hideDefaultControls={true} 
+        onMenuAction={handleMenuAction}
+      />
     </div>
   );
 };

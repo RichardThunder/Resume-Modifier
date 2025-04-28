@@ -44,11 +44,9 @@ export const SortableProjectsBlock = ({ id }) => {
       </div>
       
       {/* Block Content */}
-      <div className="p-4">
-        <ProjectsSection 
-          hideDefaultControls={false}
-        />
-      </div>
+      <ProjectsSection 
+        hideDefaultControls={false}
+      />
     </div>
   );
 };
