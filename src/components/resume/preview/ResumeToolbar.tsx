@@ -326,7 +326,7 @@ const ResumeToolbar: React.FC = () => {
     return (
         <>
             {/* 修改为垂直工具栏 */}
-            <div className="toolbar-container fixed right-0 top-0 h-full z-30 flex flex-col items-center justify-start bg-gray-200 border-l border-gray-300 py-4 px-2 w-16 overflow-auto">
+            <div className="toolbar-container fixed right-0 top-30 h-full z-30 flex flex-col items-center justify-start bg-gray-200 border-l border-gray-300 py-4 px-2 w-16 overflow-auto">
                 {/* 文件名编辑 - 垂直布局 */}
                 <div className="filename-edit mb-6 w-full">
                     {isEditingName ? (

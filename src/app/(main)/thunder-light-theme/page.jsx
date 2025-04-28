@@ -8,30 +8,28 @@ import ResumeToolbar from '../../../components/resume/preview/ResumeToolbar';
 
 export default function ResumeEditorDemo() {
   return (
-    <div className="min-h-screen bg-gray-50 py-10 relative">
+    <div className="min-h-screen bg-gray-50 py-4 relative">
       <ResumeProvider>
         {/* 主要内容区域 */}
         <div className="container mx-auto px-4">
-          <h1 className="text-2xl font-bold mb-8 text-center">可拖拽简历编辑器</h1>
-          
-          <div className="bg-white shadow-lg rounded-lg p-6 relative">
-            <div className="mb-4 p-3 bg-blue-50 rounded-md">
-              <p className="text-sm text-blue-700">提示：将鼠标悬停在各部分上可以看到拖动手柄。点击并拖动手柄可以调整各部分的顺序。</p>
-            </div>
+          <h1 className="text-2xl font-bold mb-2 text-center">可拖拽简历编辑器</h1>
+          <div className="mb-4 p-3 bg-blue-50 rounded-md">
+            <p className="text-sm text-blue-700">提示：将鼠标悬停在各部分上可以看到拖动手柄。点击并拖动手柄可以调整各部分的顺序。</p>
+          </div>
+          <div className="bg-white shadow-lg rounded-lg p-4 relative">
+            
             
             {/* 使用flex布局将ResumeBlockContainer和ResumeToolbar并排显示 */}
             <div className="flex">
               {/* 左侧简历内容区域 - 添加resume-container类用于打印 */}
-              <div className="flex-grow pr-16 resume-container">
+              <div className="flex-grow resume-container">
                 <ResumeBlockContainer />
               </div>
               
               {/* 右侧工具栏 */}
-              <div className="w-16 flex-shrink-0 relative">
-                <div className="sticky top-20">
+             
                   <ResumeToolbar />
-                </div>
-              </div>
+             
             </div>
           </div>
           
