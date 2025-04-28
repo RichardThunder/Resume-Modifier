@@ -12,12 +12,12 @@ export default function ResumeEditorDemo() {
       <ResumeProvider>
         {/* 主要内容区域 */}
         <div className="container mx-auto px-4">
-          <h1 className="text-2xl font-bold mb-2 text-center">可拖拽简历编辑器</h1>
-          <div className="mb-4 p-3 bg-blue-50 rounded-md">
-            <p className="text-sm text-blue-700">提示：将鼠标悬停在各部分上可以看到拖动手柄。点击并拖动手柄可以调整各部分的顺序。</p>
-          </div>
-          <div className="bg-white shadow-lg rounded-lg p-4 relative">
-            
+          <h1 className="text-2xl font-bold mb-8 text-center">Dragable Resume Editor</h1>
+          
+          <div className="bg-white shadow-lg rounded-lg p-6 relative">
+            <div className="mb-4 p-3 bg-blue-50 rounded-md">
+              <p className="text-sm text-blue-700">Tip: Hover your mouse over the sections to see the drag handles. Click and drag the handles to adjust the order of the sections.</p>
+            </div>
             
             {/* 使用flex布局将ResumeBlockContainer和ResumeToolbar并排显示 */}
             <div className="flex">
@@ -36,13 +36,13 @@ export default function ResumeEditorDemo() {
           {/* 显示当前 resumeData JSON 内容 */}
           <div className="mt-8 bg-gray-100 p-4 rounded-lg">
             <div className="flex justify-between items-center mb-2">
-              <h3 className="text-lg font-semibold">当前简历数据：</h3>
+              <h3 className="text-lg font-semibold">Current Resume Data: </h3>
               <DataDisplay />
             </div>
           </div>
           
           <div className="mt-8 text-center text-sm text-gray-500">
-            <p>此演示展示了可拖拽排序的简历模块，包含用户信息和教育经历部分</p>
+            <p>This demo shows the drag-and-drop sortable resume module with user information and education sections</p>
           </div>
         </div>
       </ResumeProvider>

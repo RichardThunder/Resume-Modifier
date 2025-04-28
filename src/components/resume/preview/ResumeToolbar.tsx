@@ -20,7 +20,7 @@ const ResumeToolbar: React.FC = () => {
     const { exportToPDF, isPrinting } = usePrint();
 
     const [isEditingName, setIsEditingName] = useState(false);
-    const [fileName, setLocalFileName] = useState('简历');
+    const [fileName, setLocalFileName] = useState('Resume');
     const fileNameInputRef = useRef<HTMLInputElement>(null);
 
     const [showResumeModal, setShowResumeModal] = useState(false);
@@ -94,7 +94,7 @@ const ResumeToolbar: React.FC = () => {
 
     const handleSaveFileName = () => {
         const trimmedName = fileName.trim();
-        const finalName = trimmedName || '简历'; // Default if empty
+        const finalName = trimmedName || 'Resume'; // Default if empty
         setLocalFileName(finalName);
         setIsEditingName(false);
     };
@@ -123,9 +123,9 @@ const ResumeToolbar: React.FC = () => {
     // --- Resume Upload ---
     const submitResumeUpload = async () => {
         const jwtToken = getToken();
-        if (!jwtToken) { alert('需要登录'); router.push('/login'); return; }
-        if (!selectedFile) { alert('请选择文件'); return; }
-        if (!API_URL) { alert('API URL未配置'); return; }
+        if (!jwtToken) { alert('Login required'); router.push('/login'); return; }
+        if (!selectedFile) { alert('Please select a file'); return; }
+        if (!API_URL) { alert('API URL not configured'); return; }
 
         const formData = new FormData();
         formData.append('file', selectedFile);
@@ -177,55 +177,6 @@ const ResumeToolbar: React.FC = () => {
             }
         } catch (error: any) {
             console.error('简历上传错误:', error);
-            
-            // 详细错误日志
-            if (axios.isAxiosError(error)) {
-                if (error.code === 'ECONNABORTED') {
-                    console.error('请求超时');
-                    setApiError('请求超时，请检查网络连接或稍后重试');
-                } else if (error.code === 'ERR_NETWORK') {
-                    console.error('网络错误:', error.message);
-                    setApiError('网络连接错误，请检查您的网络连接或服务器状态');
-                } else if (error.response) {
-                    console.error('服务器响应错误:', {
-                        status: error.response.status,
-                        statusText: error.response.statusText,
-                        data: error.response.data
-                    });
-                    
-                    // 根据状态码处理不同错误
-                    switch (error.response.status) {
-                        case 400:
-                            setApiError('请求参数错误: ' + (error.response.data?.message || '无效的请求'));
-                            break;
-                        case 401:
-                            setApiError('认证失败: 请重新登录');
-                            setTimeout(() => router.push('/login'), 2000);
-                            break;
-                        case 413:
-                            setApiError('文件太大: 服务器拒绝处理');
-                            break;
-                        case 415:
-                            setApiError('不支持的文件类型');
-                            break;
-                        case 500:
-                            setApiError('服务器内部错误: ' + (error.response.data?.message || '请稍后重试'));
-                            break;
-                        default:
-                            setApiError(`服务器错误 (${error.response.status}): ` + (error.response.data?.message || error.message || '上传简历时出错'));
-                    }
-                } else if (error.request) {
-                    console.error('请求已发送但未收到响应:', error.request);
-                    setApiError('服务器未响应，请检查服务器状态或稍后重试');
-                } else {
-                    console.error('请求配置错误:', error.message);
-                    setApiError('请求配置错误: ' + error.message);
-                }
-            } else {
-                console.error('非Axios错误:', error);
-                const message = error.message || '上传简历时出错';
-                setApiError(message);
-            }
         } finally {
             setIsResumeLoading(false);
             console.log('简历上传流程结束');
@@ -235,9 +186,9 @@ const ResumeToolbar: React.FC = () => {
     // --- JD Upload ---
     const submitJdUpload = async () => {
         const jwtToken = getToken();
-        if (!jwtToken) { alert('需要登录'); router.push('/login'); return; }
-        if (!jobDescription.trim()) { alert('请输入职位描述'); return; }
-        if (!API_URL) { alert('API URL未配置'); return; }
+        if (!jwtToken) { alert('Login required'); router.push('/login'); return; }
+        if (!jobDescription.trim()) { alert('Please enter job description'); return; }
+        if (!API_URL) { alert('API URL not configured'); return; }
 
         setIsJdLoading(true);
         setApiError(null);
@@ -300,7 +251,7 @@ const ResumeToolbar: React.FC = () => {
 
     // --- Reset Resume ---
     const handleResetResume = () => {
-        if (window.confirm('确定要重置简历吗？这将清除所有数据并恢复默认模板。')) {
+        if (window.confirm('Are you sure you want to reset the resume? This will clear all data and restore the default template.')) {
             clearLocalStorage();
             setHistory([]);
             setFuture([]);
@@ -343,18 +294,18 @@ const ResumeToolbar: React.FC = () => {
                             <button
                                 className="p-1 bg-blue-500 text-white hover:bg-blue-600 rounded-full shadow-sm"
                                 onClick={handleSaveFileName}
-                                title="保存文件名"
+                                title="Save filename"
                             >
-                                <Image src="/toolbar/save.svg" alt="保存名称" width={16} height={16} />
+                                <Image src="/toolbar/save.svg" alt="Save name" width={16} height={16} />
                             </button>
                         </div>
                     ) : (
                         <button
                             className="btn-custom btn-sm btn-outline-dark flex flex-col items-center w-full px-1 py-2 bg-blue-400 rounded-lg shadow-sm border border-blue-500 text-white hover:bg-blue-500"
-                            title={`当前文件名: ${fileName}. 点击重命名.`}
+                            title={`Current filename: ${fileName}. Click to rename.`}
                             onClick={handleEditFileName}
                         >
-                            <Image src="/toolbar/ep_edit.svg" alt="编辑名称" width={16} height={16} className="mb-1" />
+                            <Image src="/toolbar/ep_edit.svg" alt="Edit name" width={16} height={16} className="mb-1" />
                             <span className="truncate w-full text-xs text-center">{fileName.split('.')[0]}</span>
                         </button>
                     )}
@@ -366,17 +317,17 @@ const ResumeToolbar: React.FC = () => {
                         className="btn-custom btn-sm p-2 disabled:opacity-50 bg-blue-400 rounded-lg shadow-sm w-full flex justify-center text-white hover:bg-blue-500 border border-blue-500"
                         disabled={!canUndo}
                         onClick={undo}
-                        title="撤销"
+                        title="Undo"
                     >
-                        <Image src="/toolbar/material-symbols-light_undo.svg" alt="撤销" width={18} height={18} />
+                        <Image src="/toolbar/material-symbols-light_undo.svg" alt="Undo" width={18} height={18} />
                     </button>
                     <button
                         className="btn-custom btn-sm p-2 disabled:opacity-50 bg-blue-400 rounded-lg shadow-sm w-full flex justify-center text-white hover:bg-blue-500 border border-blue-500"
                         disabled={!canRedo}
                         onClick={redo}
-                        title="重做"
+                        title="Redo"
                     >
-                        <Image src="/toolbar/material-symbols-light_redo.svg" alt="重做" width={18} height={18} />
+                        <Image src="/toolbar/material-symbols-light_redo.svg" alt="Redo" width={18} height={18} />
                     </button>
                 </div>
 
@@ -386,32 +337,32 @@ const ResumeToolbar: React.FC = () => {
                     <button
                         className="btn-custom btn-sm flex flex-col items-center px-1 py-2 bg-blue-400 rounded-lg shadow-sm w-full border border-blue-500 text-white hover:bg-blue-500"
                         onClick={toggleResumeModal}
-                        title="上传简历PDF"
+                        title="Upload Resume PDF"
                     >
-                        <Image src="/toolbar/circum_export.svg" alt="上传" width={16} height={16} className="mb-1" />
-                        <span className="text-xs">简历</span>
+                        <Image src="/toolbar/circum_export.svg" alt="Upload" width={16} height={16} className="mb-1" />
+                        <span className="text-xs">Resume</span>
                     </button>
                     
                     {/* 上传JD */}
                     <button
                         className="btn-custom btn-sm flex flex-col items-center px-1 py-2 bg-blue-400 rounded-lg shadow-sm w-full border border-blue-500 text-white hover:bg-blue-500"
                         onClick={toggleJdModal}
-                        title="分析职位描述"
+                        title="Analyze Job Description"
                     >
                         <Image src="/toolbar/circum_export.svg" alt="上传" width={16} height={16} className="mb-1" />
                         <span className="text-xs">JD</span>
                     </button>
                     
-                    {/* 重置按钮 */}
+                    {/* Reset button */}
                     <button
                         className="btn-custom btn-sm flex flex-col items-center px-1 py-2 bg-blue-400 rounded-lg shadow-sm w-full border border-blue-500 text-white hover:bg-blue-500"
                         onClick={handleResetResume}
-                        title="重置简历"
+                        title="Reset Resume"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mb-1">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
                         </svg>
-                        <span className="text-xs">重置</span>
+                        <span className="text-xs">Reset</span>
                     </button>
                     
                     {/* 保存按钮 */}
@@ -422,10 +373,10 @@ const ResumeToolbar: React.FC = () => {
                             ${isSaveFailed ? 'bg-red-500 hover:bg-red-600 text-white border-red-600' : ''}`}
                         onClick={handleSaveResume}
                         disabled={isSaveLoading}
-                        title={isSaveSuccess ? '已保存!' : isSaveFailed ? `保存失败: ${apiError || ''}` : '保存简历'}
+                        title={isSaveSuccess ? 'Saved!' : isSaveFailed ? `Saved failed: ${apiError || ''}` : 'Save Resume'}
                     >
-                        {/* 保存按钮内容保持不变 */}
-                        <span className="text-xs">保存</span>
+                        {/* Save button content remains unchanged */}
+                        <span className="text-xs">Save</span>
                     </button>
                     
                     {/* 下载PDF */}
@@ -433,10 +384,10 @@ const ResumeToolbar: React.FC = () => {
                         className="btn-custom btn-sm flex flex-col items-center px-1 py-2 bg-blue-400 rounded-lg shadow-sm w-full border border-blue-500 text-white hover:bg-blue-500"
                         onClick={handlePDFAction}
                         disabled={isPrinting}
-                        title="下载PDF"
+                        title="Download PDF"
                     >
-                        {/* 下载按钮内容保持不变 */}
-                        <span className="text-xs">导出</span>
+                        {/* Download button content remains unchanged */}
+                        <span className="text-xs">Export</span>
                     </button>
                 </div>
             </div>
@@ -446,13 +397,13 @@ const ResumeToolbar: React.FC = () => {
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-60">
                     <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
                         <div className="flex justify-between items-center p-4 border-b">
-                            <h5 className="text-lg font-semibold">上传简历PDF</h5>
+                            <h5 className="text-lg font-semibold">upload resume</h5>
                             <button onClick={toggleResumeModal} className="text-gray-400 hover:text-gray-600">×</button>
                         </div>
                         <div className="p-4 space-y-3">
                             {apiError && <div className="alert alert-danger text-sm p-2">{apiError}</div>}
                             <div>
-                                <label htmlFor="fileUpload" className="form-label">选择PDF文件:</label>
+                                <label htmlFor="fileUpload" className="form-label">Choose PDF File:</label>
                                 <input
                                     id="fileUpload"
                                     type="file"
@@ -461,12 +412,12 @@ const ResumeToolbar: React.FC = () => {
                                     className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer"
                                 />
                             </div>
-                            {selectedFile && <p className="text-sm font-medium text-gray-700">已选择: {selectedFile.name}</p>}
+                            {selectedFile && <p className="text-sm font-medium text-gray-700">Selected: {selectedFile.name}</p>}
                         </div>
                         <div className="flex justify-end space-x-3 p-4 border-t">
-                            <button type="button" className="btn-secondary" onClick={toggleResumeModal} disabled={isResumeLoading}>取消</button>
+                            <button type="button" className="btn-secondary" onClick={toggleResumeModal} disabled={isResumeLoading}>Cancel</button>
                             <button type="button" className="btn-primary min-w-[80px] flex justify-center items-center" onClick={submitResumeUpload} disabled={isResumeLoading || !selectedFile}>
-                                {isResumeLoading ? <span className="spinner-border spinner-border-sm"></span> : '提交'}
+                                {isResumeLoading ? <span className="spinner-border spinner-border-sm"></span> : 'Submit'}
                             </button>
                         </div>
                     </div>
@@ -478,18 +429,18 @@ const ResumeToolbar: React.FC = () => {
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-60">
                     <div className="bg-white rounded-lg shadow-xl w-full max-w-lg">
                         <div className="flex justify-between items-center p-4 border-b">
-                            <h5 className="text-lg font-semibold">分析职位描述</h5>
+                            <h5 className="text-lg font-semibold">Analyze Job Description</h5>
                             <button onClick={toggleJdModal} className="text-gray-400 hover:text-gray-600">×</button>
                         </div>
                         <div className="p-4 space-y-3">
                             {apiError && <div className="alert alert-danger text-sm p-2">{apiError}</div>}
                             <div>
-                                <label htmlFor="jobDescription" className="form-label">粘贴职位描述:</label>
+                                <label htmlFor="jobDescription" className="form-label">Add Job Description:</label>
                                 <textarea
                                     id="jobDescription"
                                     value={jobDescription}
                                     onChange={(e) => setJobDescription(e.target.value)}
-                                    placeholder="在此粘贴完整的职位描述..."
+                                    placeholder="Add full job description here..."
                                     className="form-control min-h-[150px]"
                                     rows={8}
                                     disabled={isJdLoading}
@@ -497,9 +448,9 @@ const ResumeToolbar: React.FC = () => {
                             </div>
                         </div>
                         <div className="flex justify-end space-x-3 p-4 border-t">
-                            <button type="button" className="btn-secondary" onClick={toggleJdModal} disabled={isJdLoading}>取消</button>
+                            <button type="button" className="btn-secondary" onClick={toggleJdModal} disabled={isJdLoading}>cancel</button>
                             <button type="button" className="btn-primary min-w-[80px] flex justify-center items-center" onClick={submitJdUpload} disabled={isJdLoading || !jobDescription.trim()}>
-                                {isJdLoading ? <span className="spinner-border spinner-border-sm"></span> : '提交'}
+                                {isJdLoading ? <span className="spinner-border spinner-border-sm"></span> : 'submit'}
                             </button>
                         </div>
                     </div>
