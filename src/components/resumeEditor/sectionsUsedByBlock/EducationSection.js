@@ -129,10 +129,9 @@ export const EducationSection = ({ hideDefaultControls = false, onMenuAction }) 
             </div>
             
             {/* Bullet Points */}
-            <ul className="list-disc pl-5 space-y-1">
+            <ul className="list-disc pl-5 space-y-0">
               {/* GPA if available */}
-              <li>
-                <div className="flex items-baseline">
+              <li className="p-0 m-0">
                   <EditableField 
                     index={index} 
                     field="gpa" 
@@ -140,11 +139,10 @@ export const EducationSection = ({ hideDefaultControls = false, onMenuAction }) 
                     value={educationItems}
                     onChange={handleFieldChange}
                   />
-                </div>
               </li>
               
               {/* Degree if available */}
-              <li>
+              <li className="p-0 m-0">
                 <EditableField 
                   index={index} 
                   field="degree" 
@@ -155,8 +153,7 @@ export const EducationSection = ({ hideDefaultControls = false, onMenuAction }) 
               </li>
               
               {/* Courses if available */}
-              <li>
-                <div className="flex items-baseline w-full">
+              <li className="p-0 m-0">
                   <EditableField 
                     index={index} 
                     field="courses" 
@@ -165,20 +162,8 @@ export const EducationSection = ({ hideDefaultControls = false, onMenuAction }) 
                     onChange={handleFieldChange}
                     className="w-full"
                   />
-                </div>
               </li>
             </ul>
-            
-            {/* Location if available */}
-            <div className="mt-0.5 text-sm text-gray-600">
-              <EditableField 
-                index={index} 
-                field="universityLocation" 
-                placeholder="位置"
-                value={educationItems}
-                onChange={handleFieldChange}
-              />
-            </div>
             
             {/* Add Education Button */}
             <button 
