@@ -13,12 +13,10 @@ export default function ResumeEditorDemo() {
         {/* 主要内容区域 */}
         <div className="container mx-auto px-4">
           <h1 className="text-2xl font-bold mb-8 text-center">Dragable Resume Editor</h1>
-          
+          <div className="mb-4 p-3 bg-blue-50 rounded-md">
+            <p className="text-sm text-blue-700">Tip: Hover your mouse over the sections to see the drag handles. Click and drag the handles to adjust the order of the sections.</p>
+          </div>
           <div className="bg-white shadow-lg rounded-lg p-6 relative">
-            <div className="mb-4 p-3 bg-blue-50 rounded-md">
-              <p className="text-sm text-blue-700">Tip: Hover your mouse over the sections to see the drag handles. Click and drag the handles to adjust the order of the sections.</p>
-            </div>
-            
             {/* 使用flex布局将ResumeBlockContainer和ResumeToolbar并排显示 */}
             <div className="flex">
               {/* 左侧简历内容区域 - 添加resume-container类用于打印 */}
@@ -27,8 +25,7 @@ export default function ResumeEditorDemo() {
               </div>
               
               {/* 右侧工具栏 */}
-             
-                  <ResumeToolbar />
+              <ResumeToolbar />
              
             </div>
           </div>
