@@ -24,6 +24,11 @@ const usePrint = () => {
           width: 100%;
           height: 100%;
         }
+        /* 让所有字体都小一号 */
+        .resume-container * {
+          font-size: 0.9em !important;
+        }
+
         @page {
           size: A4;
           margin: 0;
