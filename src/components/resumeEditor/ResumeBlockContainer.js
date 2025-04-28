@@ -64,8 +64,39 @@ export const ResumeBlockContainer = () => {
       const oldIndex = currentBlocks.findIndex(block => block.id === active.id);
       const newIndex = currentBlocks.findIndex(block => block.id === over.id);
       
-      return arrayMove(currentBlocks, oldIndex, newIndex);
+      // 获取新的块顺序
+      const newBlocks = arrayMove(currentBlocks, oldIndex, newIndex);
+      
+      // 更新 ResumeContext 中数据的顺序
+      updateResumeDataOrder(newBlocks);
+      
+      return newBlocks;
     });
+  };
+  
+  // 更新 ResumeContext 中数据的顺序
+  const updateResumeDataOrder = (newBlocks) => {
+    const { resumeData, setResumeData, saveToLocalStorage } = useResume();
+    
+    // 创建按新顺序排列的数据对象
+    const reorderedData = {};
+    
+    // 遍历新的块顺序，按顺序构建新的数据对象
+    newBlocks.forEach(block => {
+      const dataKey = block.type === 'user-info' ? 'userInfo' :
+                     block.type === 'work-experience' ? 'workExperience' : block.type;
+      
+      // 将原数据复制到新对象中，保持相同的顺序
+      if (resumeData[dataKey]) {
+        reorderedData[dataKey] = resumeData[dataKey];
+      }
+    });
+    
+    // 更新 ResumeContext 数据
+    setResumeData(reorderedData);
+    
+    // 保存到本地存储
+    setTimeout(() => saveToLocalStorage(), 0);
   };
   
   // 渲染特定类型的块
