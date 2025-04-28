@@ -28,6 +28,11 @@ const usePrint = () => {
         .resume-container * {
           font-size: 0.9em !important;
         }
+        /* 隐藏textarea的拖拽标识 */
+        .resume-container textarea {
+          resize: none !important;
+          overflow: hidden !important;
+        }
 
         @page {
           size: A4;
