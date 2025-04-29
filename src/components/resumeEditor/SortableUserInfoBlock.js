@@ -97,7 +97,7 @@ export const SortableUserInfoBlock = ({ id, theme = 'theme2' }) => {
       </Popover.Root>
       
       {/* Block Content */}
-      <UserBasicInfoSection 
+      <UserInfoComponent 
         hideDefaultControls={true} 
         onMenuAction={handleMenuAction}
       />
