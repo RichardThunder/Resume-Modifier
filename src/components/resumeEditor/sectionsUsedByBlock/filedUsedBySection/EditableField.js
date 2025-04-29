@@ -95,6 +95,13 @@ const EditableField = ({
   // 组件挂载和值变化时调整宽度
   useEffect(() => {
     adjustWidth();
+     // 添加窗口大小变化监听器
+    window.addEventListener('resize', adjustWidth);
+    
+    // 清理函数
+    return () => {
+      window.removeEventListener('resize', adjustWidth);
+    };
   }, [getCurrentValue(), placeholder]);
   
   return (

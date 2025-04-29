@@ -69,16 +69,53 @@ const EditableFieldTextarea = ({
   // 自动调整高度的函数
   const adjustHeight = () => {
     if (inputRef.current) {
+      // 获取当前计算样式
+      const computedStyle = window.getComputedStyle(inputRef.current);
+      
+      // 保存原始样式值
+      const originalPadding = inputRef.current.style.padding;
+      const originalBorder = inputRef.current.style.border;
+      
+      // 临时移除padding和border以获得准确的内容高度
+      inputRef.current.style.padding = '0';
+      inputRef.current.style.border = 'none';
+      
       // 重置高度以获取正确的scrollHeight
       inputRef.current.style.height = 'auto';
-      // 设置新高度
-      inputRef.current.style.height = `${inputRef.current.scrollHeight}px`;
+      
+      // 考虑字体大小、行高和字体粗细对高度的影响
+      const lineHeight = computedStyle.lineHeight === 'normal' 
+        ? parseFloat(computedStyle.fontSize) * 1.2 // 估计的默认行高
+        : parseFloat(computedStyle.lineHeight);
+        
+      // 计算额外的高度缓冲区，考虑字体粗细
+      const fontWeightFactor = parseInt(computedStyle.fontWeight) > 500 ? 1.1 : 1;
+      
+      // 设置新高度，加上一点额外空间以适应不同字体
+      const newHeight = Math.max(
+        inputRef.current.scrollHeight,
+        lineHeight * fontWeightFactor
+      );
+      
+      inputRef.current.style.height = `${newHeight}px`;
+      
+      // 恢复原始样式
+      inputRef.current.style.padding = originalPadding;
+      inputRef.current.style.border = originalBorder;
     }
   };
   
   // 组件挂载和值变化时调整高度
   useEffect(() => {
     adjustHeight();
+    
+    // 添加窗口大小变化监听器
+    window.addEventListener('resize', adjustHeight);
+    
+    // 清理函数
+    return () => {
+      window.removeEventListener('resize', adjustHeight);
+    };
   }, [getCurrentValue()]);
   
   return (
