@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useResume } from '@/context/ResumeContext';
 import { Plus, X } from 'lucide-react';
 import EditableField from './filedUsedBySection/EditableField';
+import EditableFieldTextarea from './filedUsedBySection/EditableFieldTextarea';
 
 export const ProjectsSection = ({ hideDefaultControls = false, onMenuAction }) => {
   const { resumeData, updateResumeField } = useResume();
@@ -21,7 +22,11 @@ export const ProjectsSection = ({ hideDefaultControls = false, onMenuAction }) =
     }
   }, []);
   useEffect(()=> {
-    setProjectItems([...projects]);
+    if (Array.isArray(projects)) {
+      setProjectItems([...projects]);
+    } else {
+      setProjectItems([]);
+    }
   }, [projects]);
   
   // Handle changes to fields
@@ -108,7 +113,7 @@ export const ProjectsSection = ({ hideDefaultControls = false, onMenuAction }) =
                   index={index} 
                   field="fromDate" 
                   placeholder="起始日期" 
-                  className="inline-block w-20 text-center"
+                  className="inline-block text-center"
                   value={projectItems}
                   onChange={handleFieldChange}
                 />
@@ -117,7 +122,7 @@ export const ProjectsSection = ({ hideDefaultControls = false, onMenuAction }) =
                   index={index} 
                   field="toDate" 
                   placeholder="结束日期" 
-                  className="inline-block w-20 text-center"
+                  className="inline-block text-center"
                   value={projectItems}
                   onChange={handleFieldChange}
                 />
@@ -126,11 +131,11 @@ export const ProjectsSection = ({ hideDefaultControls = false, onMenuAction }) =
             
             {/* Description */}
             <div className="mt-0.5">
-              <EditableField 
+              <EditableFieldTextarea
                 index={index} 
                 field="description" 
                 placeholder="项目描述（职责、技术、成果等）" 
-                className="w-full"
+                className="w-full min-h-[60px] whitespace-normal break-words overflow-wrap-anywhere"
                 value={projectItems}
                 onChange={handleFieldChange}
               />

@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import { ResumeProvider } from '../../../context/ResumeContext';
 import ResumeBlockContainer from '../../../components/resumeEditor/ResumeBlockContainer';
-import ResumeToolbar from '../../../components/resume/preview/ResumeToolbar';
-import DataDisplay from '../../../components/DataDisplay'; 
+import DataDisplay from '../../../components/DataDisplay';
+import ResumeToolbar from '../../../components/resumeEditor/ResumeToolbar';
 import { AVAILABLE_THEMES } from '../../../components/resumeEditor/themes/ThemeManager';
 
 export default function ResumeEditorDemo() {
