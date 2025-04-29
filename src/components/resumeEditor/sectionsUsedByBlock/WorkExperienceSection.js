@@ -10,7 +10,7 @@ export const WorkExperienceSection = ({ hideDefaultControls = false, onMenuActio
   const { workExperience } = resumeData;
   
   // State for work experience items
-  const [workItems, setWorkItems] = useState([...workExperience]);
+  const [workItems, setWorkItems] = useState(Array.isArray(workExperience) ? [...workExperience] : []);
   
   // Provide context menu options for the parent component
   useEffect(() => {
@@ -20,6 +20,10 @@ export const WorkExperienceSection = ({ hideDefaultControls = false, onMenuActio
       });
     }
   }, []);
+
+  useEffect(() => {
+    setWorkItems([...workExperience]);
+  }, [workExperience]);
   
   // Handle changes to fields
   const handleFieldChange = (index, field, value) => {

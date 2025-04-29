@@ -168,6 +168,8 @@ const ResumeToolbar: React.FC = () => {
             if (response.data.status === 200 && response.data.data) {
                 console.log('简历上传成功，开始处理数据');
                 setLocalFileName(selectedFile.name);
+                console.log('保存到本地存储:', response.data.data);
+                saveToLocalStorage(response.data.data);
                 setResumeData(response.data.data);
                 toggleResumeModal();
                 console.log('简历数据已更新，模态框已关闭');
