@@ -18,7 +18,7 @@ const initialResumeData = {
   education: [
     {
       institutionName: "北京大学",
-      universityLocation: "北京, 中国",
+      city: "北京, 中国",
       fieldOfStudy: "计算机科学与技术",
       degree: "本科学士",
       fromDate: "2018",

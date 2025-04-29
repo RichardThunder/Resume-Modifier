@@ -43,7 +43,7 @@ export const EducationSection = ({ hideDefaultControls = false, onMenuAction }) 
       ...educationItems,
       {
         institutionName: "",
-        universityLocation: "",
+        city: "",
         fieldOfStudy: "",
         degree: "",
         fromDate: "",
