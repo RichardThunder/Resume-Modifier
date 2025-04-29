@@ -249,6 +249,7 @@ const ResumeToolbar: React.FC = () => {
     // --- Handle PDF Export ---
     const handlePDFAction = () => {
         exportToPDF();
+        handleSaveResume();
     };
 
     // --- Reset Resume ---
