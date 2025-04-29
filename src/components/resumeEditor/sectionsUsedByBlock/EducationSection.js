@@ -21,7 +21,11 @@ export const EducationSection = ({ hideDefaultControls = false, onMenuAction }) 
     }
   }, []);
   useEffect(() => {
-    setEducationItems([...education]);
+    if (Array.isArray(education)) {
+      setEducationItems([...education]);
+    }else {
+      setEducationItems([]);
+    }
   }, [education]);
   
   // Handle changes to fields

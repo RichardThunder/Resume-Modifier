@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useResume } from '@/context/ResumeContext';
 import { Plus, X } from 'lucide-react';
 import EditableField from './filedUsedBySection/EditableField';
-
+import EditableFieldTextarea from './filedUsedBySection/EditableFieldTextarea';
 export const WorkExperienceSection = ({ hideDefaultControls = false, onMenuAction }) => {
   const { resumeData, updateResumeField } = useResume();
   const { workExperience } = resumeData;
@@ -22,7 +22,11 @@ export const WorkExperienceSection = ({ hideDefaultControls = false, onMenuActio
   }, []);
 
   useEffect(() => {
-    setWorkItems([...workExperience]);
+    if (Array.isArray(workExperience)) {
+      setWorkItems([...workExperience]);
+    } else {
+      setWorkItems([]);
+    }
   }, [workExperience]);
   
   // Handle changes to fields
@@ -136,7 +140,7 @@ export const WorkExperienceSection = ({ hideDefaultControls = false, onMenuActio
             
             {/* Description */}
             <div className="mt-0.5">
-              <EditableField 
+              <EditableFieldTextarea 
                 index={index} 
                 field="description" 
                 placeholder="工作描述（成就、职责等）" 

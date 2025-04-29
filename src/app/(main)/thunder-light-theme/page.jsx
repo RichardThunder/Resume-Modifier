@@ -4,7 +4,7 @@ import React from 'react';
 import { ResumeProvider } from '../../../context/ResumeContext';
 import ResumeBlockContainer from '../../../components/resumeEditor/ResumeBlockContainer';
 import DataDisplay from '../../../components/DataDisplay';
-import ResumeToolbar from '../../../components/resume/preview/ResumeToolbar';
+import ResumeToolbar from '../../../components/resumeEditor/ResumeToolbar';
 
 export default function ResumeEditorDemo() {
   return (
