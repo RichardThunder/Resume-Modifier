@@ -10,7 +10,7 @@ export const EducationSection = ({ hideDefaultControls = false, onMenuAction }) 
   const { education } = resumeData;
   
   // State for education items
-  const [educationItems, setEducationItems] = useState([...education]);
+  const [educationItems, setEducationItems] = useState(Array.isArray(education) ? [...education] : []);
   
   // Provide context menu options for the parent component
   useEffect(() => {
@@ -20,6 +20,9 @@ export const EducationSection = ({ hideDefaultControls = false, onMenuAction }) 
       });
     }
   }, []);
+  useEffect(() => {
+    setEducationItems([...education]);
+  }, [education]);
   
   // Handle changes to fields
   const handleFieldChange = (index, field, value) => {
@@ -39,13 +42,13 @@ export const EducationSection = ({ hideDefaultControls = false, onMenuAction }) 
     const newItems = [
       ...educationItems,
       {
-        universityName: "",
+        institutionName: "",
         universityLocation: "",
-        universityMajor: "",
+        fieldOfStudy: "",
         degree: "",
         fromDate: "",
         toDate: "",
-        gpa: "",
+        grade: "",
         courses: ""
       }
     ];
@@ -86,7 +89,7 @@ export const EducationSection = ({ hideDefaultControls = false, onMenuAction }) 
               <div className="text-left">
                 <EditableField 
                   index={index} 
-                  field="universityName" 
+                  field="institutionName" 
                   placeholder="学校名称" 
                   className="inline-block"
                   value={educationItems}
@@ -98,7 +101,7 @@ export const EducationSection = ({ hideDefaultControls = false, onMenuAction }) 
               <div className="text-center">
                 <EditableField 
                   index={index} 
-                  field="universityMajor" 
+                  field="fieldOfStudy" 
                   placeholder="专业" 
                   className="inline-block text-center"
                   value={educationItems}
@@ -130,12 +133,12 @@ export const EducationSection = ({ hideDefaultControls = false, onMenuAction }) 
             
             {/* Bullet Points */}
             <ul className="list-disc pl-5 space-y-0">
-              {/* GPA if available */}
+              {/* grade if available */}
               <li className="p-0 m-0">
                   <EditableField 
                     index={index} 
-                    field="gpa" 
-                    placeholder="GPA"
+                    field="grade" 
+                    placeholder="grade"
                     value={educationItems}
                     onChange={handleFieldChange}
                   />

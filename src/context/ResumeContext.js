@@ -17,13 +17,13 @@ const initialResumeData = {
   },
   education: [
     {
-      universityName: "北京大学",
+      institutionName: "北京大学",
       universityLocation: "北京, 中国",
-      universityMajor: "计算机科学与技术",
+      fieldOfStudy: "计算机科学与技术",
       degree: "本科学士",
       fromDate: "2018",
       toDate: "2022",
-      gpa: "3.8/4.0",
+      grade: "3.8/4.0",
       courses: "数据结构、算法设计、操作系统、计算机网络"
     }
   ],
