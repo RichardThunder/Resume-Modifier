@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useResume } from '@/context/ResumeContext';
 
 export const SkillsSection = ({ hideDefaultControls = false, onMenuAction }) => {
@@ -9,6 +9,22 @@ export const SkillsSection = ({ hideDefaultControls = false, onMenuAction }) => 
   
   // 将技能数组转换为逗号分隔的字符串
   const [skillsText, setSkillsText] = useState(skills.join(', '));
+  // 添加一个标记，记录上次从 context 获取的 skills
+  const lastSkillsRef = useRef(skills);
+
+  // 添加 useEffect 同步 skills 数据变化到本地状态
+  useEffect(() => {
+    // 比较当前 skills 和上次的 skills 是否相同
+    const currentSkillsStr = JSON.stringify(skills);
+    const lastSkillsStr = JSON.stringify(lastSkillsRef.current);
+    
+    // 只有当 skills 发生"外部"变化时才更新文本
+    // "外部"变化指的是不是由 handleSkillsChange 触发的变化
+    if (currentSkillsStr !== lastSkillsStr) {
+      setSkillsText(skills.join(', '));
+      lastSkillsRef.current = skills;
+    }
+  }, [skills]);
   
   // 处理技能文本变更
   const handleSkillsChange = (e) => {

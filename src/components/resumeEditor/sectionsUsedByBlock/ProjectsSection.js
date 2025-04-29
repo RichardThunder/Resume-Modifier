@@ -9,7 +9,7 @@ export const ProjectsSection = ({ hideDefaultControls = false, onMenuAction }) =
   const { resumeData, updateResumeField } = useResume();
   const { projects } = resumeData;
   
-  // State for project items
+  // State for projects items
   const [projectItems, setProjectItems] = useState(Array.isArray(projects) ? [...projects] : []);
   
   // Provide context menu options for the parent component
@@ -20,6 +20,9 @@ export const ProjectsSection = ({ hideDefaultControls = false, onMenuAction }) =
       });
     }
   }, []);
+  useEffect(()=> {
+    setProjectItems([...projects]);
+  }, [projects]);
   
   // Handle changes to fields
   const handleFieldChange = (index, field, value) => {
