@@ -5,7 +5,7 @@ import { ResumeProvider } from '../../../context/ResumeContext';
 import ResumeBlockContainer from '../../../components/resumeEditor/ResumeBlockContainer';
 import DataDisplay from '../../../components/DataDisplay';
 import ResumeToolbar from '../../../components/resumeEditor/ResumeToolbar';
-import { AVAILABLE_THEMES } from '../../../components/resumeEditor/themes/ThemeManager';
+import { AVAILABLE_THEMES } from '../../../components/resumeEditor/sectionsThemed/ThemeManager';
 
 export default function ResumeEditorDemo() {
   const [currentTheme, setCurrentTheme] = useState('default');
