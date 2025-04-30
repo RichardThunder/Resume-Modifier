@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useResume } from '@/context/ResumeContext';
 import EditableField from '../../fields/EditableField';
 
-export const Theme2UserBasicInfoSection = ({ hideDefaultControls = false, onMenuAction }) => {
+export const UserBasicInfoSection = ({ hideDefaultControls = false, onMenuAction }) => {
   const { resumeData, updateResumeField } = useResume();
   const { userInfo } = resumeData;
   
@@ -53,14 +53,14 @@ export const Theme2UserBasicInfoSection = ({ hideDefaultControls = false, onMenu
   };
   
   return (
-    <div className="w-full my-3 relative bg-indigo-50 p-3 rounded-lg shadow-sm">    
-      <div className="text-left max-w-3xl w-full transition-colors duration-200">
-        {/* User's name - large and bold with indigo styling */}
-        <div className="flex gap-2 mb-3">
+    <div className="w-full flex justify-center my-2 relative">
+      <div className="text-center max-w-3xl w-full">
+        {/* User's name - large and bold */}
+        <div className="flex gap-0 justify-center mb-1">
           <EditableField 
             field="firstName" 
             placeholder="名" 
-            className="text-4xl font-bold text-indigo-900"
+            className="text-3xl font-bold text-right w-auto"
             value={userInfoState}
             onChange={handleFieldChange}
             onBlur={handleFieldBlur}
@@ -68,83 +68,83 @@ export const Theme2UserBasicInfoSection = ({ hideDefaultControls = false, onMenu
           <EditableField 
             field="lastName" 
             placeholder="姓" 
-            className="text-4xl font-bold text-indigo-900"
+            className="text-3xl font-bold text-left w-auto"
             value={userInfoState}
             onChange={handleFieldChange}
             onBlur={handleFieldBlur}
           />
         </div>
         
-        {/* Second line - contact info with indigo styling */}
-        <div className="text-indigo-700 mb-2 flex flex-wrap gap-x-2">
+        {/* Second line - contact info */}
+        <div className="text-gray-700 mb-1 flex flex-wrap justify-center items-center">
           <EditableField 
             field="location" 
             placeholder="所在地" 
-            className="inline-block font-medium"
+            className="inline-block text-center w-auto px-0.5"
             value={userInfoState}
             onChange={handleFieldChange}
             onBlur={handleFieldBlur}
           />
           
           {userInfoState.location && userInfoState.email && (
-            <span className="text-indigo-500">|</span>
+            <span className="mx-0.5">|</span>
           )}
           
           <EditableField 
             field="email" 
             placeholder="邮箱" 
-            className="inline-block font-mono"
+            className="inline-block text-center w-auto px-0.5"
             value={userInfoState}
             onChange={handleFieldChange}
             onBlur={handleFieldBlur}
           />
           
           {userInfoState.email && userInfoState.phoneNumber && (
-            <span className="text-indigo-500">|</span>
+            <span className="mx-0.5">|</span>
           )}
           
           <EditableField 
             field="phoneNumber" 
             placeholder="电话" 
-            className="inline-block font-mono"
+            className="inline-block text-center w-auto px-0.5"
             value={userInfoState}
             onChange={handleFieldChange}
             onBlur={handleFieldBlur}
           />
           
           {userInfoState.phoneNumber && userInfoState.websiteOrOtherProfileURL && (
-            <span className="text-indigo-500">|</span>
+            <span className="mx-0.5">|</span>
           )}
           
           <EditableField 
             field="websiteOrOtherProfileURL" 
             placeholder="个人网站" 
-            className="inline-block font-light"
+            className="inline-block text-center w-auto px-0.5"
             value={userInfoState}
             onChange={handleFieldChange}
             onBlur={handleFieldBlur}
           />
         </div>
         
-        {/* Third line - social profiles with indigo styling */}
-        <div className="text-indigo-700 flex gap-x-2">
+        {/* Third line - social profiles */}
+        <div className="text-gray-700 flex justify-center items-center">
           <EditableField 
             field="linkedInURL" 
             placeholder="LinkedIn" 
-            className="inline-block font-light"
+            className="inline-block text-center min-w-fit w-full px-0.5 overflow-visible whitespace-normal break-words"
             value={userInfoState}
             onChange={handleFieldChange}
             onBlur={handleFieldBlur}
           />
           
           {userInfoState.linkedInURL && userInfoState.githubURL && (
-            <span className="text-indigo-500">|</span>
+            <span className="mx-0.5">|</span>
           )}
           
           <EditableField 
             field="githubURL" 
             placeholder="GitHub" 
-            className="inline-block font-light"
+            className="inline-block text-center min-w-fit w-full px-0.5 overflow-visible whitespace-normal break-words"
             value={userInfoState}
             onChange={handleFieldChange}
             onBlur={handleFieldBlur}
@@ -156,8 +156,8 @@ export const Theme2UserBasicInfoSection = ({ hideDefaultControls = false, onMenu
 };
 
 // 附加菜单选项到组件，使其可以从组件外部访问
-Theme2UserBasicInfoSection.getMenuOptions = () => {
+UserBasicInfoSection.getMenuOptions = () => {
   return [];
 };
 
-export default Theme2UserBasicInfoSection;
+export default UserBasicInfoSection;

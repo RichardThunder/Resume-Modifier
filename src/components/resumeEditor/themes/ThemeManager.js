@@ -2,23 +2,38 @@
 
 import React from 'react';
 // Import default theme components
-import { UserBasicInfoSection } from '../sectionsUsedByBlock/UserBasicInfoSection';
+import { 
+  UserBasicInfoSection,
+  EducationSection,
+  AchievementsSection,
+  ProjectsSection,
+  SkillsSection,
+  WorkExperienceSection
+} from './defaultTheme';
+
 // Import Theme2 components
-import { Theme2UserBasicInfoSection } from './theme2/Theme2UserBasicInfoSection';
-import EducationSection from '../sectionsUsedByBlock/EducationSection';
-import Theme2EducationSection from './theme2/Theme2EducationSection'
+import { Theme2UserBasicInfoSection, Theme2EducationSection } from './theme2';
 
 // Mapping of component types to their theme-specific implementations
 const THEME_COMPONENTS = {
   // Default theme (theme1)
   'default': {
     UserBasicInfoSection: UserBasicInfoSection,
-    EducationSection:EducationSection,
+    EducationSection: EducationSection,
+    AchievementsSection: AchievementsSection,
+    ProjectsSection: ProjectsSection,
+    SkillsSection: SkillsSection,
+    WorkExperienceSection: WorkExperienceSection
   },
   // Theme2
   'theme2': {
     UserBasicInfoSection: Theme2UserBasicInfoSection,
-    EducationSection: Theme2EducationSection
+    EducationSection: Theme2EducationSection,
+    // Fallbacks to default theme will be handled by getThemeComponent
+    AchievementsSection: AchievementsSection,
+    ProjectsSection: ProjectsSection,
+    SkillsSection: SkillsSection,
+    WorkExperienceSection: WorkExperienceSection
   }
   // Additional themes can be added here
 };

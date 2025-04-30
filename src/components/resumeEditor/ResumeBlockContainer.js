@@ -107,13 +107,13 @@ export const ResumeBlockContainer = ({ theme = 'default' }) => {
       case 'education':
         return <SortableEducationBlock key={block.id} id={block.id} theme={theme} />;
       case 'work-experience':
-        return <SortableWorkExperienceBlock key={block.id} id={block.id} />;
+        return <SortableWorkExperienceBlock key={block.id} id={block.id} theme={theme} />;
       case 'skills':
-        return <SortableSkillsBlock key={block.id} id={block.id} />;
+        return <SortableSkillsBlock key={block.id} id={block.id} theme={theme} />;
       case 'projects':
-        return <SortableProjectsBlock key={block.id} id={block.id} />;
+        return <SortableProjectsBlock key={block.id} id={block.id} theme={theme} />;
       case 'achievements':
-        return <SortableAchievementsBlock key={block.id} id={block.id} />;
+        return <SortableAchievementsBlock key={block.id} id={block.id} theme={theme} />;
       default:
         return null;
     }

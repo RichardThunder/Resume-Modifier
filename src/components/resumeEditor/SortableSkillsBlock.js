@@ -4,10 +4,13 @@ import React, { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical } from 'lucide-react';
-import { SkillsSection } from './sectionsUsedByBlock/SkillsSection';
+import { getThemeComponent } from './themes/ThemeManager';
 
-export const SortableSkillsBlock = ({ id }) => {
+export const SortableSkillsBlock = ({ id, theme = 'theme2' }) => {
   const [isHovered, setIsHovered] = useState(false);
+
+  // Get the theme-specific SkillsSection component
+  const ThemeSkillsSection = getThemeComponent('SkillsSection', theme);
 
   // Setup sortable functionality with dnd-kit
   const {
@@ -44,7 +47,9 @@ export const SortableSkillsBlock = ({ id }) => {
       </div>
       
       {/* Block Content */}
-      <SkillsSection />
+      <ThemeSkillsSection 
+        hideDefaultControls={false}
+      />
     </div>
   );
 };

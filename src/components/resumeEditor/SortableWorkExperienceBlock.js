@@ -4,10 +4,13 @@ import React, { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical } from 'lucide-react';
-import { WorkExperienceSection } from './sectionsUsedByBlock/WorkExperienceSection';
+import { getThemeComponent } from './themes/ThemeManager';
 
-export const SortableWorkExperienceBlock = ({ id }) => {
+export const SortableWorkExperienceBlock = ({ id, theme = 'theme2' }) => {
   const [isHovered, setIsHovered] = useState(false);
+
+  // Get the theme-specific WorkExperienceSection component
+  const ThemeWorkExperienceSection = getThemeComponent('WorkExperienceSection', theme);
 
   // Setup sortable functionality with dnd-kit
   const {
@@ -44,7 +47,7 @@ export const SortableWorkExperienceBlock = ({ id }) => {
       </div>
       
       {/* Block Content */}
-      <WorkExperienceSection 
+      <ThemeWorkExperienceSection 
         hideDefaultControls={false}
       />
     </div>
