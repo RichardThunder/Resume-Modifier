@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical } from 'lucide-react';
-import { getThemeComponent } from '../themes/ThemeManager';
+import { getThemeComponent } from '../sectionsThemed/ThemeManager';
 
 export const SortableSkillsBlock = ({ id, theme = 'theme2' }) => {
   const [isHovered, setIsHovered] = useState(false);
