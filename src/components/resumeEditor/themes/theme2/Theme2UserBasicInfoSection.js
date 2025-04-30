@@ -53,14 +53,14 @@ export const Theme2UserBasicInfoSection = ({ hideDefaultControls = false, onMenu
   };
   
   return (
-    <div className="w-full my-8 relative">
-      <div className="text-left max-w-3xl w-full">
-        {/* User's name - large and bold */}
-        <div className="flex gap-2 mb-4">
+    <div className="w-full my-3 relative bg-indigo-50 p-3 rounded-lg shadow-sm">    
+      <div className="text-left max-w-3xl w-full transition-colors duration-200">
+        {/* User's name - large and bold with indigo styling */}
+        <div className="flex gap-2 mb-3">
           <EditableField 
             field="firstName" 
             placeholder="名" 
-            className="text-4xl font-bold"
+            className="text-4xl font-bold text-indigo-900"
             value={userInfoState}
             onChange={handleFieldChange}
             onBlur={handleFieldBlur}
@@ -68,83 +68,83 @@ export const Theme2UserBasicInfoSection = ({ hideDefaultControls = false, onMenu
           <EditableField 
             field="lastName" 
             placeholder="姓" 
-            className="text-4xl font-bold"
+            className="text-4xl font-bold text-indigo-900"
             value={userInfoState}
             onChange={handleFieldChange}
             onBlur={handleFieldBlur}
           />
         </div>
         
-        {/* Second line - contact info */}
-        <div className="text-gray-700 mb-2 flex flex-wrap gap-x-2">
+        {/* Second line - contact info with indigo styling */}
+        <div className="text-indigo-700 mb-2 flex flex-wrap gap-x-2">
           <EditableField 
             field="location" 
             placeholder="所在地" 
-            className="inline-block"
+            className="inline-block font-medium"
             value={userInfoState}
             onChange={handleFieldChange}
             onBlur={handleFieldBlur}
           />
           
           {userInfoState.location && userInfoState.email && (
-            <span>|</span>
+            <span className="text-indigo-500">|</span>
           )}
           
           <EditableField 
             field="email" 
             placeholder="邮箱" 
-            className="inline-block"
+            className="inline-block font-mono"
             value={userInfoState}
             onChange={handleFieldChange}
             onBlur={handleFieldBlur}
           />
           
           {userInfoState.email && userInfoState.phoneNumber && (
-            <span>|</span>
+            <span className="text-indigo-500">|</span>
           )}
           
           <EditableField 
             field="phoneNumber" 
             placeholder="电话" 
-            className="inline-block"
+            className="inline-block font-mono"
             value={userInfoState}
             onChange={handleFieldChange}
             onBlur={handleFieldBlur}
           />
           
           {userInfoState.phoneNumber && userInfoState.websiteOrOtherProfileURL && (
-            <span>|</span>
+            <span className="text-indigo-500">|</span>
           )}
           
           <EditableField 
             field="websiteOrOtherProfileURL" 
             placeholder="个人网站" 
-            className="inline-block"
+            className="inline-block font-light"
             value={userInfoState}
             onChange={handleFieldChange}
             onBlur={handleFieldBlur}
           />
         </div>
         
-        {/* Third line - social profiles */}
-        <div className="text-gray-700 flex gap-x-2">
+        {/* Third line - social profiles with indigo styling */}
+        <div className="text-indigo-700 flex gap-x-2">
           <EditableField 
             field="linkedInURL" 
             placeholder="LinkedIn" 
-            className="inline-block"
+            className="inline-block font-light"
             value={userInfoState}
             onChange={handleFieldChange}
             onBlur={handleFieldBlur}
           />
           
           {userInfoState.linkedInURL && userInfoState.githubURL && (
-            <span>|</span>
+            <span className="text-indigo-500">|</span>
           )}
           
           <EditableField 
             field="githubURL" 
             placeholder="GitHub" 
-            className="inline-block"
+            className="inline-block font-light"
             value={userInfoState}
             onChange={handleFieldChange}
             onBlur={handleFieldBlur}
