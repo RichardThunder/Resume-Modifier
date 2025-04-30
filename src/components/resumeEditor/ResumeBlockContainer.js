@@ -105,7 +105,7 @@ export const ResumeBlockContainer = ({ theme = 'default' }) => {
       case 'user-info':
         return <SortableUserInfoBlock key={block.id} id={block.id} theme={theme} />;
       case 'education':
-        return <SortableEducationBlock key={block.id} id={block.id} />;
+        return <SortableEducationBlock key={block.id} id={block.id} theme={theme} />;
       case 'work-experience':
         return <SortableWorkExperienceBlock key={block.id} id={block.id} />;
       case 'skills':

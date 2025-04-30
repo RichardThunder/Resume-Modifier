@@ -5,16 +5,20 @@ import React from 'react';
 import { UserBasicInfoSection } from '../sectionsUsedByBlock/UserBasicInfoSection';
 // Import Theme2 components
 import { Theme2UserBasicInfoSection } from './theme2/Theme2UserBasicInfoSection';
+import EducationSection from '../sectionsUsedByBlock/EducationSection';
+import Theme2EducationSection from './theme2/Theme2EducationSection'
 
 // Mapping of component types to their theme-specific implementations
 const THEME_COMPONENTS = {
   // Default theme (theme1)
   'default': {
     UserBasicInfoSection: UserBasicInfoSection,
+    EducationSection:EducationSection,
   },
   // Theme2
   'theme2': {
     UserBasicInfoSection: Theme2UserBasicInfoSection,
+    EducationSection: Theme2EducationSection
   }
   // Additional themes can be added here
 };

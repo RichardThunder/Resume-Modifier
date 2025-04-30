@@ -5,9 +5,13 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical } from 'lucide-react';
 import { EducationSection } from './sectionsUsedByBlock/EducationSection';
+import { getThemeComponent } from './themes/ThemeManager';
 
-export const SortableEducationBlock = ({ id }) => {
+export const SortableEducationBlock = ({ id, theme = 'theme2' }) => {
   const [isHovered, setIsHovered] = useState(false);
+
+  // Get the theme-specific EducationSection component
+  const ThemeEducationSection = getThemeComponent('EducationSection', theme);
 
   // Setup sortable functionality with dnd-kit
   const {
@@ -43,8 +47,8 @@ export const SortableEducationBlock = ({ id }) => {
         <GripVertical className="w-5 h-5 text-gray-400" />
       </div>
       
-      {/* Block Content */}
-      <EducationSection 
+      {/* Block Content - Use the theme-specific component */}
+      <ThemeEducationSection 
         hideDefaultControls={false}
       />
     </div>
