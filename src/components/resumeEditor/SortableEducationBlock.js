@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical } from 'lucide-react';
-import { EducationSection } from './sectionsUsedByBlock/EducationSection';
 import { getThemeComponent } from './themes/ThemeManager';
 
 export const SortableEducationBlock = ({ id, theme = 'theme2' }) => {
