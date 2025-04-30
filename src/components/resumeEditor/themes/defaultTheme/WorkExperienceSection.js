@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { useResume } from '@/context/ResumeContext';
 import { Plus, X } from 'lucide-react';
-import EditableField from '../../fields/EditableField';
-import EditableFieldTextarea from '../../fields/EditableFieldTextarea';
+import EditableField from '../../fieldsEditable/EditableField';
+import EditableFieldTextarea from '../../fieldsEditable/EditableFieldTextarea';
 
 export const WorkExperienceSection = ({ hideDefaultControls = false, onMenuAction }) => {
   const { resumeData, updateResumeField } = useResume();

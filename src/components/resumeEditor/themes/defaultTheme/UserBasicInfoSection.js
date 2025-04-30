@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useResume } from '@/context/ResumeContext';
-import EditableField from '../../fields/EditableField';
+import EditableField from '../../fieldsEditable/EditableField';
 
 export const UserBasicInfoSection = ({ hideDefaultControls = false, onMenuAction }) => {
   const { resumeData, updateResumeField } = useResume();

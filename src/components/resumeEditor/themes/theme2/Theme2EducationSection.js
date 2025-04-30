@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useResume } from '@/context/ResumeContext';
 import { Plus, X } from 'lucide-react';
-import EditableField from '../../fields/EditableField';
+import EditableField from '../../fieldsEditable/EditableField';
 
 export const Theme2EducationSection = ({ hideDefaultControls = false, onMenuAction }) => {
   const { resumeData, updateResumeField } = useResume();

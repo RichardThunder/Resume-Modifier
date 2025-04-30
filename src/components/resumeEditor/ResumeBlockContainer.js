@@ -15,12 +15,12 @@ import {
   arrayMove
 } from '@dnd-kit/sortable';
 
-import SortableUserInfoBlock from './SortableUserInfoBlock';
-import SortableEducationBlock from './SortableEducationBlock';
-import SortableWorkExperienceBlock from './SortableWorkExperienceBlock';
-import SortableProjectsBlock from './SortableProjectsBlock';
-import SortableAchievementsBlock from './SortableAchievementsBlock';
-import SortableSkillsBlock from './SortableSkillsBlock';
+import SortableUserInfoBlock from './blocksDraggable/SortableUserInfoBlock';
+import SortableEducationBlock from './blocksDraggable/SortableEducationBlock';
+import SortableWorkExperienceBlock from './blocksDraggable/SortableWorkExperienceBlock';
+import SortableProjectsBlock from './blocksDraggable/SortableProjectsBlock';
+import SortableAchievementsBlock from './blocksDraggable/SortableAchievementsBlock';
+import SortableSkillsBlock from './blocksDraggable/SortableSkillsBlock';
 import { useResume } from '../../context/ResumeContext';
 
 /**

@@ -4,13 +4,13 @@ import React, { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical } from 'lucide-react';
-import { getThemeComponent } from './themes/ThemeManager';
+import { getThemeComponent } from '../themes/ThemeManager';
 
-export const SortableSkillsBlock = ({ id, theme = 'theme2' }) => {
+export const SortableEducationBlock = ({ id, theme = 'theme2' }) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  // Get the theme-specific SkillsSection component
-  const ThemeSkillsSection = getThemeComponent('SkillsSection', theme);
+  // Get the theme-specific EducationSection component
+  const ThemeEducationSection = getThemeComponent('EducationSection', theme);
 
   // Setup sortable functionality with dnd-kit
   const {
@@ -46,12 +46,12 @@ export const SortableSkillsBlock = ({ id, theme = 'theme2' }) => {
         <GripVertical className="w-5 h-5 text-gray-400" />
       </div>
       
-      {/* Block Content */}
-      <ThemeSkillsSection 
+      {/* Block Content - Use the theme-specific component */}
+      <ThemeEducationSection 
         hideDefaultControls={false}
       />
     </div>
   );
 };
 
-export default SortableSkillsBlock;
+export default SortableEducationBlock;

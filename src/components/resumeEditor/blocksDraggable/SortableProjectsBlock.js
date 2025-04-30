@@ -4,13 +4,13 @@ import React, { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical } from 'lucide-react';
-import { getThemeComponent } from './themes/ThemeManager';
+import { getThemeComponent } from '../themes/ThemeManager';
 
-export const SortableAchievementsBlock = ({ id, theme = 'theme2' }) => {
+export const SortableProjectsBlock = ({ id, theme = 'theme2' }) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  // Get the theme-specific AchievementsSection component
-  const ThemeAchievementsSection = getThemeComponent('AchievementsSection', theme);
+  // Get the theme-specific ProjectsSection component
+  const ThemeProjectsSection = getThemeComponent('ProjectsSection', theme);
 
   // Setup sortable functionality with dnd-kit
   const {
@@ -47,11 +47,11 @@ export const SortableAchievementsBlock = ({ id, theme = 'theme2' }) => {
       </div>
       
       {/* Block Content */}
-      <ThemeAchievementsSection 
+      <ThemeProjectsSection 
         hideDefaultControls={false}
       />
     </div>
   );
 };
 
-export default SortableAchievementsBlock;
+export default SortableProjectsBlock;

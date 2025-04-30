@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical, Pencil, Check } from 'lucide-react';
-import { getThemeComponent } from './themes/ThemeManager';
+import { getThemeComponent } from '../themes/ThemeManager';
 import * as Popover from '@radix-ui/react-popover';
 
 export const SortableUserInfoBlock = ({ id, theme = 'theme2' }) => {
