@@ -1,10 +1,9 @@
 import axios from 'axios';
 import { getToken } from '@/lib/auth';
-import { ResumeModel } from '@/types/resume';
 
 interface SaveResumePayload {
     resume_title: string;
-    updated_resume: ResumeModel;
+    updated_resume: any; // Changed from ResumeModel to accept resumeData directly
 }
 
 interface SaveResult {
@@ -14,7 +13,7 @@ interface SaveResult {
 }
 
 const saveResumeService = {
-    async save(fileName: string, resumeData: ResumeModel): Promise<SaveResult> {
+    async save(fileName: string, resumeData: any): Promise<SaveResult> {
         const API_URL = process.env.NEXT_PUBLIC_API_URL;
         if (!API_URL) {
             console.error("API URL is not configured.");
