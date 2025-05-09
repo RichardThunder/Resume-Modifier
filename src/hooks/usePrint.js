@@ -18,8 +18,6 @@ const usePrint = () => {
 
         .resume-block-container, .resume-block-container * {
           visibility: visible;
-          padding-top: none !important;
-          margin-top: none !important;
         }
         .resume-block-container {
           position: absolute;
@@ -27,15 +25,16 @@ const usePrint = () => {
           top: 0;
           width: 100%;
           height: auto;
-          margin: none !important;
-          padding: none !important;
-          transform: translateY(0) !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          transform: none !important;
+          box-shadow: none !important;
         }
         /* 让所有字体都小一号 */
         .resume-block-container * {
           font-size: 0.9em !important;
-          margin-top: none !important;
-          padding-top: none !important;
+          margin-top: 0 !important;
+          padding-top: 0 !important;
         }
         /* 隐藏textarea的拖拽标识 */
         .resume-block-container textarea {
@@ -45,10 +44,28 @@ const usePrint = () => {
 
         @page {
           size: A4;
-          margin: none !important;
+
+        }
+
+
+        .resume-block-container {
+          position: fixed;
+          left: 5%;
+          top: 2%;
+          width: 90%;
+          height: 90%;
+          margin: 0 auto !important;
+          transform: none !important;
+          box-shadow: none !important;
         }
       }
     `;
+    /*
+            
+    .resume - block - container - parent {
+      margin: 0!important;
+      padding: 0!important;
+    } */
     document.head.appendChild(style);
   };
 
@@ -70,7 +87,7 @@ const usePrint = () => {
       align-items: center;
       cursor: wait;
     `;
-    
+
     // 添加旋转加载图标
     const spinner = document.createElement('div');
     spinner.style.cssText = `
@@ -81,7 +98,7 @@ const usePrint = () => {
       height: 50px;
       animation: spin 2s linear infinite;
     `;
-    
+
     // 添加旋转动画
     const styleAnimation = document.createElement('style');
     styleAnimation.innerHTML = `
@@ -92,7 +109,7 @@ const usePrint = () => {
     `;
     styleAnimation.setAttribute('data-overlay-animation', 'true');
     document.head.appendChild(styleAnimation);
-    
+
     // 添加文字
     const text = document.createElement('div');
     text.innerText = '正在生成 PDF，请稍候...';
@@ -102,19 +119,19 @@ const usePrint = () => {
       font-weight: bold;
       color: #333;
     `;
-    
+
     overlay.appendChild(spinner);
     overlay.appendChild(text);
     document.body.appendChild(overlay);
   };
-  
+
   // 移除导出覆盖层
   const removeExportOverlay = () => {
     const overlay = document.getElementById('export-overlay');
     if (overlay) {
       document.body.removeChild(overlay);
     }
-    
+
     const styleAnimation = document.head.querySelector('style[data-overlay-animation]');
     if (styleAnimation) {
       document.head.removeChild(styleAnimation);
@@ -131,20 +148,29 @@ const usePrint = () => {
 
   const exportToPDF = () => {
     setIsPrinting(true);
-    
+
     // 添加打印样式和覆盖层
     addPrintStyles();
     addExportOverlay();
-    
-    setTimeout(() => {
-      let newstr = document.getElementsByClassName('resume-container')[0].innerHTML;
-      let oldstr = document.body.innerHTML;
-      document.body.innerHTML = newstr;
-      window.print();
-      document.body.innerHTML = oldstr;
 
-      // 打印对话框关闭后移除样式并重置状态
+    setTimeout(() => {
+      // 保存当前页面上所有元素的可见性状态
+      const elementsToHide = Array.from(document.body.querySelectorAll('*:not(.resume-block-container):not(.resume-block-container *)'));
+      const visibilityStates = elementsToHide.map(el => ({ element: el, visibility: el.style.visibility }));
+
+      // 隐藏不需要打印的元素
+      elementsToHide.forEach(el => el.style.visibility = 'hidden');
+
+      // 打印
+      window.print();
+
+      // 恢复元素的可见性
       setTimeout(() => {
+        visibilityStates.forEach(item => {
+          item.element.style.visibility = item.visibility || '';
+        });
+
+        // 移除样式并重置状态
         removePrintStyles();
         removeExportOverlay();
         setIsPrinting(false);
