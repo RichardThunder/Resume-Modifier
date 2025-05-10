@@ -8,6 +8,7 @@ import { useResume } from '@/context/ResumeContext';
 import usePrint from '@/hooks/usePrint';
 import Image from 'next/image';
 import saveResumeService from '@/lib/services/saveResumeService';
+import { AVAILABLE_THEMES } from './sectionsThemed/ThemeManager';
 
 const ResumeToolbar: React.FC = () => {
     const {
@@ -277,10 +278,92 @@ const ResumeToolbar: React.FC = () => {
 
   return `${prefix}_${year}${month}${day}_${hour}${minute}${second}.${ext}`;
 }
+    // 主题菜单状态
+    const [showThemeMenu, setShowThemeMenu] = useState(false);
+    const [showTipPopover, setShowTipPopover] = useState(false);
+    const themeButtonRef = useRef<HTMLButtonElement>(null);
+    const tipButtonRef = useRef<HTMLButtonElement>(null);
+
+    // 点击其他地方关闭菜单
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (themeButtonRef.current && !themeButtonRef.current.contains(event.target as Node)) {
+                setShowThemeMenu(false);
+            }
+            if (tipButtonRef.current && !tipButtonRef.current.contains(event.target as Node)) {
+                setShowTipPopover(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
     return (
         <>
             {/* 修改为垂直工具栏 */}
             <div className="toolbar-container fixed right-0 top-12 h-full z-30 flex flex-col items-center justify-start bg-gray-50 border-l border-gray-300 py-4 px-2 w-16 overflow-auto">
+                {/* 提示按钮 */}
+                <div className="relative mb-6 w-full">
+                    <button
+                        ref={tipButtonRef}
+                        onClick={() => setShowTipPopover(!showTipPopover)}
+                        className="btn-custom btn-sm flex flex-col items-center px-1 py-2 bg-blue-400 rounded-lg shadow-sm w-full border border-blue-500 text-white hover:bg-blue-500"
+                        title="Tips"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mb-1">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+                        </svg>
+                        <span className="text-xs">Tips</span>
+                    </button>
+                    
+                    {/* 提示气泡 */}
+                    {showTipPopover && (
+                        <div className="absolute right-full mr-2 top-0 w-64 bg-white p-3 rounded-lg shadow-lg border border-gray-200">
+                            <p className="text-sm text-blue-700">
+                                Hover your mouse over the sections to see the drag handles. Click and drag the handles to adjust the order of the sections.
+                            </p>
+                        </div>
+                    )}
+                </div>
+
+                {/* 主题切换按钮 */}
+                <div className="relative mb-6 w-full">
+                    <button
+                        ref={themeButtonRef}
+                        onClick={() => setShowThemeMenu(!showThemeMenu)}
+                        className="btn-custom btn-sm flex flex-col items-center px-1 py-2 bg-blue-400 rounded-lg shadow-sm w-full border border-blue-500 text-white hover:bg-blue-500"
+                        title="Change Theme"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mb-1">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M4.098 19.902a3.75 3.75 0 005.304 0l6.401-6.402M6.75 21A3.75 3.75 0 013 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 003.75-3.75V8.197M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125v-5.25c0-.621-.504-1.125-1.125-1.125h-4.072M10.5 8.197l2.88-2.88c.438-.439 1.15-.439 1.59 0l3.712 3.713c.44.44.44 1.152 0 1.59l-2.879 2.88M6.75 17.25h.008v.008H6.75v-.008z" />
+                        </svg>
+                        <span className="text-xs">Theme</span>
+                    </button>
+                    
+                    {/* 主题菜单 */}
+                    {showThemeMenu && (
+                        <div className="absolute right-full mr-2 top-0 bg-white rounded-lg shadow-lg border border-gray-200">
+                            {AVAILABLE_THEMES.map((theme) => (
+                                <button
+                                    key={theme}
+                                    onClick={() => {
+                                        setCurrentTheme(theme);
+                                        setShowThemeMenu(false);
+                                    }}
+                                    className={`block w-full text-left px-4 py-2 hover:bg-gray-100 ${
+                                        currentTheme === theme ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
+                                    }`}
+                                >
+                                    {theme === 'default' ? 'Default Theme' : `Theme ${theme.replace('theme', '')}`}
+                                </button>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
                 {/* 文件名编辑 - 垂直布局 */}
                 <div className="filename-edit mb-6 w-full">
                     {isEditingName ? (
