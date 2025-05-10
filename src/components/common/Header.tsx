@@ -103,19 +103,13 @@ const Header: React.FC = () => {
                 >
                     <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white">
                         <li>
-                            <a href="/enterResume" className={navLinkClasses("#")} target="_blank" rel="noopener noreferrer" onClick={closeNavbar}>Home</a>
+                            <Link href="/enterResume" className={navLinkClasses("#")} onClick={closeNavbar}>Home</Link>
                         </li>
                         <li>
-                            <a href="https://aws.mintmelon.ca/Chart" className={navLinkClasses("#chart")} target="_blank" rel="noopener noreferrer" onClick={closeNavbar}>Chart</a>
+                            <a href="https://aws.mintmelon.ca/Chart" className={navLinkClasses("#chart")} onClick={closeNavbar}>Chart</a>
                         </li>
                         <li>
-                            <a href="https://aws.mintmelon.ca/job_market" className={navLinkClasses("#job_market")} target="_blank" rel="noopener noreferrer" onClick={closeNavbar}>Job Market</a>
-                        </li>
-                        <li>
-                            {/* Use next/link for internal navigation */}
-                            <Link href="/resume" className={navLinkClasses("/resume")} onClick={closeNavbar}>
-                                Resume Editor
-                            </Link>
+                            <a href="https://aws.mintmelon.ca/job_market" className={navLinkClasses("#job_market")} onClick={closeNavbar}>Job Market</a>
                         </li>
                         <li>
                             <Link href="/template" className={hotTemplateLinkClasses("/template")} onClick={closeNavbar}>
