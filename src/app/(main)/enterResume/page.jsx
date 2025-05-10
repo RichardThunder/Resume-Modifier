@@ -15,7 +15,6 @@ export default function ResumeEditorDemo() {
       <ResumeProvider>
         {/* 主要内容区域 */}
         <div className="container mx-auto px-4">
-          <h1 className="text-2xl font-bold mb-8 text-center">Dragable Resume Editor</h1>
           <div className="mb-4 p-3 bg-blue-50 rounded-md">
             <p className="text-sm text-blue-700">Tip: Hover your mouse over the sections to see the drag handles. Click and drag the handles to adjust the order of the sections.</p>
           </div>
