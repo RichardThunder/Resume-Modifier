@@ -6,7 +6,7 @@ import type { NextRequest } from 'next/server';
 const PUBLIC_PATHS = ['/login', '/register'];
 
 // Define paths that require authentication (adjust as needed)
-const PROTECTED_PATHS = ['/', '/resume', '/profile', '/template', '/thunder-light-theme'];
+const PROTECTED_PATHS = ['/', '/resume', '/profile', '/template', '/enterResume'];
 
 export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
@@ -50,8 +50,8 @@ export function middleware(request: NextRequest) {
     if (token) {
         // Redirect away from public auth pages if logged in
         if (isPublicPath) {
-            console.log(`Middleware: Authenticated user accessing public path ${pathname}. Redirecting to /thunder-light-theme.`);
-            return NextResponse.redirect(new URL('/thunder-light-theme', request.url));
+            console.log(`Middleware: Authenticated user accessing public path ${pathname}. Redirecting to /enterResume.`);
+            return NextResponse.redirect(new URL('/enterResume', request.url));
         }
         // Allow access to protected or other paths
         return NextResponse.next();

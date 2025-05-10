@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { getToken, removeToken } from '@/lib/auth';
-import { useResumeStore } from '@/store/resumeStore'; // Import Zustand store
 import Image from 'next/image'; // Use Next.js Image component
 
 // Define types for profile and resume history items
@@ -26,7 +25,6 @@ interface ResumeHistoryItem {
 
 export default function ProfilePage() {
     const router = useRouter();
-    const { setModel: setResumeModel, clearLocalStorage: clearResumeStorage } = useResumeStore(); // Get actions from store
 
     const [profile, setProfile] = useState<ProfileData>({
         first_name: '', last_name: '', title: '', email: '', city: '', country: '', bio: ''
@@ -175,11 +173,8 @@ export default function ProfilePage() {
 
             if (response.status === 200 && response.data?.data?.resume) {
                 console.log("Resume data fetched:", response.data.data.resume);
-                // Use the setModel action from Zustand store
-                setResumeModel(response.data.data.resume); // Update the global resume state
-                // Navigate to the resume editor page
-                // router.push("/resume");
-                router.push("/thunder-light-theme");
+                // todo by tt 0510; 需要保存 简历json 到 localStorage
+                router.push("/enterResume");
             } else {
                 throw new Error('Failed to fetch resume data.');
             }
@@ -195,7 +190,7 @@ export default function ProfilePage() {
     const closeLogoutModal = () => setShowLogoutConfirmation(false);
     const confirmLogout = () => {
         removeToken();
-        clearResumeStorage(); // Clear resume data from local storage via store action
+        // todo by tt 0510; 需要清除 localStorage 吗？
         router.push('/login');
         // Force reload might be needed if state isn't clearing properly across contexts/layouts
         // window.location.reload();

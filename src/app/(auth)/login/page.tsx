@@ -24,7 +24,7 @@ export default function LoginPage() {
             setSuccess(true);
             // Redirect after a short delay
             setTimeout(() => {
-                router.push('/thunder-light-theme'); // Redirect to the main app page (e.g., resume editor)
+                router.push('/enterResume'); // Redirect to the main app page (e.g., resume editor)
                 // Optionally reload if state isn't updating correctly across layouts, though ideally not needed
                 // window.location.reload();
             }, 1000);
