@@ -75,6 +75,16 @@ const ResumeContext = createContext();
 export function ResumeProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
   
+  // Add theme state management
+  const [currentTheme, setCurrentTheme] = useState(() => {
+    // Load saved theme from localStorage or default to 'default'
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem('currentTheme');
+      return savedTheme || 'default';
+    }
+    return 'default';
+  });
+  
   // 在初始化状态时就检查本地存储
   const getInitialData = () => {
     if (typeof window !== 'undefined') {  // 确保在浏览器环境中
@@ -181,6 +191,14 @@ export function ResumeProvider({ children }) {
     }
   };
 
+  // Save current theme to localStorage when it changes
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('currentTheme', currentTheme);
+      console.log('Theme saved to ResumeContext localStorage:', currentTheme);
+    }
+  }, [currentTheme]);
+
   // 在组件初始化时尝试加载数据
   React.useEffect(() => {
     // 只在本地存储中没有数据时，保存默认模板
@@ -238,7 +256,9 @@ export function ResumeProvider({ children }) {
       saveToLocalStorage: () => saveToLocalStorage(resumeData),
       loadFromLocalStorage,
       clearLocalStorage,  
-      isLoading
+      isLoading,
+      currentTheme,
+      setCurrentTheme
     }}>
       {!isLoading && children}
     </ResumeContext.Provider>

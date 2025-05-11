@@ -15,7 +15,9 @@ const ResumeToolbar: React.FC = () => {
         resumeData,
         setResumeData,
         saveToLocalStorage,
-        clearLocalStorage
+        clearLocalStorage,
+        currentTheme,
+        setCurrentTheme
     } = useResume();
 
     const { exportToPDF, isPrinting } = usePrint();
@@ -284,6 +286,8 @@ const ResumeToolbar: React.FC = () => {
     const themeButtonRef = useRef<HTMLButtonElement>(null);
     const tipButtonRef = useRef<HTMLButtonElement>(null);
 
+    // The theme is now saved in ResumeContext
+
     // 点击其他地方关闭菜单
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -329,39 +333,28 @@ const ResumeToolbar: React.FC = () => {
                     )}
                 </div>
 
-                {/* 主题切换按钮 */}
+                {/* 主题切换按钮 - 单击循环切换 */}
                 <div className="relative mb-6 w-full">
                     <button
                         ref={themeButtonRef}
-                        onClick={() => setShowThemeMenu(!showThemeMenu)}
+                        onClick={() => {
+                            // Get current theme index
+                            const currentIndex = AVAILABLE_THEMES.indexOf(currentTheme);
+                            // Calculate next theme index (circular)
+                            const nextIndex = (currentIndex + 1) % AVAILABLE_THEMES.length;
+                            // Set the next theme
+                            setCurrentTheme(AVAILABLE_THEMES[nextIndex]);
+                        }}
                         className="btn-custom btn-sm flex flex-col items-center px-1 py-2 bg-blue-400 rounded-lg shadow-sm w-full border border-blue-500 text-white hover:bg-blue-500"
-                        title="Change Theme"
+                        title={`Current: ${currentTheme === 'default' ? 'Default Theme' : `Theme ${currentTheme.replace('theme', '')}`}. Click to change.`}
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mb-1">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M4.098 19.902a3.75 3.75 0 005.304 0l6.401-6.402M6.75 21A3.75 3.75 0 013 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 003.75-3.75V8.197M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125v-5.25c0-.621-.504-1.125-1.125-1.125h-4.072M10.5 8.197l2.88-2.88c.438-.439 1.15-.439 1.59 0l3.712 3.713c.44.44.44 1.152 0 1.59l-2.879 2.88M6.75 17.25h.008v.008H6.75v-.008z" />
                         </svg>
-                        <span className="text-xs">Theme</span>
+                        <span className="text-xs">
+                            {currentTheme === 'default' ? 'Default' : `Theme ${currentTheme.replace('theme', '')}`}
+                        </span>
                     </button>
-                    
-                    {/* 主题菜单 */}
-                    {showThemeMenu && (
-                        <div className="absolute right-full mr-2 top-0 bg-white rounded-lg shadow-lg border border-gray-200">
-                            {AVAILABLE_THEMES.map((theme) => (
-                                <button
-                                    key={theme}
-                                    onClick={() => {
-                                        setCurrentTheme(theme);
-                                        setShowThemeMenu(false);
-                                    }}
-                                    className={`block w-full text-left px-4 py-2 hover:bg-gray-100 ${
-                                        currentTheme === theme ? 'bg-blue-50 text-blue-600' : 'text-gray-700'
-                                    }`}
-                                >
-                                    {theme === 'default' ? 'Default Theme' : `Theme ${theme.replace('theme', '')}`}
-                                </button>
-                            ))}
-                        </div>
-                    )}
                 </div>
 
                 {/* 文件名编辑 - 垂直布局 */}

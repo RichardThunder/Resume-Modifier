@@ -30,7 +30,10 @@ import { useResume } from '../../context/ResumeContext';
  * 1. 提供简历各部分的拖拽功能
  * 2. 管理简历块的排序顺序
  */
-export const ResumeBlockContainer = ({ theme = 'default' }) => {
+export const ResumeBlockContainer = () => {
+  // Get currentTheme from ResumeContext
+  const { currentTheme } = useResume();
+  const theme = currentTheme; // Use the theme from context
   // 定义初始的简历块ID和类型
   const initialBlocks = [
     { id: 'user-info-block', type: 'user-info' },
