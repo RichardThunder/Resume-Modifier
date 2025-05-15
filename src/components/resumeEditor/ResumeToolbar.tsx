@@ -9,6 +9,7 @@ import usePrint from '@/hooks/usePrint';
 import Image from 'next/image';
 import saveResumeService from '@/lib/services/saveResumeService';
 import { AVAILABLE_THEMES } from './sectionsThemed/ThemeManager';
+import { getTimestampedFilename } from '@/lib/methods'; // Import the utility function
 
 const ResumeToolbar: React.FC = () => {
     const {
@@ -41,10 +42,23 @@ const ResumeToolbar: React.FC = () => {
     const [history, setHistory] = useState<any[]>([]);
     const [future, setFuture] = useState<any[]>([]);
     const [currentData, setCurrentData] = useState(resumeData);
-
-    const router = useRouter();
+    const [isLoggedIn, setIsLoggedIn] = useState(false); // 新增状态用于跟踪登录状态
     const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
+    //检查登录状态
+    useEffect(() => {
+        const checkLoginStatus = async () => {
+            const token = getToken();
+            if (token) {
+                setIsLoggedIn(true);
+            }
+        };
+        checkLoginStatus();
+        if (!isLoggedIn) {
+            //如果未登录, 允许简历上传解析功能, 将简历数据存储为guestResume
+
+        }
+    }, []);
     // 初始化时保存当前状态
     useEffect(() => {
         setCurrentData(resumeData);
@@ -126,7 +140,6 @@ const ResumeToolbar: React.FC = () => {
     // --- Resume Upload ---
     const submitResumeUpload = async () => {
         const jwtToken = getToken();
-        if (!jwtToken) { alert('Login required'); router.push('/login'); return; }
         if (!selectedFile) { alert('Please select a file'); return; }
         if (!API_URL) { alert('API URL not configured'); return; }
 
@@ -191,7 +204,6 @@ const ResumeToolbar: React.FC = () => {
     // --- JD Upload ---
     const submitJdUpload = async () => {
         const jwtToken = getToken();
-        if (!jwtToken) { alert('Login required'); router.push('/login'); return; }
         if (!jobDescription.trim()) { alert('Please enter job description'); return; }
         if (!API_URL) { alert('API URL not configured'); return; }
 
@@ -221,7 +233,6 @@ const ResumeToolbar: React.FC = () => {
             console.error('职位描述上传错误:', error);
             const message = error.response?.data?.message || error.message || '上传职位描述时出错';
             setApiError(message);
-            if (error.response?.status === 401) router.push('/login');
         } finally {
             setIsJdLoading(false);
         }
@@ -244,7 +255,6 @@ const ResumeToolbar: React.FC = () => {
             setTimeout(() => {setIsSaveFailed(false); setApiError(null)}, 5000); // Clear fail state/error
             if (result.shouldRedirect) {
                 alert("Authentication expired. Please log in again.");
-                router.push('/login');
             }
         }
     };
@@ -267,19 +277,7 @@ const ResumeToolbar: React.FC = () => {
 
     const canUndo = history.length > 0;
     const canRedo = future.length > 0;
- const getTimestampedFilename = function(prefix = 'file', ext = 'pdf') {
-  const now = new Date();
-  const pad = (n: number) => n.toString().padStart(2, '0');
 
-  const year = now.getFullYear();
-  const month = pad(now.getMonth() + 1);
-  const day = pad(now.getDate());
-  const hour = pad(now.getHours());
-  const minute = pad(now.getMinutes());
-  const second = pad(now.getSeconds());
-
-  return `${prefix}_${year}${month}${day}_${hour}${minute}${second}.${ext}`;
-}
     // 主题菜单状态
     const [showThemeMenu, setShowThemeMenu] = useState(false);
     const [showTipPopover, setShowTipPopover] = useState(false);
@@ -412,7 +410,7 @@ const ResumeToolbar: React.FC = () => {
 
                 {/* 操作按钮 - 垂直布局 */}
                 <div className="flex flex-col items-center space-y-3 w-full">
-                    {/* 上传简历 */}
+                    {/* 上传简历 - 始终启用 */}
                     <button
                         className="btn-custom btn-sm flex flex-col items-center px-1 py-2 bg-blue-400 rounded-lg shadow-sm w-full border border-blue-500 text-white hover:bg-blue-500"
                         onClick={toggleResumeModal}
@@ -422,17 +420,18 @@ const ResumeToolbar: React.FC = () => {
                         <span className="text-xs">Resume</span>
                     </button>
                     
-                    {/* 上传JD */}
+                    {/* 上传JD - 需要登录 */}
                     <button
-                        className="btn-custom btn-sm flex flex-col items-center px-1 py-2 bg-blue-400 rounded-lg shadow-sm w-full border border-blue-500 text-white hover:bg-blue-500"
-                        onClick={toggleJdModal}
-                        title="Analyze Job Description"
+                        className={`btn-custom btn-sm flex flex-col items-center px-1 py-2 ${!isLoggedIn ? 'bg-gray-400 border-gray-500' : 'bg-blue-400 border-blue-500 hover:bg-blue-500'} rounded-lg shadow-sm w-full border text-white`}
+                        onClick={isLoggedIn ? toggleJdModal : undefined}
+                        disabled={!isLoggedIn}
+                        title={!isLoggedIn ? "Login required" : "Analyze Job Description"}
                     >
                         <Image src="/toolbar/circum_export.svg" alt="上传" width={16} height={16} className="mb-1" />
                         <span className="text-xs">JD</span>
                     </button>
                     
-                    {/* Reset button */}
+                    {/* Reset button - 始终启用 */}
                     <button
                         className="btn-custom btn-sm flex flex-col items-center px-1 py-2 bg-blue-400 rounded-lg shadow-sm w-full border border-blue-500 text-white hover:bg-blue-500"
                         onClick={handleResetResume}
@@ -444,26 +443,31 @@ const ResumeToolbar: React.FC = () => {
                         <span className="text-xs">Reset</span>
                     </button>
                     
-                    {/* 保存按钮 */}
+                    {/* 保存按钮 - 需要登录 */}
                     <button
                         type="button"
                         className={`btn-custom btn-sm flex flex-col items-center px-1 py-2 rounded-lg shadow-sm w-full border
-                            ${isSaveSuccess ? 'bg-green-500 hover:bg-green-600 text-white border-green-600' : 'bg-blue-400 text-white border-blue-500 hover:bg-blue-500'} 
-                            ${isSaveFailed ? 'bg-red-500 hover:bg-red-600 text-white border-red-600' : ''}`}
-                        onClick={handleSaveResume}
-                        disabled={isSaveLoading}
-                        title={isSaveSuccess ? 'Saved!' : isSaveFailed ? `Saved failed: ${apiError || ''}` : 'Save Resume'}
+                            ${!isLoggedIn ? 'bg-gray-400 border-gray-500 text-white' :
+                                isSaveSuccess ? 'bg-green-500 hover:bg-green-600 text-white border-green-600' :
+                                    isSaveFailed ? 'bg-red-500 hover:bg-red-600 text-white border-red-600' :
+                                        'bg-blue-400 text-white border-blue-500 hover:bg-blue-500'}`}
+                        onClick={isLoggedIn ? handleSaveResume : undefined}
+                        disabled={isSaveLoading || !isLoggedIn}
+                        title={!isLoggedIn ? "Login required" :
+                            isSaveSuccess ? 'Saved!' :
+                                isSaveFailed ? `Saved failed: ${apiError || ''}` :
+                                    'Save Resume'}
                     >
                         {/* Save button content remains unchanged */}
                         <span className="text-xs">Save</span>
                     </button>
                     
-                    {/* 下载PDF */}
+                    {/* 下载PDF - 需要登录 */}
                     <button
-                        className="btn-custom btn-sm flex flex-col items-center px-1 py-2 bg-blue-400 rounded-lg shadow-sm w-full border border-blue-500 text-white hover:bg-blue-500"
-                        onClick={handlePDFAction}
-                        disabled={isPrinting}
-                        title="Download PDF"
+                        className={`btn-custom btn-sm flex flex-col items-center px-1 py-2 ${!isLoggedIn ? 'bg-gray-400 border-gray-500' : 'bg-blue-400 border-blue-500 hover:bg-blue-500'} rounded-lg shadow-sm w-full border text-white`}
+                        onClick={isLoggedIn ? handlePDFAction : undefined}
+                        disabled={isPrinting || !isLoggedIn}
+                        title={!isLoggedIn ? "Login required" : "Download PDF"}
                     >
                         {/* Download button content remains unchanged */}
                         <span className="text-xs">Export</span>
