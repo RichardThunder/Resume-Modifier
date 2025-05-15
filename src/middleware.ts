@@ -3,10 +3,10 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 // Define paths that are public (don't require authentication)
-const PUBLIC_PATHS = ['/login', '/register'];
+const PUBLIC_PATHS = ['/login', '/register', '/enterResume'];
 
 // Define paths that require authentication (adjust as needed)
-const PROTECTED_PATHS = ['/', '/resume', '/profile', '/template', '/enterResume'];
+const PROTECTED_PATHS = ['/', '/resume', '/profile', '/template'];
 
 export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
@@ -32,7 +32,7 @@ export function middleware(request: NextRequest) {
     // --- DEVELOPMENT MODE BYPASS ---
     // If in development, allow access to everything *except* trying to access
     // login/register pages when theoretically logged in (if token exists).
-    if (isDevelopment) {
+    /* if (isDevelopment) {
         console.warn(`🚧 DEV MODE: Auth checks bypassed for ${pathname}.`);
         // Still redirect logged-in users away from login/register in dev? (Optional)
         // if (token && isPublicPath) {
@@ -41,7 +41,7 @@ export function middleware(request: NextRequest) {
         // }
         // Otherwise, allow access in development regardless of token or path protection
         return NextResponse.next();
-    }
+    } */
     // --- END DEVELOPMENT MODE BYPASS ---
 
 
@@ -49,7 +49,7 @@ export function middleware(request: NextRequest) {
     // Case 1: User is logged in (has token)
     if (token) {
         // Redirect away from public auth pages if logged in
-        if (isPublicPath) {
+        if (isPublicPath && pathname !== '/enterResume') {
             console.log(`Middleware: Authenticated user accessing public path ${pathname}. Redirecting to /enterResume.`);
             return NextResponse.redirect(new URL('/enterResume', request.url));
         }
