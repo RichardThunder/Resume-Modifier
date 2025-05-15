@@ -10,6 +10,8 @@ import Image from 'next/image';
 import saveResumeService from '@/lib/services/saveResumeService';
 import { AVAILABLE_THEMES } from './sectionsThemed/ThemeManager';
 import { getTimestampedFilename } from '@/lib/methods'; // Import the utility function
+import { isAuthenticated } from '@/lib/auth';
+
 
 const ResumeToolbar: React.FC = () => {
     const {
@@ -47,18 +49,13 @@ const ResumeToolbar: React.FC = () => {
 
     //检查登录状态
     useEffect(() => {
-        const checkLoginStatus = async () => {
-            const token = getToken();
-            if (token) {
-                setIsLoggedIn(true);
-            }
-        };
-        checkLoginStatus();
-        if (!isLoggedIn) {
-            //如果未登录, 允许简历上传解析功能, 将简历数据存储为guestResume
-
+        if (isAuthenticated()) {
+            setIsLoggedIn(true);
+        } else {
+            setIsLoggedIn(false);
         }
-    }, []);
+    }, [isAuthenticated]);
+
     // 初始化时保存当前状态
     useEffect(() => {
         setCurrentData(resumeData);
@@ -200,6 +197,67 @@ const ResumeToolbar: React.FC = () => {
             console.log('简历上传流程结束');
         }
     };
+    // --- Guest Resume Upload --- 未登录状态下
+    const submitGuestResumeUpload = async () => {
+        if (!selectedFile) { alert('Please select a file'); return; }
+        if (!API_URL) { alert('API URL not configured'); return; }
+
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+
+        // 打印请求信息
+        console.log('准备上传简历:', {
+            fileName: selectedFile.name,
+            fileSize: `${(selectedFile.size / 1024).toFixed(2)} KB`,
+            fileType: selectedFile.type,
+            endpoint: `${API_URL}/pdfupload`
+        });
+
+
+        setIsResumeLoading(true);
+        setApiError(null);
+        try {
+            console.log('开始上传简历...');
+            console.time('简历上传耗时');
+
+            const response = await axios.post(`${API_URL}/pdfupload`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+                timeout: 30000, // 30秒超时
+                onUploadProgress: (progressEvent) => {
+                    const percentCompleted = Math.round((progressEvent.loaded * 100) / (progressEvent.total || 1));
+                    console.log(`上传进度: ${percentCompleted}%`);
+                }
+            });
+
+            console.timeEnd('简历上传耗时');
+            console.log('简历上传响应:', {
+                status: response.status,
+                statusText: response.statusText,
+                dataStatus: response.data?.status,
+                hasData: !!response.data?.data
+            });
+
+            if (response.data.status === 200 && response.data.data) {
+                console.log('简历上传成功，开始处理数据');
+                setLocalFileName(selectedFile.name);
+                console.log('保存到本地存储:', response.data.data);
+                saveToLocalStorage(response.data.data);
+                setResumeData(response.data.data);
+                toggleResumeModal();
+                console.log('简历数据已更新，模态框已关闭');
+            } else {
+                console.warn('服务器返回成功但数据异常:', response.data);
+                throw new Error(response.data.message || '上传简历失败');
+            }
+        } catch (error: any) {
+            console.error('简历上传错误:', error);
+        } finally {
+            setIsResumeLoading(false);
+            console.log('简历上传流程结束');
+        }
+    }
 
     // --- JD Upload ---
     const submitJdUpload = async () => {
@@ -499,7 +557,7 @@ const ResumeToolbar: React.FC = () => {
                         </div>
                         <div className="flex justify-end space-x-3 p-4 border-t">
                             <button type="button" className="btn-secondary" onClick={toggleResumeModal} disabled={isResumeLoading}>Cancel</button>
-                            <button type="button" className="btn-primary min-w-[80px] flex justify-center items-center" onClick={submitResumeUpload} disabled={isResumeLoading || !selectedFile}>
+                            <button type="button" className="btn-primary min-w-[80px] flex justify-center items-center" onClick={isLoggedIn ? submitResumeUpload : submitGuestResumeUpload} disabled={isResumeLoading || !selectedFile}>
                                 {isResumeLoading ? <span className="spinner-border spinner-border-sm"></span> : 'Submit'}
                             </button>
                         </div>

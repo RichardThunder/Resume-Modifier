@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getToken } from '@/lib/auth';
+import { getTimestampedFilename } from '@/lib/methods'; // Import the utility function
 
 interface SaveResumePayload {
     resume_title: string;
@@ -85,5 +86,30 @@ const saveResumeService = {
         }
     }
 };
+// 将游客简历数据保存到后端
+//TODO: tingpei 根据后端api设计, 修改游客模式下的建立数据上传
+ export  const saveGuestResumeToBackend = async (resumeData: any) => {
+        try {
+            const result = await saveResumeService.save(getTimestampedFilename("MyResume", 'pdf'), resumeData)
+            const response = await fetch('/api/resume/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ resumeData }),
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                throw new Error(data.message || '保存简历失败');
+            }
+
+            console.log('游客简历数据已成功保存到用户账户');
+        } catch (error) {
+            console.error('保存游客简历数据失败:', error);
+            // 可以选择在这里显示错误通知，但不阻止用户继续
+        }
+    };
 
 export default saveResumeService;
+
