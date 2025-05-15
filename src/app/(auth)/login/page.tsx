@@ -4,9 +4,6 @@ import React, { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import LoginForm from '@/components/auth/LoginForm'; // Corrected path
 import { login } from '@/lib/services/authService'; // Corrected path
-import { getGuestResume, clearGuestResume, hasGuestResume } from '@/services/guestResumeService';
-import saveResumeService from '@/lib/services/saveResumeService';
-import { getTimestampedFilename } from '@/lib/methods'; // Import the utility function
 import Header from '@/components/common/Header'; // 导入Header组件
 
 export default function LoginPage() {
@@ -25,29 +22,8 @@ export default function LoginPage() {
         setIsLoading(false); // Stop loading
 
         if (result.success) {
-            setSuccess(true);
-            // 登录成功，检查是否有游客简历数据
-            try {
-                if (hasGuestResume()) {
-                    const guestResumeData = getGuestResume();
-
-                    // 将游客数据保存到后端
-                    await saveGuestResumeToBackend(guestResumeData);
-
-                    // 清除本地游客数据
-                    clearGuestResume();
-
-                    // 重定向到简历编辑页面
-                    router.push('/enterResume');
-                } else {
-                    // 没有游客数据，重定向到用户主页或默认简历页面
-                    router.push('enterResume');
-                }
-            } catch (error) {
-                console.error('Error saving guest resume to backend:', error);
-            }
-
-
+            setSuccess(true);         
+            router.push('enterResume');
 
             // Redirect after a short delay
             setTimeout(() => {
@@ -61,29 +37,7 @@ export default function LoginPage() {
             setTimeout(() => setError(null), 5000);
         }
     };
-    // 将游客简历数据保存到后端
-    const saveGuestResumeToBackend = async (resumeData: any) => {
-        try {
-            const result = await saveResumeService.save(getTimestampedFilename("MyResume", 'pdf'), resumeData)
-            const response = await fetch('/api/resume/save', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ resumeData }),
-            });
 
-            if (!response.ok) {
-                const data = await response.json();
-                throw new Error(data.message || '保存简历失败');
-            }
-
-            console.log('游客简历数据已成功保存到用户账户');
-        } catch (error) {
-            console.error('保存游客简历数据失败:', error);
-            // 可以选择在这里显示错误通知，但不阻止用户继续
-        }
-    };
 
     return (
         <>

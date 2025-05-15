@@ -21,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/lib/services/saveResumeService.js", "postcss.config.js"], // Include .js files if necessary
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/lib/services/saveResumeService.js", "postcss.config.js", "src/lib/services/guestResumeService.js"], // Include .js files if necessary
   "exclude": ["node_modules"]
 }
