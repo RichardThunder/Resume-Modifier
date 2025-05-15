@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import RegisterForm from '@/components/auth/RegisterForm'; // Corrected path
 import { registerService } from '@/lib/services/registerService'; // Corrected path
+import Header from '@/components/common/Header'; // 导入Header组件
 
 export default function RegisterPage() {
     const router = useRouter();
@@ -57,31 +58,36 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4 py-12">
-            <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
-                <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">
-                    Sign Up
-                </h1>
-                <RegisterForm onSubmit={handleRegister} isLoading={isLoading} />
+        <>
+            {/* 添加Header组件 */}
+            <Header />
 
-                {error && (
-                    <div
-                        className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded text-sm"
-                        role="alert"
-                    >
-                        {error}
-                    </div>
-                )}
-                {successEmail && (
-                    <div
-                        className="mt-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded text-sm"
-                        role="alert"
-                    >
-                        <strong>Success!</strong> Registered as {successEmail}.
-                        Redirecting to login in {countdown} seconds...
-                    </div>
-                )}
+            <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4 py-12 pt-24"> {/* 添加pt-24以为Header留出空间 */}
+                <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
+                    <h1 className="text-2xl font-bold text-center text-gray-800 mb-6">
+                        Sign Up
+                    </h1>
+                    <RegisterForm onSubmit={handleRegister} isLoading={isLoading} />
+
+                    {error && (
+                        <div
+                            className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded text-sm"
+                            role="alert"
+                        >
+                            {error}
+                        </div>
+                    )}
+                    {successEmail && (
+                        <div
+                            className="mt-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded text-sm"
+                            role="alert"
+                        >
+                            <strong>Success!</strong> Registered as {successEmail}.
+                            Redirecting to login in {countdown} seconds...
+                        </div>
+                    )}
+                </div>
             </div>
-        </div>
+        </>
     );
 }
