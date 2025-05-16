@@ -74,7 +74,7 @@ const Header: React.FC = () => {
                         </Link>
                     ) : (
                         <Link href="/login" onClick={closeNavbar}>
-                            <button className="btn-primary btn-sm">
+                                <button className="btn-primary btn-sm sign-in-btn">
                                 Sign In
                             </button>
                         </Link>

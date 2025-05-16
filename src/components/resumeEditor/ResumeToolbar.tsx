@@ -12,8 +12,11 @@ import { AVAILABLE_THEMES } from './sectionsThemed/ThemeManager';
 import { getTimestampedFilename } from '@/lib/methods'; // Import the utility function
 import { isAuthenticated } from '@/lib/auth';
 
+interface ResumeToolbarProps {
+    setIntroEnabled: (enabled: boolean) => void;
+}
 
-const ResumeToolbar: React.FC = () => {
+const ResumeToolbar: React.FC<ResumeToolbarProps> = ({ setIntroEnabled }) => {
     const {
         resumeData,
         setResumeData,
@@ -83,7 +86,7 @@ const ResumeToolbar: React.FC = () => {
         if (history.length > 0) {
             const prevState = history[history.length - 1];
             const newHistory = history.slice(0, -1);
-            
+
             setFuture([currentData, ...future]);
             setHistory(newHistory);
             setCurrentData(prevState);
@@ -95,7 +98,7 @@ const ResumeToolbar: React.FC = () => {
         if (future.length > 0) {
             const nextState = future[0];
             const newFuture = future.slice(1);
-            
+
             setHistory([...history, currentData]);
             setFuture(newFuture);
             setCurrentData(nextState);
@@ -157,7 +160,7 @@ const ResumeToolbar: React.FC = () => {
         try {
             console.log('开始上传简历...');
             console.time('简历上传耗时');
-            
+
             const response = await axios.post(`${API_URL}/pdfupload`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -169,7 +172,7 @@ const ResumeToolbar: React.FC = () => {
                     console.log(`上传进度: ${percentCompleted}%`);
                 }
             });
-            
+
             console.timeEnd('简历上传耗时');
             console.log('简历上传响应:', {
                 status: response.status,
@@ -302,7 +305,7 @@ const ResumeToolbar: React.FC = () => {
         setIsSaveSuccess(false);
         setIsSaveFailed(false);
         setApiError(null);
-        const result = await saveResumeService.save(getTimestampedFilename(fileName,'pdf'),resumeData)
+        const result = await saveResumeService.save(getTimestampedFilename(fileName, 'pdf'), resumeData)
         setIsSaveLoading(false);
         if (result.success) {
             setIsSaveSuccess(true);
@@ -310,7 +313,7 @@ const ResumeToolbar: React.FC = () => {
         } else {
             setIsSaveFailed(true);
             setApiError(result.error || 'Failed to save resume.'); // Show specific error
-            setTimeout(() => {setIsSaveFailed(false); setApiError(null)}, 5000); // Clear fail state/error
+            setTimeout(() => { setIsSaveFailed(false); setApiError(null) }, 5000); // Clear fail state/error
             if (result.shouldRedirect) {
                 alert("Authentication expired. Please log in again.");
             }
@@ -369,7 +372,11 @@ const ResumeToolbar: React.FC = () => {
                 <div className="relative mb-6 w-full">
                     <button
                         ref={tipButtonRef}
-                        onClick={() => setShowTipPopover(!showTipPopover)}
+                        onClick={() => {
+                            localStorage.setItem('hasVisitedResumePage', 'false');
+                            setIntroEnabled(true);
+                        }
+                        }
                         className="btn-custom btn-sm flex flex-col items-center px-1 py-2 bg-blue-400 rounded-lg shadow-sm w-full border border-blue-500 text-white hover:bg-blue-500"
                         title="Tips"
                     >
@@ -378,7 +385,7 @@ const ResumeToolbar: React.FC = () => {
                         </svg>
                         <span className="text-xs">Tips</span>
                     </button>
-                    
+
                     {/* 提示气泡 */}
                     {showTipPopover && (
                         <div className="absolute right-full mr-2 top-0 w-64 bg-white p-3 rounded-lg shadow-lg border border-gray-200">
@@ -390,7 +397,7 @@ const ResumeToolbar: React.FC = () => {
                 </div>
 
                 {/* 主题切换按钮 - 单击循环切换 */}
-                <div className="relative mb-6 w-full">
+                <div className="relative mb-6 w-full theme-switcher">
                     <button
                         ref={themeButtonRef}
                         onClick={() => {
@@ -447,7 +454,7 @@ const ResumeToolbar: React.FC = () => {
                 </div>
 
                 {/* 撤销/重做 - 垂直布局 */}
-                <div className="flex flex-col items-center space-y-2 mb-6 w-full">
+                <div className="flex flex-col items-center space-y-2 mb-6 w-full undo-redo-container">
                     <button
                         className="btn-custom btn-sm p-2 disabled:opacity-50 bg-blue-400 rounded-lg shadow-sm w-full flex justify-center text-white hover:bg-blue-500 border border-blue-500"
                         disabled={!canUndo}
@@ -470,17 +477,17 @@ const ResumeToolbar: React.FC = () => {
                 <div className="flex flex-col items-center space-y-3 w-full">
                     {/* 上传简历 - 始终启用 */}
                     <button
-                        className="btn-custom btn-sm flex flex-col items-center px-1 py-2 bg-blue-400 rounded-lg shadow-sm w-full border border-blue-500 text-white hover:bg-blue-500"
+                        className="resume-uploader btn-custom btn-sm flex flex-col items-center px-1 py-2 bg-blue-400 rounded-lg shadow-sm w-full border border-blue-500 text-white hover:bg-blue-500"
                         onClick={toggleResumeModal}
                         title="Upload Resume PDF"
                     >
                         <Image src="/toolbar/circum_export.svg" alt="Upload" width={16} height={16} className="mb-1" />
                         <span className="text-xs">Resume</span>
                     </button>
-                    
+
                     {/* 上传JD - 需要登录 */}
                     <button
-                        className={`btn-custom btn-sm flex flex-col items-center px-1 py-2 ${!isLoggedIn ? 'bg-gray-400 border-gray-500' : 'bg-blue-400 border-blue-500 hover:bg-blue-500'} rounded-lg shadow-sm w-full border text-white`}
+                        className={`job-description-analysis btn-custom btn-sm flex flex-col items-center px-1 py-2 ${!isLoggedIn ? 'bg-gray-400 border-gray-500' : 'bg-blue-400 border-blue-500 hover:bg-blue-500'} rounded-lg shadow-sm w-full border text-white`}
                         onClick={isLoggedIn ? toggleJdModal : undefined}
                         disabled={!isLoggedIn}
                         title={!isLoggedIn ? "Login required" : "Analyze Job Description"}
@@ -488,10 +495,10 @@ const ResumeToolbar: React.FC = () => {
                         <Image src="/toolbar/circum_export.svg" alt="上传" width={16} height={16} className="mb-1" />
                         <span className="text-xs">JD</span>
                     </button>
-                    
+
                     {/* Reset button - 始终启用 */}
                     <button
-                        className="btn-custom btn-sm flex flex-col items-center px-1 py-2 bg-blue-400 rounded-lg shadow-sm w-full border border-blue-500 text-white hover:bg-blue-500"
+                        className="reset-resume btn-custom btn-sm flex flex-col items-center px-1 py-2 bg-blue-400 rounded-lg shadow-sm w-full border border-blue-500 text-white hover:bg-blue-500"
                         onClick={handleResetResume}
                         title="Reset Resume"
                     >
@@ -500,11 +507,11 @@ const ResumeToolbar: React.FC = () => {
                         </svg>
                         <span className="text-xs">Reset</span>
                     </button>
-                    
+
                     {/* 保存按钮 - 需要登录 */}
                     <button
                         type="button"
-                        className={`btn-custom btn-sm flex flex-col items-center px-1 py-2 rounded-lg shadow-sm w-full border
+                        className={` save-resume-btn btn-custom btn-sm flex flex-col items-center px-1 py-2 rounded-lg shadow-sm w-full border
                             ${!isLoggedIn ? 'bg-gray-400 border-gray-500 text-white' :
                                 isSaveSuccess ? 'bg-green-500 hover:bg-green-600 text-white border-green-600' :
                                     isSaveFailed ? 'bg-red-500 hover:bg-red-600 text-white border-red-600' :
@@ -519,10 +526,10 @@ const ResumeToolbar: React.FC = () => {
                         {/* Save button content remains unchanged */}
                         <span className="text-xs">Save</span>
                     </button>
-                    
+
                     {/* 下载PDF - 需要登录 */}
                     <button
-                        className={`btn-custom btn-sm flex flex-col items-center px-1 py-2 ${!isLoggedIn ? 'bg-gray-400 border-gray-500' : 'bg-blue-400 border-blue-500 hover:bg-blue-500'} rounded-lg shadow-sm w-full border text-white`}
+                        className={`export-resume-btn btn-custom btn-sm flex flex-col items-center px-1 py-2 ${!isLoggedIn ? 'bg-gray-400 border-gray-500' : 'bg-blue-400 border-blue-500 hover:bg-blue-500'} rounded-lg shadow-sm w-full border text-white`}
                         onClick={isLoggedIn ? handlePDFAction : undefined}
                         disabled={isPrinting || !isLoggedIn}
                         title={!isLoggedIn ? "Login required" : "Download PDF"}
@@ -531,72 +538,76 @@ const ResumeToolbar: React.FC = () => {
                         <span className="text-xs">Export</span>
                     </button>
                 </div>
-            </div>
+            </div >
 
             {/* 模态框保持不变 */}
-            {showResumeModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-60">
-                    <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
-                        <div className="flex justify-between items-center p-4 border-b">
-                            <h5 className="text-lg font-semibold">upload resume</h5>
-                            <button onClick={toggleResumeModal} className="text-gray-400 hover:text-gray-600">×</button>
-                        </div>
-                        <div className="p-4 space-y-3">
-                            {apiError && <div className="alert alert-danger text-sm p-2">{apiError}</div>}
-                            <div>
-                                <label htmlFor="fileUpload" className="form-label">Choose PDF File:</label>
-                                <input
-                                    id="fileUpload"
-                                    type="file"
-                                    accept=".pdf"
-                                    onChange={handleFileChange}
-                                    className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer"
-                                />
+            {
+                showResumeModal && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-60">
+                        <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
+                            <div className="flex justify-between items-center p-4 border-b">
+                                <h5 className="text-lg font-semibold">upload resume</h5>
+                                <button onClick={toggleResumeModal} className="text-gray-400 hover:text-gray-600">×</button>
                             </div>
-                            {selectedFile && <p className="text-sm font-medium text-gray-700">Selected: {selectedFile.name}</p>}
-                        </div>
-                        <div className="flex justify-end space-x-3 p-4 border-t">
-                            <button type="button" className="btn-secondary" onClick={toggleResumeModal} disabled={isResumeLoading}>Cancel</button>
-                            <button type="button" className="btn-primary min-w-[80px] flex justify-center items-center" onClick={isLoggedIn ? submitResumeUpload : submitGuestResumeUpload} disabled={isResumeLoading || !selectedFile}>
-                                {isResumeLoading ? <span className="spinner-border spinner-border-sm"></span> : 'Submit'}
-                            </button>
+                            <div className="p-4 space-y-3">
+                                {apiError && <div className="alert alert-danger text-sm p-2">{apiError}</div>}
+                                <div>
+                                    <label htmlFor="fileUpload" className="form-label">Choose PDF File:</label>
+                                    <input
+                                        id="fileUpload"
+                                        type="file"
+                                        accept=".pdf"
+                                        onChange={handleFileChange}
+                                        className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer"
+                                    />
+                                </div>
+                                {selectedFile && <p className="text-sm font-medium text-gray-700">Selected: {selectedFile.name}</p>}
+                            </div>
+                            <div className="flex justify-end space-x-3 p-4 border-t">
+                                <button type="button" className="btn-secondary" onClick={toggleResumeModal} disabled={isResumeLoading}>Cancel</button>
+                                <button type="button" className="btn-primary min-w-[80px] flex justify-center items-center" onClick={isLoggedIn ? submitResumeUpload : submitGuestResumeUpload} disabled={isResumeLoading || !selectedFile}>
+                                    {isResumeLoading ? <span className="spinner-border spinner-border-sm"></span> : 'Submit'}
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
+                )
+            }
 
             {/* JD Upload Modal */}
-            {showJdModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-60">
-                    <div className="bg-white rounded-lg shadow-xl w-full max-w-lg">
-                        <div className="flex justify-between items-center p-4 border-b">
-                            <h5 className="text-lg font-semibold">Analyze Job Description</h5>
-                            <button onClick={toggleJdModal} className="text-gray-400 hover:text-gray-600">×</button>
-                        </div>
-                        <div className="p-4 space-y-3">
-                            {apiError && <div className="alert alert-danger text-sm p-2">{apiError}</div>}
-                            <div>
-                                <label htmlFor="jobDescription" className="form-label">Add Job Description:</label>
-                                <textarea
-                                    id="jobDescription"
-                                    value={jobDescription}
-                                    onChange={(e) => setJobDescription(e.target.value)}
-                                    placeholder="Add full job description here..."
-                                    className="form-control min-h-[150px]"
-                                    rows={8}
-                                    disabled={isJdLoading}
-                                />
+            {
+                showJdModal && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-60">
+                        <div className="bg-white rounded-lg shadow-xl w-full max-w-lg">
+                            <div className="flex justify-between items-center p-4 border-b">
+                                <h5 className="text-lg font-semibold">Analyze Job Description</h5>
+                                <button onClick={toggleJdModal} className="text-gray-400 hover:text-gray-600">×</button>
+                            </div>
+                            <div className="p-4 space-y-3">
+                                {apiError && <div className="alert alert-danger text-sm p-2">{apiError}</div>}
+                                <div>
+                                    <label htmlFor="jobDescription" className="form-label">Add Job Description:</label>
+                                    <textarea
+                                        id="jobDescription"
+                                        value={jobDescription}
+                                        onChange={(e) => setJobDescription(e.target.value)}
+                                        placeholder="Add full job description here..."
+                                        className="form-control min-h-[150px]"
+                                        rows={8}
+                                        disabled={isJdLoading}
+                                    />
+                                </div>
+                            </div>
+                            <div className="flex justify-end space-x-3 p-4 border-t">
+                                <button type="button" className="btn-secondary" onClick={toggleJdModal} disabled={isJdLoading}>cancel</button>
+                                <button type="button" className="btn-primary min-w-[80px] flex justify-center items-center" onClick={submitJdUpload} disabled={isJdLoading || !jobDescription.trim()}>
+                                    {isJdLoading ? <span className="spinner-border spinner-border-sm"></span> : 'submit'}
+                                </button>
                             </div>
                         </div>
-                        <div className="flex justify-end space-x-3 p-4 border-t">
-                            <button type="button" className="btn-secondary" onClick={toggleJdModal} disabled={isJdLoading}>cancel</button>
-                            <button type="button" className="btn-primary min-w-[80px] flex justify-center items-center" onClick={submitJdUpload} disabled={isJdLoading || !jobDescription.trim()}>
-                                {isJdLoading ? <span className="spinner-border spinner-border-sm"></span> : 'submit'}
-                            </button>
-                        </div>
                     </div>
-                </div>
-            )}
+                )
+            }
         </>
     );
 };

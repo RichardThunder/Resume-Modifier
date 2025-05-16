@@ -212,5 +212,16 @@
     max-height: 1000px; /* Adjust max-height if needed */
     opacity: 1;
   }
+  .customTooltip {
+  background-color: #f8f9fa;
+  color: #333;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.customHighlight {
+  background-color: rgba(66, 153, 225, 0.1);
+  border-radius: 4px;
+}
 
 }
