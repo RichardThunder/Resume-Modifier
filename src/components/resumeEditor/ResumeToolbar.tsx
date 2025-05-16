@@ -11,6 +11,7 @@ import saveResumeService from '@/lib/services/saveResumeService';
 import { AVAILABLE_THEMES } from './sectionsThemed/ThemeManager';
 import { getTimestampedFilename } from '@/lib/methods'; // Import the utility function
 import { isAuthenticated } from '@/lib/auth';
+import { AutoScrollActivator } from '@dnd-kit/core';
 
 interface ResumeToolbarProps {
     setIntroEnabled: (enabled: boolean) => void;
@@ -492,7 +493,7 @@ const ResumeToolbar: React.FC<ResumeToolbarProps> = ({ setIntroEnabled }) => {
                         disabled={!isLoggedIn}
                         title={!isLoggedIn ? "Login required" : "Analyze Job Description"}
                     >
-                        <Image src="/toolbar/circum_export.svg" alt="上传" width={16} height={16} className="mb-1" />
+                        <Image src="/toolbar/circum_export.svg" alt="upload" width={16} height={16} className="mb-1" />
                         <span className="text-xs">JD</span>
                     </button>
 

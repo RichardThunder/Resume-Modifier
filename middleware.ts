@@ -1,7 +1,7 @@
 // src/middleware.ts
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-
+import { getToken } from '@/lib/auth';
 // Define paths that are public (don't require authentication)
 const PUBLIC_PATHS = ['/login', '/register', '/enterResume'];
 
@@ -13,7 +13,7 @@ export function middleware(request: NextRequest) {
     const isDevelopment = process.env.NODE_ENV === 'development';
 
     // --- Get Token (Prioritize Cookies in Middleware) ---
-    const token = request.cookies.get('jwt_token')?.value;
+    const token = getToken();
 
     // --- Allow Next.js internals, static assets, API routes ---
     if (
@@ -43,28 +43,23 @@ export function middleware(request: NextRequest) {
         return NextResponse.next();
     } */
     // --- END DEVELOPMENT MODE BYPASS ---
-
+ 
 
     // --- PRODUCTION/OTHER ENVIRONMENTS AUTH LOGIC ---
-    // Case 1: User is logged in (has token)
-    if (token) {
-        // Redirect away from public auth pages if logged in
-        if (isPublicPath && pathname !== '/enterResume') {
-            console.log(`Middleware: Authenticated user accessing public path ${pathname}. Redirecting to /enterResume.`);
-            return NextResponse.redirect(new URL('/enterResume', request.url));
-        }
-        // Allow access to protected or other paths
-        return NextResponse.next();
-    }
-    // Case 2: User is NOT logged in (no token)
-    else {
-        // Redirect to login if trying to access a protected path
-        if (isProtectedRoute) {
-            console.log(`Middleware: Unauthenticated user accessing protected path ${pathname}. Redirecting to /login.`);
+    if (isProtectedRoute) {
+        if (!token) {
+            // not login
+            console.log(`Middleware (Prod): Unauthenticated user accessing protected route ${pathname}. Redirecting to /login.`);   
             const loginUrl = new URL('/login', request.url);
             return NextResponse.redirect(loginUrl);
+        } else {
+            //already login
+            console.log(`Middleware (Prod): Authenticated user accessing protected route ${pathname}. Allowing access.`);
+            return NextResponse.next();
         }
+    } else {
         // Allow access to public paths
+        console.log(`Middleware (Prod): Public user accessing path ${pathname}. Allowing access.`);
         return NextResponse.next();
     }
 }
