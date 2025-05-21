@@ -1,59 +1,43 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useResume } from '@/context/ResumeContext';
-import { Plus, X, Lightbulb, Star } from 'lucide-react';
-import EditableField from '../../fieldsEditable/EditableField';
+import { Lightbulb } from 'lucide-react';
 
 export const Theme2SkillsSection = ({ hideDefaultControls = false, onMenuAction }) => {
   const { resumeData, updateResumeField } = useResume();
   const { skills } = resumeData;
   
-  const [skillItems, setSkillItems] = useState(
-    Array.isArray(skills) ? [...skills] : []
-  );
-  
-  useEffect(() => {
-    if (onMenuAction) {
-      onMenuAction({ addSkill });
-    }
-  }, []);
+  // 将技能数组转换为逗号分隔的字符串
+  const [skillsText, setSkillsText] = useState(Array.isArray(skills) ? skills.join(', ') : '');
+  // 添加一个标记，记录上次从 context 获取的 skills
+  const lastSkillsRef = useRef(skills);
 
+  // 添加 useEffect 同步 skills 数据变化到本地状态
   useEffect(() => {
-    if (Array.isArray(skills)) {
-      setSkillItems([...skills]);
-    } else {
-      setSkillItems([]);
+    // 比较当前 skills 和上次的 skills 是否相同
+    const currentSkillsStr = JSON.stringify(skills);
+    const lastSkillsStr = JSON.stringify(lastSkillsRef.current);
+    
+    // 只有当 skills 发生"外部"变化时才更新文本
+    if (currentSkillsStr !== lastSkillsStr) {
+      setSkillsText(Array.isArray(skills) ? skills.join(', ') : '');
+      lastSkillsRef.current = skills;
     }
   }, [skills]);
   
-  const handleFieldChange = (index, field, value) => {
-    const newItems = [...skillItems];
-    newItems[index] = {
-      ...newItems[index],
-      [field]: value
-    };
-    setSkillItems(newItems);
-    updateResumeField(`skills[${index}].${field}`, value);
-  };
-  
-  const addSkill = () => {
-    const newItems = [
-      ...skillItems,
-      {
-        category: "",
-        skills: ""
-      }
-    ];
-    setSkillItems(newItems);
-    updateResumeField('skills', newItems);
-  };
-  
-  const removeSkill = (index) => {
-    const newItems = [...skillItems];
-    newItems.splice(index, 1);
-    setSkillItems(newItems);
-    updateResumeField('skills', newItems);
+  // 处理技能文本变更
+  const handleSkillsChange = (e) => {
+    const newText = e.target.value;
+    setSkillsText(newText);
+    
+    // 将文本转换回数组并更新上下文
+    const skillsArray = newText
+      .split(',')
+      .map(skill => skill.trim())
+      .filter(skill => skill.length > 0);
+      
+    updateResumeField('skills', skillsArray);
   };
 
   // 生成随机的渐变背景色
@@ -81,79 +65,20 @@ export const Theme2SkillsSection = ({ hideDefaultControls = false, onMenuAction 
         <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-16 h-0.5 bg-gradient-to-r from-indigo-500 to-purple-500"></div>
       </div>
       
-      {/* Skills Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {skillItems.map((skill, index) => (
-          <div key={index} 
-               className={`relative bg-gradient-to-br ${getRandomGradient(index)} p-4 rounded-lg
-                         group transition-all duration-300 hover:shadow-lg hover:shadow-indigo-100 
-                         border border-transparent hover:border-indigo-200`}>
-            {/* Delete Button */}
-            <button 
-              onClick={() => removeSkill(index)}
-              className="absolute right-2 top-2 text-indigo-400 hover:text-red-500 
-                         opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            >
-              <X className="w-4 h-4" />
-            </button>
-            
-            {/* Skill Category */}
-            <div className="flex items-center mb-3">
-              <Star className="w-4 h-4 text-indigo-500 mr-2" />
-              <EditableField 
-                index={index}
-                field="category"
-                placeholder="技能类别"
-                className="font-medium text-lg text-indigo-900"
-                value={skillItems}
-                onChange={handleFieldChange}
-              />
-            </div>
-            
-            {/* Skills List */}
-            <div className="pl-6">
-              <EditableField 
-                index={index}
-                field="skills"
-                placeholder="技能列表"
-                className="text-indigo-700 leading-relaxed"
-                value={skillItems}
-                onChange={handleFieldChange}
-              />
-            </div>
-          </div>
-        ))}
+      {/* Skills Input with Theme2 Styling */}
+      <div className="bg-gradient-to-r from-indigo-50 to-purple-50 p-4 rounded-lg 
+                    transition-all duration-300 hover:shadow-lg hover:shadow-indigo-100 
+                    border border-transparent hover:border-indigo-200">
+        <textarea
+          value={skillsText}
+          onChange={handleSkillsChange}
+          placeholder="输入技能，用逗号分隔（例如：前端开发, React.js, TypeScript）"
+          className="w-full bg-transparent border-none focus:outline-none focus:ring-0 
+                   min-h-[100px] resize-y text-indigo-800 placeholder-indigo-400"
+        />
       </div>
-      
-      {/* Add Button */}
-      {!hideDefaultControls && (
-        <button 
-          onClick={addSkill}
-          className="flex items-center mx-auto mt-4 px-6 py-2 bg-gradient-to-r 
-                   from-indigo-100 to-purple-100 text-indigo-700 rounded-full 
-                   hover:from-indigo-200 hover:to-purple-200 transition-all 
-                   duration-300 font-medium group"
-        >
-          <Plus className="w-5 h-5 mr-2 transform group-hover:rotate-180 transition-transform duration-300" />
-          添加技能类别
-        </button>
-      )}
     </div>
   );
-};
-
-Theme2SkillsSection.getMenuOptions = (component) => {
-  if (!component) return [];
-  
-  const { addSkill } = component;
-  
-  return [
-    {
-      icon: <Plus className="w-4 h-4" />,
-      label: '添加技能类别',
-      action: addSkill
-    }
-  ];
 };
 
 export default Theme2SkillsSection;
