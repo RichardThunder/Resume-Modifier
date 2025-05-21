@@ -12,7 +12,14 @@ import {
 } from './defaultTheme';
 
 // Import Theme2 components
-import { Theme2UserBasicInfoSection, Theme2EducationSection } from './theme2';
+import { 
+  Theme2UserBasicInfoSection, 
+  Theme2EducationSection,
+  Theme2WorkExperienceSection,
+  Theme2ProjectsSection,
+  Theme2SkillsSection,
+  Theme2AchievementsSection
+} from './theme2';
 
 // Mapping of component types to their theme-specific implementations
 const THEME_COMPONENTS = {
@@ -29,11 +36,10 @@ const THEME_COMPONENTS = {
   'theme2': {
     UserBasicInfoSection: Theme2UserBasicInfoSection,
     EducationSection: Theme2EducationSection,
-    // Fallbacks to default theme will be handled by getThemeComponent
-    AchievementsSection: AchievementsSection,
-    ProjectsSection: ProjectsSection,
-    SkillsSection: SkillsSection,
-    WorkExperienceSection: WorkExperienceSection
+    WorkExperienceSection: Theme2WorkExperienceSection,
+    ProjectsSection: Theme2ProjectsSection,
+    SkillsSection: Theme2SkillsSection,
+    AchievementsSection: Theme2AchievementsSection
   }
   // Additional themes can be added here
 };
