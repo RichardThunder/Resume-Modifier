@@ -21,6 +21,16 @@ import {
   Theme2AchievementsSection
 } from './theme2';
 
+// Import Theme3 components
+import {
+  Theme3UserBasicInfoSection,
+  Theme3EducationSection,
+  Theme3WorkExperienceSection,
+  Theme3ProjectsSection,
+  Theme3SkillsSection,
+  Theme3AchievementsSection
+} from './theme3';
+
 // Mapping of component types to their theme-specific implementations
 const THEME_COMPONENTS = {
   // Default theme (theme1)
@@ -32,7 +42,7 @@ const THEME_COMPONENTS = {
     SkillsSection: SkillsSection,
     WorkExperienceSection: WorkExperienceSection
   },
-  // Theme2
+  // Theme2 - Purple Gradient Theme
   'theme2': {
     UserBasicInfoSection: Theme2UserBasicInfoSection,
     EducationSection: Theme2EducationSection,
@@ -40,6 +50,24 @@ const THEME_COMPONENTS = {
     ProjectsSection: Theme2ProjectsSection,
     SkillsSection: Theme2SkillsSection,
     AchievementsSection: Theme2AchievementsSection
+  },
+  // Theme3 - Dark Red Theme
+  'theme3': {
+    UserBasicInfoSection: Theme3UserBasicInfoSection,
+    EducationSection: Theme3EducationSection,
+    WorkExperienceSection: Theme3WorkExperienceSection,
+    ProjectsSection: Theme3ProjectsSection,
+    SkillsSection: Theme3SkillsSection,
+    AchievementsSection: Theme2AchievementsSection
+  },
+  // Theme3 - Dark Red Theme
+  'theme3': {
+    UserBasicInfoSection: Theme3UserBasicInfoSection,
+    EducationSection: Theme3EducationSection,
+    WorkExperienceSection: Theme3WorkExperienceSection,
+    ProjectsSection: Theme3ProjectsSection,
+    SkillsSection: Theme3SkillsSection,
+    AchievementsSection: Theme3AchievementsSection
   }
   // Additional themes can be added here
 };
