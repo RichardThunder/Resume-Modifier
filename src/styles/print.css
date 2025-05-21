@@ -1,0 +1,20 @@
+/* 打印样式 */
+@media print {
+  /* 打印时隐藏空字段 */
+  .editable-field.empty-field {
+    display: none !important;
+  }
+}
+
+/* 编辑时的样式 */
+.editable-field {
+  transition: all 0.2s;
+}
+
+.editable-field.empty-field {
+  opacity: 0.6;
+}
+
+.editable-field:hover, .editable-field:focus {
+  opacity: 1;
+}

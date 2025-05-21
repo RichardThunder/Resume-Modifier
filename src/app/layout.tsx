@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Raleway } from "next/font/google"; // Import Raleway font
 import "./globals.css";
+import "../styles/print.css"; // Import print styles
 import React from "react";
 
 // Configure Raleway font

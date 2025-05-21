@@ -31,7 +31,7 @@ const EditableField = ({
   const inputRef = useRef(null);
   // 使用 ref 维持隐藏的测量元素引用
   const measureRef = useRef(null);
-  
+
   // 处理值变化
   const handleChange = (e) => {
     const newValue = e.target.value;
@@ -102,35 +102,31 @@ const EditableField = ({
     return () => {
       window.removeEventListener('resize', adjustWidth);
     };
-  }, [getCurrentValue(), placeholder]);
-  
+  }, [value, placeholder]);
+
+  const currentValue = getCurrentValue();
+  const isEmpty = !currentValue;
+
   return (
     <>
+      {/* 隐藏的测量元素 */}
+      <span ref={measureRef} style={{ visibility: 'hidden', position: 'absolute', whiteSpace: 'pre' }} />
+      
       <input
         ref={inputRef}
         type={type}
-        value={getCurrentValue()}
+        value={currentValue}
         onChange={handleChange}
-        onBlur={onBlur ? handleBlur : undefined}
+        onBlur={handleBlur}
         placeholder={placeholder}
-        className={`bg-transparent border-b-[0.5px] border-transparent hover:border-gray-300 focus:border-blue-500 outline-none py-0 px-1 ${className}`}
-        style={{ minWidth: '20px' }}
-      />
-      {/* 隐藏的测量元素，用于计算宽度 */}
-      <span 
-        ref={measureRef} 
-        style={{ 
-          visibility: 'hidden', 
-          position: 'absolute', 
-          whiteSpace: 'pre',
-          fontSize: 'inherit',
-          fontFamily: 'inherit',
-          fontWeight: 'inherit',
-          letterSpacing: 'inherit'
+        className={`editable-field ${className} ${isEmpty ? 'empty-field' : ''}`}
+        style={{
+          padding: 0,
+          border: 'none',
+          outline: 'none',
+          background: 'transparent',
         }}
-      >
-        {getCurrentValue() || placeholder}
-      </span>
+      />
     </>
   );
 };
