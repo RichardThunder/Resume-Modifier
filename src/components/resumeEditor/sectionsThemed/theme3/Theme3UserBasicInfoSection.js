@@ -46,14 +46,14 @@ export const Theme3UserBasicInfoSection = () => {
               <EditableField
                 field="firstName"
                 placeholder="名"
-                className="text-3xl font-bold text-red-300"
+                className="text-3xl font-bold text-red-300 font-playfair italic"
                 value={userInfo}
                 onChange={handleFieldChange}
               />
               <EditableField
                 field="lastName"
                 placeholder="姓"
-                className="text-3xl font-bold text-red-300"
+                className="text-3xl font-bold text-red-300 font-playfair italic"
                 value={userInfo}
                 onChange={handleFieldChange}
               />
@@ -61,7 +61,7 @@ export const Theme3UserBasicInfoSection = () => {
             <EditableField
               field="headLine"
               placeholder="职位头衔"
-              className="text-lg text-red-400 mt-2"
+              className="text-lg text-red-400 mt-2 font-playfair italic"
               value={userInfo}
               onChange={handleFieldChange}
             />
@@ -77,7 +77,7 @@ export const Theme3UserBasicInfoSection = () => {
               <EditableField
                 field="email"
                 placeholder="邮箱地址"
-                className="text-red-200 hover:text-red-100 transition-colors"
+                className="text-red-200 hover:text-red-100 transition-colors font-playfair italic"
                 value={userInfo}
                 onChange={handleFieldChange}
               />
@@ -89,7 +89,7 @@ export const Theme3UserBasicInfoSection = () => {
               <EditableField
                 field="phoneNumber"
                 placeholder="电话号码"
-                className="text-red-200 hover:text-red-100 transition-colors"
+                className="text-red-200 hover:text-red-100 transition-colors font-playfair italic"
                 value={userInfo}
                 onChange={handleFieldChange}
               />
@@ -101,7 +101,7 @@ export const Theme3UserBasicInfoSection = () => {
               <EditableField
                 field="location"
                 placeholder="所在地"
-                className="text-red-200 hover:text-red-100 transition-colors"
+                className="text-red-200 hover:text-red-100 transition-colors font-playfair italic"
                 value={userInfo}
                 onChange={handleFieldChange}
               />

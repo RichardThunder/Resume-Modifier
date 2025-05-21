@@ -63,7 +63,7 @@ export const Theme3AchievementsSection = ({ hideDefaultControls = false, onMenuA
       {/* Section Title with Icon */}
       <div className="flex items-center mb-1">
         <Trophy className="w-6 h-6 text-red-500 mr-2" />
-        <h2 className="text-2xl font-semibold text-red-500 font-serif">Achievements</h2>
+        <h2 className="text-2xl font-playfair font-semibold text-red-500 italic">Achievements</h2>
       </div>
       
       {/* Animated Divider with Multiple Glowing Dots */}
@@ -102,7 +102,7 @@ export const Theme3AchievementsSection = ({ hideDefaultControls = false, onMenuA
                   index={index}
                   field="title"
                   placeholder="成就标题"
-                  className="text-lg font-medium text-red-300"
+                  className="text-lg font-medium text-red-300 font-playfair italic"
                   value={achievementItems}
                   onChange={handleFieldChange}
                 />
@@ -127,7 +127,7 @@ export const Theme3AchievementsSection = ({ hideDefaultControls = false, onMenuA
                 index={index}
                 field="description"
                 placeholder="成就描述"
-                className="w-full min-h-[60px] text-red-200 leading-relaxed bg-transparent"
+                className="w-full min-h-[60px] text-red-200 leading-relaxed bg-transparent font-playfair italic"
                 value={achievementItems}
                 onChange={handleFieldChange}
               />

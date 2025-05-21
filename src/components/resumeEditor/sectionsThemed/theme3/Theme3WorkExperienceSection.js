@@ -66,7 +66,7 @@ export const Theme3WorkExperienceSection = ({ hideDefaultControls = false, onMen
       {/* Section Title with Icon */}
       <div className="flex items-center mb-1">
         <Briefcase className="w-6 h-6 text-red-500 mr-2" />
-        <h2 className="text-2xl font-semibold text-red-500 font-serif">Work Experience</h2>
+        <h2 className="text-2xl font-playfair font-semibold text-red-500 italic">Work Experience</h2>
       </div>
       
       {/* Animated Divider with Dark Red Glow */}
@@ -100,7 +100,7 @@ export const Theme3WorkExperienceSection = ({ hideDefaultControls = false, onMen
                   index={index}
                   field="companyName"
                   placeholder="公司名称"
-                  className="block font-medium text-lg text-red-300"
+                  className="block font-medium text-lg text-red-300 font-playfair italic"
                   value={experienceItems}
                   onChange={handleFieldChange}
                 />

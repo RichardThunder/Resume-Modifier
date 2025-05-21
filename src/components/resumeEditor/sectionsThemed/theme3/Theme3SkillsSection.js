@@ -43,7 +43,7 @@ export const Theme3SkillsSection = ({ hideDefaultControls = false, onMenuAction 
       {/* Section Title with Icon */}
       <div className="flex items-center mb-1">
         <Flame className="w-6 h-6 text-red-500 mr-2" />
-        <h2 className="text-2xl font-semibold text-red-500 font-serif">Skills</h2>
+        <h2 className="text-2xl font-playfair font-semibold text-red-500 italic">Skills</h2>
       </div>
       
       {/* Animated Divider with Dark Red Glow */}
@@ -65,7 +65,8 @@ export const Theme3SkillsSection = ({ hideDefaultControls = false, onMenuAction 
           placeholder="输入技能，用逗号分隔（例如：前端开发, React.js, TypeScript）"
           className="w-full bg-transparent border-none focus:outline-none focus:ring-0 
                    min-h-[100px] resize-y text-red-100 placeholder-red-700/50
-                   selection:bg-red-900 selection:text-red-100"
+                   selection:bg-red-900 selection:text-red-100
+                   font-playfair italic"
         />
       </div>
     </div>

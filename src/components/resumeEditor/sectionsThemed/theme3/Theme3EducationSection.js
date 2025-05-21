@@ -67,7 +67,7 @@ export const Theme3EducationSection = ({ hideDefaultControls = false, onMenuActi
       {/* Section Title with Icon */}
       <div className="flex items-center mb-1">
         <GraduationCap className="w-6 h-6 text-red-500 mr-2" />
-        <h2 className="text-2xl font-semibold text-red-500 font-serif">Education</h2>
+        <h2 className="text-2xl font-playfair font-semibold text-red-500 italic">Education</h2>
       </div>
       
       {/* Animated Divider with Dark Red Glow */}
@@ -104,7 +104,7 @@ export const Theme3EducationSection = ({ hideDefaultControls = false, onMenuActi
                   index={index} 
                   field="institutionName" 
                   placeholder="学校名称" 
-                  className="inline-block font-medium text-lg text-red-300"
+                  className="inline-block font-medium text-lg text-red-300 font-playfair italic"
                   value={educationItems}
                   onChange={handleFieldChange}
                 />
@@ -113,7 +113,7 @@ export const Theme3EducationSection = ({ hideDefaultControls = false, onMenuActi
                     index={index} 
                     field="city" 
                     placeholder="城市" 
-                    className="inline-block text-red-600 italic"
+                    className="inline-block text-red-600 italic font-playfair"
                     value={educationItems}
                     onChange={handleFieldChange}
                   />
@@ -148,7 +148,7 @@ export const Theme3EducationSection = ({ hideDefaultControls = false, onMenuActi
                 index={index} 
                 field="fieldOfStudy" 
                 placeholder="专业" 
-                className="text-red-300"
+                className="text-red-300 font-playfair italic"
                 value={educationItems}
                 onChange={handleFieldChange}
               />
@@ -156,7 +156,7 @@ export const Theme3EducationSection = ({ hideDefaultControls = false, onMenuActi
                 index={index} 
                 field="degree" 
                 placeholder="学位"
-                className="text-red-300"
+                className="text-red-300 font-playfair italic"
                 value={educationItems}
                 onChange={handleFieldChange}
               />
@@ -174,7 +174,7 @@ export const Theme3EducationSection = ({ hideDefaultControls = false, onMenuActi
                   placeholder="成绩"
                   value={educationItems}
                   onChange={handleFieldChange}
-                  className="block text-red-400"
+                  className="block text-red-400 font-playfair italic"
                 />
                 <EditableField 
                   index={index} 
@@ -182,7 +182,7 @@ export const Theme3EducationSection = ({ hideDefaultControls = false, onMenuActi
                   placeholder="主修课程"
                   value={educationItems}
                   onChange={handleFieldChange}
-                  className="block text-red-200"
+                  className="block text-red-200 font-playfair italic"
                 />
               </div>
             </div>

@@ -66,7 +66,7 @@ export const Theme3ProjectsSection = ({ hideDefaultControls = false, onMenuActio
       {/* Section Title with Icon */}
       <div className="flex items-center mb-1">
         <Code2 className="w-6 h-6 text-red-500 mr-2" />
-        <h2 className="text-2xl font-semibold text-red-500 font-serif">Projects</h2>
+        <h2 className="text-2xl font-playfair font-semibold text-red-500 italic">Projects</h2>
       </div>
       
       {/* Animated Divider with Dark Red Glow */}
@@ -104,7 +104,7 @@ export const Theme3ProjectsSection = ({ hideDefaultControls = false, onMenuActio
                     index={index}
                     field="projectName"
                     placeholder="项目名称"
-                    className="text-lg font-medium text-red-300"
+                    className="text-lg font-medium text-red-300 font-playfair italic"
                     value={projectItems}
                     onChange={handleFieldChange}
                   />
@@ -168,7 +168,7 @@ export const Theme3ProjectsSection = ({ hideDefaultControls = false, onMenuActio
                 index={index}
                 field="description"
                 placeholder="项目描述"
-                className="w-full min-h-[100px] text-red-200 leading-relaxed bg-transparent"
+                className="w-full min-h-[100px] text-red-200 leading-relaxed bg-transparent font-playfair italic"
                 value={projectItems}
                 onChange={handleFieldChange}
               />

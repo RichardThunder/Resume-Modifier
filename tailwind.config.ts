@@ -9,10 +9,10 @@ const config: Config = {
     theme: {
         extend: {
             fontFamily: {
-                // Add Raleway font if imported via CSS/font file
-                raleway: ['Raleway', 'sans-serif'],
-                // Or define using Next/Font variable if set up in layout:
-                // raleway: ['var(--font-raleway)', 'sans-serif'],
+                sans: ['var(--font-raleway)', 'sans-serif'],
+                // Theme fonts
+                raleway: ['var(--font-raleway)', 'sans-serif'],
+                playfair: ['var(--font-playfair)', 'serif'],
             },
             colors: {
                 // Define custom colors matching original CSS variables

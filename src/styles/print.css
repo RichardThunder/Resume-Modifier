@@ -4,6 +4,38 @@
   .editable-field.empty-field {
     display: none !important;
   }
+
+  /* Theme3 特定打印样式 */
+  [data-theme="theme3"] {
+    background: white !important;
+    color: rgb(20, 20, 20) !important;
+  }
+
+  [data-theme="theme3"] * {
+    text-shadow: none !important;
+    box-shadow: none !important;
+  }
+
+  [data-theme="theme3"] .font-playfair {
+    font-family: "Playfair Display", serif !important;
+  }
+
+  /* 确保深色背景正确打印 */
+  [data-theme="theme3"] .bg-gradient-to-br {
+    background: white !important;
+    border: 1px solid rgba(185, 28, 28, 0.2) !important;
+  }
+
+  /* 调整文本颜色以提高打印对比度 */
+  [data-theme="theme3"] .text-red-500 {
+    color: rgb(185, 28, 28) !important;
+  }
+  
+  [data-theme="theme3"] .text-red-400,
+  [data-theme="theme3"] .text-red-300,
+  [data-theme="theme3"] .text-red-200 {
+    color: rgb(51, 51, 51) !important;
+  }
 }
 
 /* 编辑时的样式 */
