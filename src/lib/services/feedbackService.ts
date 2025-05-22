@@ -1,3 +1,4 @@
+'use client'
 import { getToken } from "@/lib/auth";
 import axios from "axios";
 import { ResumeModel } from "@/types/resume";

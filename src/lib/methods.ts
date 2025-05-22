@@ -1,3 +1,4 @@
+'use client'
 import axios from 'axios';
 import { getToken } from '@/lib/auth'; // Adjusted path
 // Removed router import - handle navigation in components/pages

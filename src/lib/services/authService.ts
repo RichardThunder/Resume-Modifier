@@ -1,3 +1,4 @@
+'use client'
 import axios from "axios";
 import { setToken } from '@/lib/auth'; // Ensure correct path
 

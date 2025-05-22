@@ -1,3 +1,4 @@
+'use client'
 /**
  * Checks if running in a browser environment.
  */

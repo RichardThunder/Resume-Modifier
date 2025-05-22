@@ -1,3 +1,4 @@
+'use client'
 import axios from 'axios';
 import { getToken } from '@/lib/auth';
 import { getTimestampedFilename } from '@/lib/methods'; // Import the utility function

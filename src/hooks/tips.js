@@ -1,3 +1,4 @@
+'use client'
 import 'intro.js/introjs.css';
 
 export const tipSteps =

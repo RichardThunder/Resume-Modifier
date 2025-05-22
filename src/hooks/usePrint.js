@@ -1,3 +1,4 @@
+'use client'
 import { useState, useEffect } from 'react';
 import { useResume } from '@/context/ResumeContext';
 import { CloudCog } from 'lucide-react';
