@@ -19,7 +19,7 @@ const nextConfig = {
 
 
   // Optional: Configure output for specific deployment targets
-  // output: 'standalone', // For Docker deployment using standalone output
+  output: 'standalone', // For Docker deployment using standalone output
 
   // Optional: Experimental features
   // experimental: {

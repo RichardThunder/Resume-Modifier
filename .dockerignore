@@ -1,0 +1,44 @@
+# Versioning and metadata
+.git
+.gitignore
+.github
+.vscode
+.idea
+
+# Build dependencies
+node_modules
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+
+# Environment (never include these)
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Docker
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# Testing
+coverage
+.nyc_output
+
+# Build outputs
+.next
+out
+build
+dist
+
+# Cache
+.npm
+.eslintcache
+
+# Misc
+README.md
+LICENSE
+.DS_Store
+*.log 
