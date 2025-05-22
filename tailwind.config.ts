@@ -47,7 +47,7 @@ const config: Config = {
                 '8mm': '8mm',
             },
             // Allow prose styles to use custom colors if needed
-            typography: (theme) => ({
+            typography: (theme: (path: string) => string | undefined) => ({
                 DEFAULT: {
                     css: {
                         color: theme('colors.gray.700'), // Default prose color
