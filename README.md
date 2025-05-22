@@ -2,6 +2,19 @@
 
 ![alt text](imgs/README/image.png)
 
+
+# How to run with docker
+
+build:
+```
+docker build -f Dockerfile1 --build-arg API_URL=http://localhost:5001/api -t editor-frontend .
+```
+
+run:
+```
+docker run -p 3000:80 editor-frontend:latest
+```
+
 # todo
 
 - [x] 前端不使用ResumeModel，而是直接使用 context 中的 resumeData，json 格式
