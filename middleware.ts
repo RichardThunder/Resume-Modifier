@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getToken } from '@/lib/auth';
 // Define paths that are public (don't require authentication)
-const PUBLIC_PATHS = ['/login', '/register', '/enterResume'];
+const PUBLIC_PATHS = ['/login', '/register', '/modifier'];
 
 // Define paths that require authentication (adjust as needed)
 const PROTECTED_PATHS = ['/', '/resume', '/profile', '/template'];

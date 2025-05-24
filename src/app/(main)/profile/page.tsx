@@ -174,7 +174,7 @@ export default function ProfilePage() {
             if (response.status === 200 && response.data?.data?.resume) {
                 console.log("Resume data fetched:", response.data.data.resume);
                 // todo by tt 0510; 需要保存 简历json 到 localStorage
-                router.push("/enterResume");
+                router.push("/modifier");
             } else {
                 throw new Error('Failed to fetch resume data.');
             }

@@ -103,7 +103,7 @@ const Header: React.FC = () => {
                 >
                     <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white">
                         <li>
-                            <Link href="/enterResume" className={navLinkClasses("#")} onClick={closeNavbar}>Home</Link>
+                            <Link href="/modifier" className={navLinkClasses("#")} onClick={closeNavbar}>Home</Link>
                         </li>
                         <li>
                             <a href="https://aws.mintmelon.ca/Chart" className={navLinkClasses("#chart")} onClick={closeNavbar}>Chart</a>

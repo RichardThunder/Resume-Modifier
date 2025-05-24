@@ -23,11 +23,11 @@ export default function LoginPage() {
 
         if (result.success) {
             setSuccess(true);         
-            router.push('enterResume');
+            router.push('modifier');
 
             // Redirect after a short delay
             setTimeout(() => {
-                router.push('/enterResume'); // Redirect to the main app page (e.g., resume editor)
+                router.push('/modifier'); // Redirect to the main app page (e.g., resume editor)
                 // Optionally reload if state isn't updating correctly across layouts, though ideally not needed
                 // window.location.reload();
             }, 1000);
