@@ -84,16 +84,18 @@ export const ResumeBlockContainer = () => {
     // 创建按新顺序排列的数据对象
     const reorderedData = {};
     
-    // 遍历新的块顺序，按顺序构建新的数据对象
-    newBlocks.forEach(block => {
-      const dataKey = block.type === 'user-info' ? 'userInfo' :
-                     block.type === 'work-experience' ? 'workExperience' : block.type;
-      
-      // 将原数据复制到新对象中，保持相同的顺序
-      if (resumeData[dataKey]) {
+    // 只处理在 resumeData 中存在的块
+    newBlocks
+      .filter(block => {
+        const dataKey = block.type === 'user-info' ? 'userInfo' :
+                       block.type === 'work-experience' ? 'workExperience' : block.type;
+        return resumeData.hasOwnProperty(dataKey);
+      })
+      .forEach(block => {
+        const dataKey = block.type === 'user-info' ? 'userInfo' :
+                       block.type === 'work-experience' ? 'workExperience' : block.type;
         reorderedData[dataKey] = resumeData[dataKey];
-      }
-    });
+      });
     
     // 更新 ResumeContext 数据
     setResumeData(reorderedData);
@@ -102,8 +104,23 @@ export const ResumeBlockContainer = () => {
     setTimeout(() => saveToLocalStorage(), 0);
   };
   
+  // Get resumeData from context
+  const { resumeData } = useResume();
+
+  // Check if a block should be rendered based on its data
+  const shouldRenderBlock = (type) => {
+    const key = type === 'work-experience' ? 'workExperience' : 
+                type === 'user-info' ? 'userInfo' : type;
+    return resumeData.hasOwnProperty(key);
+  };
+
   // 渲染特定类型的块
   const renderBlock = (block) => {
+    // 如果对应的数据不存在，不渲染这个块
+    if (!shouldRenderBlock(block.type)) {
+      return null;
+    }
+
     switch (block.type) {
       case 'user-info':
         return <SortableUserInfoBlock key={block.id} id={block.id} theme={theme} />;

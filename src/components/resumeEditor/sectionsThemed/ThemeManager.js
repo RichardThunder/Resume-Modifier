@@ -58,15 +58,6 @@ const THEME_COMPONENTS = {
     WorkExperienceSection: Theme3WorkExperienceSection,
     ProjectsSection: Theme3ProjectsSection,
     SkillsSection: Theme3SkillsSection,
-    AchievementsSection: Theme2AchievementsSection
-  },
-  // Theme3 - Dark Red Theme
-  'theme3': {
-    UserBasicInfoSection: Theme3UserBasicInfoSection,
-    EducationSection: Theme3EducationSection,
-    WorkExperienceSection: Theme3WorkExperienceSection,
-    ProjectsSection: Theme3ProjectsSection,
-    SkillsSection: Theme3SkillsSection,
     AchievementsSection: Theme3AchievementsSection
   }
   // Additional themes can be added here
@@ -87,26 +78,10 @@ export const getThemeComponent = (componentName, themeName = 'default') => {
   return theme[componentName] || THEME_COMPONENTS.default[componentName];
 };
 
-/**
- * Higher-order component that provides a theme-specific component
- * 
- * @param {string} componentName - The name of the component to use
- * @param {string} themeName - The theme to use
- * @returns {React.Component} A wrapped component that uses the theme-specific implementation
- */
-export const withTheme = (componentName, themeName = 'default') => {
-  // Get the appropriate component for the theme
-  const ThemeComponent = getThemeComponent(componentName, themeName);
-  
-  // Return a component that passes through all props
-  return (props) => <ThemeComponent {...props} />;
-};
-
 // Export available themes for selection
 export const AVAILABLE_THEMES = Object.keys(THEME_COMPONENTS);
 
 export default {
   getThemeComponent,
-  withTheme,
   AVAILABLE_THEMES
 };

@@ -12,6 +12,7 @@ import { AVAILABLE_THEMES } from './sectionsThemed/ThemeManager';
 import { getTimestampedFilename } from '@/lib/methods'; // Import the utility function
 import { isAuthenticated } from '@/lib/auth';
 import { AutoScrollActivator } from '@dnd-kit/core';
+import { BlockManagementModal } from './BlockManagementModal';
 
 interface ResumeToolbarProps {
     setIntroEnabled: (enabled: boolean) => void;
@@ -32,6 +33,7 @@ const ResumeToolbar: React.FC<ResumeToolbarProps> = ({ setIntroEnabled }) => {
     const [isEditingName, setIsEditingName] = useState(false);
     const [fileName, setLocalFileName] = useState('Resume');
     const fileNameInputRef = useRef<HTMLInputElement>(null);
+    const [showBlockModal, setShowBlockModal] = useState(false);  // Add this line
 
     const [showResumeModal, setShowResumeModal] = useState(false);
     const [showJdModal, setShowJdModal] = useState(false);
@@ -497,6 +499,18 @@ const ResumeToolbar: React.FC<ResumeToolbarProps> = ({ setIntroEnabled }) => {
                         <span className="text-xs">JD</span>
                     </button>
 
+                    {/* Block Management Button */}
+                    <button
+                        className="btn-custom btn-sm flex flex-col items-center px-1 py-2 bg-blue-400 rounded-lg shadow-sm w-full border border-blue-500 text-white hover:bg-blue-500"
+                        onClick={() => setShowBlockModal(true)}
+                        title="Manage Resume Blocks"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 mb-1">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                        </svg>
+                        <span className="text-xs">Blocks</span>
+                    </button>
+
                     {/* Reset button - 始终启用 */}
                     <button
                         className="reset-resume btn-custom btn-sm flex flex-col items-center px-1 py-2 bg-blue-400 rounded-lg shadow-sm w-full border border-blue-500 text-white hover:bg-blue-500"
@@ -607,6 +621,16 @@ const ResumeToolbar: React.FC<ResumeToolbarProps> = ({ setIntroEnabled }) => {
                             </div>
                         </div>
                     </div>
+                )
+            }
+
+            {/* Block Management Modal - 新增的模态框 */}
+            {
+                showBlockModal && (
+                    <BlockManagementModal
+                        isOpen={showBlockModal}
+                        onClose={() => setShowBlockModal(false)}
+                    />
                 )
             }
         </>
