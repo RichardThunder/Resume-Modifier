@@ -59,7 +59,7 @@ export const UserBasicInfoSection = ({ hideDefaultControls = false, onMenuAction
         <div className="flex gap-0 justify-center mb-1">
           <EditableField 
             field="firstName" 
-            placeholder="名" 
+            placeholder="First " 
             className="text-3xl font-bold text-right w-auto"
             value={userInfoState}
             onChange={handleFieldChange}
@@ -67,7 +67,7 @@ export const UserBasicInfoSection = ({ hideDefaultControls = false, onMenuAction
           />
           <EditableField 
             field="lastName" 
-            placeholder="姓" 
+            placeholder="Last Name" 
             className="text-3xl font-bold text-left w-auto"
             value={userInfoState}
             onChange={handleFieldChange}
@@ -79,7 +79,7 @@ export const UserBasicInfoSection = ({ hideDefaultControls = false, onMenuAction
         <div className="text-gray-700 mb-1 flex flex-wrap justify-center items-center">
           <EditableField 
             field="location" 
-            placeholder="所在地" 
+            placeholder="Location" 
             className="inline-block text-center w-auto px-0.5"
             value={userInfoState}
             onChange={handleFieldChange}
@@ -92,7 +92,7 @@ export const UserBasicInfoSection = ({ hideDefaultControls = false, onMenuAction
           
           <EditableField 
             field="email" 
-            placeholder="邮箱" 
+            placeholder="Email" 
             className="inline-block text-center w-auto px-0.5"
             value={userInfoState}
             onChange={handleFieldChange}
@@ -105,7 +105,7 @@ export const UserBasicInfoSection = ({ hideDefaultControls = false, onMenuAction
           
           <EditableField 
             field="phoneNumber" 
-            placeholder="电话" 
+            placeholder="Phone" 
             className="inline-block text-center w-auto px-0.5"
             value={userInfoState}
             onChange={handleFieldChange}
@@ -118,7 +118,7 @@ export const UserBasicInfoSection = ({ hideDefaultControls = false, onMenuAction
           
           <EditableField 
             field="websiteOrOtherProfileURL" 
-            placeholder="个人网站" 
+            placeholder="Website or Profile URL" 
             className="inline-block text-center w-auto px-0.5"
             value={userInfoState}
             onChange={handleFieldChange}

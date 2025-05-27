@@ -2,9 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { useResume } from '@/context/ResumeContext';
-import { Plus, X } from 'lucide-react';
+import { Plus, X, Wand2 } from 'lucide-react';
+import feedbackService from '@/lib/services/feedbackService';
 import EditableField from '../../fieldsEditable/EditableField';
 import EditableFieldTextarea from '../../fieldsEditable/EditableFieldTextarea';
+import * as Popover from '@radix-ui/react-popover';
+import { useFloating, offset, shift, flip, arrow, autoUpdate, useHover, useFocus, useDismiss, useRole, useInteractions } from '@floating-ui/react-dom-interactions';
+
 
 export const ProjectsSection = ({ hideDefaultControls = false, onMenuAction }) => {
   const { resumeData, updateResumeField } = useResume();
@@ -12,6 +16,8 @@ export const ProjectsSection = ({ hideDefaultControls = false, onMenuAction }) =
   
   // State for projects items
   const [projectItems, setProjectItems] = useState(Array.isArray(projects) ? [...projects] : []);
+  // 控制菜单显示
+  const [openPopoverIndex, setOpenPopoverIndex] = useState(null);
   
   // Provide context menu options for the parent component
   useEffect(() => {
@@ -69,14 +75,25 @@ export const ProjectsSection = ({ hideDefaultControls = false, onMenuAction }) =
     updateResumeField('projects', newItems);
   };
   
+  // AI优化项目描述
+  const optimizeDescription = async (index) => {
+    const section_type = 'projects';
+    const sectionData = projectItems[index];
+    const result = await feedbackService.sendFeedback(sectionData, section_type, '', resumeData, index);
+    console.log('AI优化结果:', result);
+    if (result.success && result.content) {
+      handleFieldChange(index, 'description', result.content);
+    } else {
+      alert(result.error || 'AI优化失败');
+    }
+  };
+  
   return (
     <div className="w-full max-w-4xl mx-auto my-1 relative">
       {/* Section Title */}
       <h2 className="text-2xl font-bold mb-0.5">Projects</h2>
-      
       {/* Divider Line */}
       <hr className="border-gray-300 mb-1" />
-      
       {/* Project Items */}
       <div className="space-y-1">
         {projectItems.map((project, index) => (
@@ -87,32 +104,29 @@ export const ProjectsSection = ({ hideDefaultControls = false, onMenuAction }) =
             >
               <X className="w-4 h-4" />
             </button>
-            
-            {/* Project Title and Date Row - 三列均分布局 */}
+            {/* Project Title and Date Row - 3 columns layout */}
             <div className="grid grid-cols-3 gap-1 items-center mb-0.5">
-              {/* 项目名称 - 左侧 */}
+              {/* Project Name - Left */}
               <div className="text-left">
                 <EditableField 
                   index={index} 
                   field="title" 
-                  placeholder="项目名称" 
+                  placeholder="Project Name" 
                   className="inline-block font-medium"
                   value={projectItems}
                   onChange={handleFieldChange}
                 />
               </div>
-              
-              {/* 空白中间列，保持布局 */}
+              {/* Empty center column for layout */}
               <div className="text-center">
-                {/* 可以根据需要添加其他字段，例如技术栈等 */}
+                {/* Add other fields if needed, e.g. tech stack */}
               </div>
-              
-              {/* 日期 - 右侧 */}
+              {/* Date - Right */}
               <div className="text-right flex items-center justify-end space-x-1">
                 <EditableField 
                   index={index} 
                   field="fromDate" 
-                  placeholder="起始日期" 
+                  placeholder="Start Date" 
                   className="inline-block text-center"
                   value={projectItems}
                   onChange={handleFieldChange}
@@ -121,29 +135,57 @@ export const ProjectsSection = ({ hideDefaultControls = false, onMenuAction }) =
                 <EditableField 
                   index={index} 
                   field="toDate" 
-                  placeholder="结束日期" 
+                  placeholder="End Date" 
                   className="inline-block text-center"
                   value={projectItems}
                   onChange={handleFieldChange}
                 />
               </div>
             </div>
-            
-            {/* Description */}
-            <div className="mt-0.5">
-              <EditableFieldTextarea
-                index={index} 
-                field="description" 
-                placeholder="项目描述（职责、技术、成果等）" 
-                className="w-full min-h-[60px] whitespace-normal break-words overflow-wrap-anywhere"
-                value={projectItems}
-                onChange={handleFieldChange}
-              />
+            {/* Description with Edit Button and Menu */}
+            <div className="mt-0.5 relative group/desc">
+              <div className="relative">
+                {/* Edit Button */}
+                <div className="absolute -left-8 top-1/2 -translate-y-1/2 opacity-0 group-hover/desc:opacity-100 transition-opacity">
+                  <Popover.Root open={openPopoverIndex === index} onOpenChange={(open) => setOpenPopoverIndex(open ? index : null)}>
+                    <Popover.Trigger asChild>
+                      <button className="p-1 hover:bg-gray-100 rounded-md text-gray-500 hover:text-blue-500">
+                        <Wand2 className="w-4 h-4" />
+                      </button>
+                    </Popover.Trigger>
+                    <Popover.Portal>
+                      <Popover.Content className="bg-white rounded-lg shadow-lg p-2 z-50" sideOffset={5}>
+                        <div className="flex flex-col gap-1">
+                          <button
+                            onClick={() => {
+                              optimizeDescription(index);
+                              setOpenPopoverIndex(null);
+                            }}
+                            className="flex items-center gap-2 px-3 py-1.5 text-sm rounded hover:bg-blue-50 text-blue-600 whitespace-nowrap"
+                          >
+                            <Wand2 className="w-4 h-4" />
+                            <span>AI Rewrite</span>
+                          </button>
+                        </div>
+                        <Popover.Arrow className="fill-white" />
+                      </Popover.Content>
+                    </Popover.Portal>
+                  </Popover.Root>
+                </div>
+
+                <EditableFieldTextarea
+                  index={index}
+                  field="description"
+                  placeholder="Project description (responsibilities, technologies, achievements, etc.)"
+                  className="w-full min-h-[60px] whitespace-normal break-words overflow-wrap-anywhere"
+                  value={projectItems}
+                  onChange={handleFieldChange}
+                />
+              </div>
             </div>
-            
             {/* Add Project Button */}
             <button 
-              onClick={addProject} 
+              onClick={addProject}
               className="absolute right-2 bottom-2 text-gray-400 hover:text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity"
             >
               <Plus className="w-4 h-4" />
@@ -151,14 +193,13 @@ export const ProjectsSection = ({ hideDefaultControls = false, onMenuAction }) =
           </div>
         ))}
       </div>
-      
       {/* Add Project Button */}
       {!hideDefaultControls && projectItems.length === 0 && (
         <button 
           onClick={addProject}
           className="flex items-center mt-1 px-3 py-1 bg-blue-50 text-blue-600 rounded-md hover:bg-blue-100"
         >
-          <Plus className="w-4 h-4 mr-2" /> 添加项目经历
+          <Plus className="w-4 h-4 mr-2" /> Add Project
         </button>
       )}
     </div>

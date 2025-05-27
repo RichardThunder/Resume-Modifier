@@ -2,14 +2,17 @@
 
 import React, { useState, useEffect } from 'react';
 import { useResume } from '@/context/ResumeContext';
-import { Plus, X } from 'lucide-react';
+import { Plus, X, Wand2 } from 'lucide-react';
+import feedbackService from '@/lib/services/feedbackService';
 import EditableField from '../../fieldsEditable/EditableField';
 import EditableFieldTextarea from '../../fieldsEditable/EditableFieldTextarea';
+import * as Popover from '@radix-ui/react-popover';
 
 export const AchievementsSection = ({ hideDefaultControls = false, onMenuAction }) => {
   const { resumeData, updateResumeField } = useResume();
   const { achievements } = resumeData;
-  
+  // 控制菜单显示
+  const [openPopoverIndex, setOpenPopoverIndex] = useState(null);
   // State for achievement items
   const [achievementItems, setAchievementItems] = useState([...achievements]);
   
@@ -59,6 +62,19 @@ export const AchievementsSection = ({ hideDefaultControls = false, onMenuAction 
     updateResumeField('achievements', newItems);
   };
   
+  // AI优化成就描述
+  const optimizeDescription = async (index) => {
+    const section_type = 'achievements';
+    const sectionData = achievementItems[index];
+    const result = await feedbackService.sendFeedback(sectionData, section_type, '', resumeData, index);
+    console.log('AI优化结果:', result);
+    if (result.success && result.content) {
+      handleFieldChange(index, 'description', result.content);
+    } else {
+      alert(result.error || 'AI优化失败');
+    }
+  };
+  
   return (
     <div className="w-full max-w-4xl mx-auto my-1 relative">
       {/* Section Title */}
@@ -77,7 +93,7 @@ export const AchievementsSection = ({ hideDefaultControls = false, onMenuAction 
             >
               <X className="w-4 h-4" />
             </button>
-            
+
             {/* Achievement Title and Date Row - 三列均分布局 */}
             <div className="grid grid-cols-3 gap-1 items-center mb-0.5">
               {/* 成就名称 - 左侧 */}
@@ -85,7 +101,7 @@ export const AchievementsSection = ({ hideDefaultControls = false, onMenuAction 
                 <EditableField 
                   index={index} 
                   field="title" 
-                  placeholder="成就名称" 
+                  placeholder="Achievement Title" 
                   className="inline-block font-medium"
                   value={achievementItems}
                   onChange={handleFieldChange}
@@ -102,7 +118,7 @@ export const AchievementsSection = ({ hideDefaultControls = false, onMenuAction 
                 <EditableField 
                   index={index} 
                   field="fromDate" 
-                  placeholder="起始日期" 
+                  placeholder="Start Date" 
                   className="inline-block w-20 text-center"
                   value={achievementItems}
                   onChange={handleFieldChange}
@@ -111,25 +127,55 @@ export const AchievementsSection = ({ hideDefaultControls = false, onMenuAction 
                 <EditableField 
                   index={index} 
                   field="toDate" 
-                  placeholder="结束日期" 
+                  placeholder="End Date" 
                   className="inline-block w-20 text-center"
                   value={achievementItems}
                   onChange={handleFieldChange}
                 />
               </div>
             </div>
-            
-            {/* Description */}
-            <div className="mt-0.5">
-              <EditableFieldTextarea 
-                index={index} 
-                field="description" 
-                placeholder="成就描述（证书、奖项、荣誉等）" 
-                className="w-full"
-                value={achievementItems}
-                onChange={handleFieldChange}
-              />
+            {/* Description with Edit Button and Menu */}
+            <div className="mt-0.5 relative group/desc">
+              <div className="relative">
+                {/* Edit Button */}
+                <div className="absolute -left-8 top-1/2 -translate-y-1/2 opacity-0 group-hover/desc:opacity-100 transition-opacity">
+                  <Popover.Root open={openPopoverIndex === index} onOpenChange={(open) => setOpenPopoverIndex(open ? index : null)}>
+                    <Popover.Trigger asChild>
+                      <button className="p-1 hover:bg-gray-100 rounded-md text-gray-500 hover:text-blue-500">
+                        <Wand2 className="w-4 h-4" />
+                      </button>
+                    </Popover.Trigger>
+                    <Popover.Portal>
+                      <Popover.Content className="bg-white rounded-lg shadow-lg p-2 z-50" sideOffset={5}>
+                        <div className="flex flex-col gap-1">
+                          <button
+                            onClick={() => {
+                              optimizeDescription(index);
+                              setOpenPopoverIndex(null);
+                            }}
+                            className="flex items-center gap-2 px-3 py-1.5 text-sm rounded hover:bg-blue-50 text-blue-600 whitespace-nowrap"
+                          >
+                            <Wand2 className="w-4 h-4" />
+                            <span>AI Rewrite</span>
+                          </button>
+                        </div>
+                        <Popover.Arrow className="fill-white" />
+                      </Popover.Content>
+                    </Popover.Portal>
+                  </Popover.Root>
+                </div>
+
+                <EditableFieldTextarea
+                  index={index}
+                  field="description"
+                  placeholder="Achievement description (certificates, awards, honors, etc.)"
+                  className="w-full"
+                  value={achievementItems}
+                  onChange={handleFieldChange}
+                />
+              </div>
             </div>
+          
             
             {/* Add Achievement Button */}
             <button 
@@ -148,7 +194,7 @@ export const AchievementsSection = ({ hideDefaultControls = false, onMenuAction 
           onClick={addAchievement}
           className="flex items-center mt-1 px-3 py-1 bg-blue-50 text-blue-600 rounded-md hover:bg-blue-100"
         >
-          <Plus className="w-4 h-4 mr-2" /> 添加成就经历
+          <Plus className="w-4 h-4 mr-2" /> Add Achievement
         </button>
       )}
     </div>

@@ -1,10 +1,13 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useResume } from '@/context/ResumeContext';
-import { Plus, X } from 'lucide-react';
+import { Plus, X, Sparkles, Wand2 } from 'lucide-react';
 import EditableField from '../../fieldsEditable/EditableField';
 import EditableFieldTextarea from '../../fieldsEditable/EditableFieldTextarea';
+import * as Popover from '@radix-ui/react-popover';
+import { useFloating, offset, shift, flip, arrow, autoUpdate, useHover, useFocus, useDismiss, useRole, useInteractions } from '@floating-ui/react-dom-interactions';
+import feedbackService from '@/lib/services/feedbackService';
 
 export const WorkExperienceSection = ({ hideDefaultControls = false, onMenuAction }) => {
   const { resumeData, updateResumeField } = useResume();
@@ -12,6 +15,12 @@ export const WorkExperienceSection = ({ hideDefaultControls = false, onMenuActio
   
   // State for work experience items
   const [workItems, setWorkItems] = useState(Array.isArray(workExperience) ? [...workExperience] : []);
+  // 当前悬浮工具框显示的工作经历索引
+  const [activeIndex, setActiveIndex] = useState(null);
+  // 控制菜单显示
+  const [openPopoverIndex, setOpenPopoverIndex] = useState(null);
+  // 悬浮工具框的引用
+  const arrowRef = useRef(null);
   
   // Provide context menu options for the parent component
   useEffect(() => {
@@ -29,7 +38,7 @@ export const WorkExperienceSection = ({ hideDefaultControls = false, onMenuActio
       setWorkItems([]);
     }
   }, [workExperience]);
-  
+
   // Handle changes to fields
   const handleFieldChange = (index, field, value) => {
     const newItems = [...workItems];
@@ -71,7 +80,23 @@ export const WorkExperienceSection = ({ hideDefaultControls = false, onMenuActio
     setWorkItems(newItems);
     updateResumeField('workExperience', newItems);
   };
-  
+
+  // AI优化工作描述
+  const optimizeDescription = async (index) => {
+    const section_type = 'workExperience';
+    const sectionData = workItems[index];
+    console.log('获取sectionData', sectionData, index);
+    // 传递整个简历数据，index
+    const result = await feedbackService.sendFeedback(sectionData, section_type, '', resumeData, index);
+    console.log('AI优化结果:', result);
+    if (result.success && result.content) {
+      // 只更新当前条目的 description 字段
+      handleFieldChange(index, 'description', result.content);
+    } else {
+      alert(result.error || 'AI优化失败');
+    }
+  };
+
   return (
     <div className="w-full max-w-4xl mx-auto my-1 relative">
       {/* Section Title */}
@@ -98,7 +123,7 @@ export const WorkExperienceSection = ({ hideDefaultControls = false, onMenuActio
                 <EditableField 
                   index={index} 
                   field="companyName" 
-                  placeholder="公司名称" 
+                  placeholder="Company Name" 
                   className="inline-block font-medium"
                   value={workItems}
                   onChange={handleFieldChange}
@@ -110,7 +135,7 @@ export const WorkExperienceSection = ({ hideDefaultControls = false, onMenuActio
                 <EditableField 
                   index={index} 
                   field="jobTitle" 
-                  placeholder="职位" 
+                  placeholder="Job Title" 
                   className="inline-block text-center"
                   value={workItems}
                   onChange={handleFieldChange}
@@ -122,7 +147,7 @@ export const WorkExperienceSection = ({ hideDefaultControls = false, onMenuActio
                 <EditableField 
                   index={index} 
                   field="fromDate" 
-                  placeholder="起始日期" 
+                  placeholder="Start Date" 
                   className="inline-block w-20 text-center"
                   value={workItems}
                   onChange={handleFieldChange}
@@ -131,7 +156,7 @@ export const WorkExperienceSection = ({ hideDefaultControls = false, onMenuActio
                 <EditableField 
                   index={index} 
                   field="toDate" 
-                  placeholder="结束日期" 
+                  placeholder="End Date" 
                   className="inline-block w-20 text-center"
                   value={workItems}
                   onChange={handleFieldChange}
@@ -139,16 +164,46 @@ export const WorkExperienceSection = ({ hideDefaultControls = false, onMenuActio
               </div>
             </div>
             
-            {/* Description */}
-            <div className="mt-0.5">
-              <EditableFieldTextarea 
-                index={index} 
-                field="description" 
-                placeholder="工作描述（成就、职责等）" 
-                className="w-full"
-                value={workItems}
-                onChange={handleFieldChange}
-              />
+            {/* Description with Edit Button and Menu */}
+            <div className="mt-0.5 relative group/desc">
+              <div className="relative">
+                {/* Edit Button */}
+                <div className="absolute -left-8 top-1/2 -translate-y-1/2 opacity-0 group-hover/desc:opacity-100 transition-opacity">
+                  <Popover.Root open={openPopoverIndex === index} onOpenChange={(open) => setOpenPopoverIndex(open ? index : null)}>
+                    <Popover.Trigger asChild>
+                      <button className="p-1 hover:bg-gray-100 rounded-md text-gray-500 hover:text-blue-500">
+                        <Wand2 className="w-4 h-4" />
+                      </button>
+                    </Popover.Trigger>
+                    <Popover.Portal>
+                      <Popover.Content className="bg-white rounded-lg shadow-lg p-2 z-50" sideOffset={5}>
+                        <div className="flex flex-col gap-1">
+                          <button
+                            onClick={() => {
+                              optimizeDescription(index);
+                              setOpenPopoverIndex(null);
+                            }}
+                            className="flex items-center gap-2 px-3 py-1.5 text-sm rounded hover:bg-blue-50 text-blue-600 whitespace-nowrap"
+                          >
+                            <Wand2 className="w-4 h-4" />
+                            <span>AI Rewrite</span>
+                          </button>
+                        </div>
+                        <Popover.Arrow className="fill-white" />
+                      </Popover.Content>
+                    </Popover.Portal>
+                  </Popover.Root>
+                </div>
+
+                <EditableFieldTextarea
+                  index={index}
+                  field="description"
+                  placeholder="Work description (achievements, responsibilities, etc.)"
+                  className="w-full"
+                  value={workItems}
+                  onChange={handleFieldChange}
+                />
+              </div>
             </div>
             
             {/* Add Experience Button */}
