@@ -32,7 +32,7 @@ export default function RootLayout({
     return (
         <html lang="en">
         {/* Apply font variables */}
-        <body className={`${raleway.variable} ${playfair.variable} font-sans bg-background-color text-text-color`}>
+        <body className={`${raleway.variable} ${playfair.variable} font-sans bg-background-color text-text-color`} suppressHydrationWarning>
         {children}
         </body>
         </html>
