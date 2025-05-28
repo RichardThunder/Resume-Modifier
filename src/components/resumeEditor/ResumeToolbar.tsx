@@ -13,6 +13,7 @@ import { getTimestampedFilename } from '@/lib/methods'; // Import the utility fu
 import { isAuthenticated } from '@/lib/auth';
 import { AutoScrollActivator } from '@dnd-kit/core';
 import { BlockManagementModal } from './BlockManagementModal';
+import { getAssetPath } from '@/lib/utils';
 
 interface ResumeToolbarProps {
     setIntroEnabled: (enabled: boolean) => void;
@@ -441,7 +442,7 @@ const ResumeToolbar: React.FC<ResumeToolbarProps> = ({ setIntroEnabled }) => {
                                 onClick={handleSaveFileName}
                                 title="Save filename"
                             >
-                                <Image src="/toolbar/save.svg" alt="Save name" width={16} height={16} />
+                                <Image src={getAssetPath('/toolbar/save.svg')} alt="Save name" width={16} height={16} />
                             </button>
                         </div>
                     ) : (
@@ -450,7 +451,7 @@ const ResumeToolbar: React.FC<ResumeToolbarProps> = ({ setIntroEnabled }) => {
                             title={`Current filename: ${fileName}. Click to rename.`}
                             onClick={handleEditFileName}
                         >
-                            <Image src="/toolbar/ep_edit.svg" alt="Edit name" width={16} height={16} className="mb-1" />
+                            <Image src={getAssetPath('/toolbar/ep_edit.svg')} alt="Edit name" width={16} height={16} className="mb-1" />
                             <span className="truncate w-full text-xs text-center">{fileName.split('.')[0]}</span>
                         </button>
                     )}
@@ -464,7 +465,7 @@ const ResumeToolbar: React.FC<ResumeToolbarProps> = ({ setIntroEnabled }) => {
                         onClick={undo}
                         title="Undo"
                     >
-                        <Image src="/toolbar/material-symbols-light_undo.svg" alt="Undo" width={18} height={18} />
+                        <Image src={getAssetPath('/toolbar/material-symbols-light_undo.svg')} alt="Undo" width={18} height={18} />
                     </button>
                     <button
                         className="btn-custom btn-sm p-2 disabled:opacity-50 bg-blue-400 rounded-lg shadow-sm w-full flex justify-center text-white hover:bg-blue-500 border border-blue-500"
@@ -472,7 +473,7 @@ const ResumeToolbar: React.FC<ResumeToolbarProps> = ({ setIntroEnabled }) => {
                         onClick={redo}
                         title="Redo"
                     >
-                        <Image src="/toolbar/material-symbols-light_redo.svg" alt="Redo" width={18} height={18} />
+                        <Image src={getAssetPath('/toolbar/material-symbols-light_redo.svg')} alt="Redo" width={18} height={18} />
                     </button>
                 </div>
 
@@ -484,7 +485,7 @@ const ResumeToolbar: React.FC<ResumeToolbarProps> = ({ setIntroEnabled }) => {
                         onClick={toggleResumeModal}
                         title="Upload Resume PDF"
                     >
-                        <Image src="/toolbar/circum_export.svg" alt="Upload" width={16} height={16} className="mb-1" />
+                        <Image src={getAssetPath('/toolbar/circum_export.svg')} alt="Upload" width={16} height={16} className="mb-1" />
                         <span className="text-xs">Resume</span>
                     </button>
 
@@ -495,7 +496,7 @@ const ResumeToolbar: React.FC<ResumeToolbarProps> = ({ setIntroEnabled }) => {
                         disabled={!isLoggedIn}
                         title={!isLoggedIn ? "Login required" : "Analyze Job Description"}
                     >
-                        <Image src="/toolbar/circum_export.svg" alt="upload" width={16} height={16} className="mb-1" />
+                        <Image src={getAssetPath('/toolbar/circum_export.svg')} alt="upload" width={16} height={16} className="mb-1" />
                         <span className="text-xs">JD</span>
                     </button>
 

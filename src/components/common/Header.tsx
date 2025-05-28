@@ -6,6 +6,10 @@ import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation'; // Use correct imports for App Router
 import { isAuthenticated, getLocalStorage } from '@/lib/auth'; // Assuming auth utils are in lib
 
+// Import static images directly for better asset handling
+import botLogo from '../../../public/bot.svg';
+import userAvatar from '../../../public/Avatar.png';
+
 const Header: React.FC = () => {
     const [isNavbarOpen, setIsNavbarOpen] = useState(false);
     const [isAuth, setIsAuth] = useState(false);
@@ -33,9 +37,6 @@ const Header: React.FC = () => {
         setIsNavbarOpen(false);
     }
 
-    // Example Avatar - replace with actual user data if available
-    const userAvatar = "/Avatar.png"; // Path relative to /public
-
     const navLinkClasses = (path: string) =>
         `block py-2 px-3 md:p-0 rounded md:bg-transparent font-semibold text-lg transition duration-150 ease-in-out ${
             pathname === path
@@ -55,7 +56,13 @@ const Header: React.FC = () => {
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-4 py-2">
                 {/* Logo and Brand */}
                 <Link href={isAuth ? "/" : "/login"} className="flex items-center space-x-2 rtl:space-x-reverse">
-                    <Image src="/bot.svg" alt="ResumeBot Logo" width={40} height={40} />
+                    <Image 
+                        src={botLogo} 
+                        alt="ResumeBot Logo" 
+                        width={40} 
+                        height={40} 
+                        priority
+                    />
                     <span className="self-center text-2xl font-bold whitespace-nowrap text-gray-800">ResumeBot</span>
                 </Link>
 
@@ -70,6 +77,7 @@ const Header: React.FC = () => {
                                 width={36}
                                 height={36}
                                 className="rounded-full cursor-pointer object-cover border-2 border-gray-300 hover:border-blue-500"
+                                priority
                             />
                         </Link>
                     ) : (
@@ -103,7 +111,7 @@ const Header: React.FC = () => {
                 >
                     <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white">
                         <li>
-                            <Link href="/modifier" className={navLinkClasses("#")} onClick={closeNavbar}>Home</Link>
+                            <Link href="/enterResume" className={navLinkClasses("#")} onClick={closeNavbar}>Home</Link>
                         </li>
                         <li>
                             <a href="https://aws.mintmelon.ca/Chart" className={navLinkClasses("#chart")} onClick={closeNavbar}>Chart</a>
