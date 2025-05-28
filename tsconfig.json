@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -18,9 +22,22 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/lib/services/saveResumeService.js", "postcss.config.js", "src/lib/services/guestResumeService.js"], // Include .js files if necessary
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/lib/services/saveResumeService.js",
+    "postcss.config.js",
+    "src/lib/services/guestResumeService.js",
+    "dist/types/**/*.ts"
+  ], // Include .js files if necessary
+  "exclude": [
+    "node_modules"
+  ]
 }

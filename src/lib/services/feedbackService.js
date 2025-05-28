@@ -47,7 +47,7 @@ const feedbackService = {
                         "section type": section_type,
                         workExperience: updated_resume.workExperience[index] || sectionData
                     },
-                    feedback: "Please act as an experienced hiring manager. Help me optimize the following Work Experience description using the STAR method (Situation, Task, Action, Result) and quantify achievements wherever possible. Focus on my key responsibilities and accomplishments as a SDE. Start bullet points with strong action verbs. My current description is below. Please rewrite this into 3-5 impactful, accomplishment-driven bullet points.",
+                    feedback: "Please act as an experienced hiring manager. Help me optimize the following Work Experience description using the STAR method (Situation, Task, Action, Result) and quantify achievements wherever possible. Focus on my key responsibilities and accomplishments as a SDE. Start bullet points with strong action verbs. Return with bullet sentence start with '•', My current description is below. Please rewrite this into 3-5 impactful, accomplishment-driven bullet points.",
                     updated_resume,
                 };
                 break;
@@ -58,7 +58,7 @@ const feedbackService = {
                         "section type": section_type,
                         projects: updated_resume.projects[index] || sectionData
                     },
-                    feedback: "Please optimize the following Project Experience description. Clearly state my role in the project, the key technologies/tools used (e.g., [Tech 1], [Tech 2]), the challenges faced, the solutions I implemented, and the final project outcomes or impact. My current description is below. Emphasize my individual contributions and problem-solving abilities.",
+                    feedback: "Please optimize the following Project Experience description. Clearly state my role in the project, the key technologies/tools used (e.g., [Tech 1], [Tech 2]), the challenges faced, the solutions I implemented, and the final project outcomes or impact. Return with bullet sentence start with '•', My current description is below. Emphasize my individual contributions and problem-solving abilities.",
                     updated_resume,
                 };
                 break;
@@ -69,7 +69,7 @@ const feedbackService = {
                         "section type": section_type,
                         achievements: updated_resume.achievements[index] || sectionData
                     },
-                    feedback:"Please review my list of Achievements/Awards and help me select the most relevant ones for my career goal of becoming a SDE. Then, optimize their descriptions to strongly support my application for such roles. My description is below",
+                    feedback:"Please review my list of Achievements/Awards and help me select the most relevant ones for my career goal of becoming a SDE. Then, optimize their descriptions to strongly support my application for such roles.Return with bullet sentence start with '•',  My description is below",
                     updated_resume,
                 };
                 break;

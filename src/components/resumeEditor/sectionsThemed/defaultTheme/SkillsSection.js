@@ -55,7 +55,7 @@ export const SkillsSection = ({ hideDefaultControls = false, onMenuAction }) => 
         <textarea
           value={skillsText}
           onChange={handleSkillsChange}
-          placeholder="输入技能，用逗号分隔（例如：前端开发, React.js, TypeScript）"
+          placeholder="Enter skills, separated by commas (e.g. front-end development, React.js, TypeScript)"
           className="w-full p-0.5 border-none focus:outline-none focus:ring-0 min-h-[35px] resize-y"
         />
       </div>
