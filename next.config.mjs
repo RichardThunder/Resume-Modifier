@@ -1,10 +1,18 @@
 /** @type {import('next').NextConfig} */
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 const nextConfig = {
   reactStrictMode: true, // Recommended for development
-  // Optional: Configure image domains if using external images with next/image
-  // images: {
-  //   domains: ['example.com'],
-  // },
+  
+  // Improve image handling
+  images: {
+    unoptimized: process.env.NODE_ENV === 'production', // Use unoptimized images in production to avoid issues
+    // If you need image optimization, use domains or remotePatterns instead
+    // domains: ['example.com'],
+  },
 
   // Make environment variables available on the client-side
   // Prefix with NEXT_PUBLIC_
@@ -13,19 +21,34 @@ const nextConfig = {
     // Add other public environment variables here
   },
 
-  // Optional: Base path if deploying to a subdirectory (matches Vite config)
-  // basePath: process.env.NODE_ENV === 'production' ? '/modifier' : '',
-  // assetPrefix: process.env.NODE_ENV === 'production' ? '/modifier/' : '', // Ensure trailing slash for asset prefix
+  // Set base path for deployment to /modifier subdirectory for both dev and prod
+  basePath: '/modifier',
+  assetPrefix: '/modifier', // No trailing slash needed for Next.js
 
+  // Configure output for specific deployment targets
+  // output: 'standalone', // For Docker deployment using standalone output
+  // Configure output for static file generation
+  output: 'export',
+  
+  // Required for static export with basePath
+  distDir: 'dist',
+  
+  // Disable server features in static export
+  experimental: {
+    // Keep any existing experimental features that might be needed
+  },
 
-  // Optional: Configure output for specific deployment targets
-  output: 'standalone', // For Docker deployment using standalone output
-
-  // Optional: Experimental features
-  // experimental: {
-  //   appDir: true, // Already default in recent Next.js versions
-  // },
-
+  // Ensure webpack resolves the path aliases correctly
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': path.resolve(__dirname, 'src')
+    };
+    return config;
+  },
+  
+  // Make sure trailing slashes are consistent
+  trailingSlash: true,
 };
 
 export default nextConfig;
