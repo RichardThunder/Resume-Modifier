@@ -114,10 +114,10 @@ const Header: React.FC = () => {
                             <Link href="/enterResume" className={navLinkClasses("#")} onClick={closeNavbar}>Home</Link>
                         </li>
                         <li>
-                            <a href="https://aws.mintmelon.ca/Chart" className={navLinkClasses("#chart")} onClick={closeNavbar}>Chart</a>
+                            <a href="https://ahttps://resume.mintmelon.ca/Chart" className={navLinkClasses("#chart")} onClick={closeNavbar}>Chart</a>
                         </li>
                         <li>
-                            <a href="https://aws.mintmelon.ca/job_market" className={navLinkClasses("#job_market")} onClick={closeNavbar}>Job Market</a>
+                            <a href="https://resume.mintmelon.ca/job_market" className={navLinkClasses("#job_market")} onClick={closeNavbar}>Job Market</a>
                         </li>
                         <li>
                             <Link href="/template" className={hotTemplateLinkClasses("/template")} onClick={closeNavbar}>
