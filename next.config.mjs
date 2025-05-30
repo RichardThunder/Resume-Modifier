@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const isProd = process.env.NODE_ENV === 'production';
 
 const nextConfig = {
   reactStrictMode: true, // Recommended for development
@@ -28,10 +29,11 @@ const nextConfig = {
   // Configure output for specific deployment targets
   // output: 'standalone', // For Docker deployment using standalone output
   // Configure output for static file generation
-  output: 'export',
-  
   // Required for static export with basePath
-  distDir: 'dist',
+  ...(isProd && {
+    output: 'export',
+    distDir: 'dist',
+  }),
   
   // Disable server features in static export
   experimental: {
