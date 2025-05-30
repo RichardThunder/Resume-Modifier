@@ -52,7 +52,9 @@ const ResumeToolbar: React.FC<ResumeToolbarProps> = ({ setIntroEnabled }) => {
     const [future, setFuture] = useState<any[]>([]);
     const [currentData, setCurrentData] = useState(resumeData);
     const [isLoggedIn, setIsLoggedIn] = useState(false); // 新增状态用于跟踪登录状态
-    const API_URL = process.env.NEXT_PUBLIC_API_URL;
+    const API_URL = process.env.NODE_ENV === 'development'
+        ? 'http://localhost:5001/api'
+        : (process.env.NEXT_PUBLIC_API_URL || 'https://api.examplebackup.com/api'); // 使用环境变量配置API URL
 
     //检查登录状态
     useEffect(() => {
