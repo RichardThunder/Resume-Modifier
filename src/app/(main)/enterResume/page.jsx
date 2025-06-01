@@ -48,13 +48,9 @@ export default function ResumeEditorDemo() {
           </div>
 
           {/* 显示当前 resumeData JSON 内容 */}
-          <div className="mt-8 bg-gray-100 p-4 rounded-lg">
-            <div className="flex justify-between items-center mb-2">
-              <h3 className="text-lg font-semibold">Current Resume Data: </h3>
-              <DataDisplay />
-            </div>
-          </div>
+      
 
+          {/* 说明文本 */}
           <div className="mt-8 text-center text-sm text-gray-500">
             <p>This demo shows the drag-and-drop sortable resume module with user information and education sections</p>
           </div>

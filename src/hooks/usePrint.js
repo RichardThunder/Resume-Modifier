@@ -31,6 +31,7 @@ const usePrint = () => {
           transform: none !important;
           box-shadow: none !important;
         }
+       
         /* 让所有字体都小一号 */
         .resume-block-container * {
           font-size: 0.9em !important;
@@ -48,17 +49,7 @@ const usePrint = () => {
 
         }
 
-
-        .resume-block-container {
-          position: fixed;
-          left: 5%;
-          top: 2%;
-          width: 90%;
-          height: 90%;
-          margin: 0 auto !important;
-          transform: none !important;
-          box-shadow: none !important;
-        }
+        
       }
     `;
     /*
